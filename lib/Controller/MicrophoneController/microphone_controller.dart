@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,11 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../Model/speechToSpeechModel.dart';
+import '../../Services/api_services.dart';
+import '../../Services/api_urls.dart';
 import '../../Utils/utils.dart';
+import '../ExceptionalController/exceptional_controller.dart';
 
 class MicrophoneController extends GetxController {
   FlutterSoundRecorder? recorder;
@@ -15,6 +20,7 @@ class MicrophoneController extends GetxController {
   String? filePath;
   bool isRecorderInitialized = false;
   File? audioFile;
+  // MicrophoneController micController = Get.find<MicrophoneController>();
 
   Future<void> initializeRecorder() async {
     try {
@@ -25,13 +31,13 @@ class MicrophoneController extends GetxController {
         isRecorderInitialized = true;
         update();
       } else {
-        logger.e('Microphone permission denied');
+        debugPrint('Microphone permission denied');
 
         isRecorderInitialized = false;
         update();
       }
     } catch (e) {
-      logger.e('Error initializing recorder: $e');
+      debugPrint('Error initializing recorder: $e');
 
       isRecorderInitialized = false;
       update();
@@ -40,18 +46,20 @@ class MicrophoneController extends GetxController {
 
   Future<void> startRecording() async {
     if (!isRecorderInitialized) {
-      logger.e('Recorder is not initialized');
+      debugPrint('Recorder is not initialized');
       return;
     }
     try {
       final directory = await getApplicationDocumentsDirectory();
       filePath = p.join(
-          directory.path, 'audio_${DateTime.now().millisecondsSinceEpoch}.m4a');
+          directory.path, 'audio_${DateTime.now().millisecondsSinceEpoch}.wav');
 
       await recorder!.startRecorder(
-        toFile: filePath,
-        codec: Codec.aacMP4,
-      );
+          toFile: filePath,
+          codec: Codec.pcm16WAV,
+          // codec: Codec.aacADTS, // Use AAC codec for smaller file size
+          numChannels: 1, // Record in mono
+          bitRate: 4000);
 
       isRecording = true;
       update();
@@ -62,10 +70,11 @@ class MicrophoneController extends GetxController {
 
   Future<void> stopRecording() async {
     if (!isRecorderInitialized) {
-      logger.e('Recorder is not initialized');
+      debugPrint('Recorder is not initialized');
       return;
     }
     try {
+      sendSpeech();
       await recorder!.stopRecorder();
 
       isRecording = false;
@@ -76,11 +85,44 @@ class MicrophoneController extends GetxController {
   }
 
   final FlutterTts flutterTts = FlutterTts();
-  Future<void> speak() async {
+  Future<void> speak(String txt) async {
     await flutterTts.setLanguage("en-US");
     await flutterTts.setPitch(1.0);
     await flutterTts.setSpeechRate(0.5);
-    await flutterTts.speak("note book");
+    await flutterTts.speak(txt);
+  }
+
+  SpeechToSpeechModel? speechToSpeechModel;
+  Future<bool> sendSpeech() async {
+    Map<String, String> files = {};
+    files['file'] = '$filePath';
+
+    Map<String, String> field = {
+      "language": "French",
+    };
+
+    showProgress();
+    return await ApiServices.postMultiPartQuery(
+            feedUrl: ApiUrls.speechToSpeechApi, fields: field, files: files)
+        .then((res) {
+      if (res == null) {
+        stopProgress();
+        return false;
+      }
+      speechToSpeechModel = speechToSpeechModelFromJson(res);
+      stopProgress();
+      update();
+      return true;
+    }).onError((error, stackTrace) async {
+      debugPrint('Error => $error');
+      logger.e('StackTrace => $stackTrace');
+      await ExceptionController().exceptionAlert(
+        errorMsg: '$error',
+        exceptionFormat: ApiServices.methodExceptionFormat(
+            'POST', ApiUrls.speechToSpeechApi, error, stackTrace),
+      );
+      throw '$error';
+    });
   }
 
   // Future<void> pickAudio() async {

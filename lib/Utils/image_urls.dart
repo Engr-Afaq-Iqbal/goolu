@@ -9,3 +9,4 @@ const String downArrowImage = 'downArrow.svg';
 const String languageImage = 'language.svg';
 const String levelImage = 'level.svg';
 const String dashboardImage = 'dashboard.svg';
+const String roundMicImage = 'roundMic.svg';

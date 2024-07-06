@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Controller/MicrophoneController/microphone_controller.dart';
-import 'package:goolu/Utils/utils.dart';
 
 import '../../Config/app_config.dart';
 import '../../Controller/AuthController/auth_controller.dart';
@@ -27,10 +27,10 @@ class _MicrophonePageState extends State<MicrophonePage> {
     microphoneController.recorder = FlutterSoundRecorder();
     microphoneController.initializeRecorder();
     microphoneController.flutterTts.setCompletionHandler(() {
-      logger.i("Speech completed");
+      debugPrint("Speech completed");
     });
     microphoneController.flutterTts.setErrorHandler((msg) {
-      logger.e("Error: $msg");
+      debugPrint("Error: $msg");
     });
   }
 
@@ -77,74 +77,92 @@ class _MicrophonePageState extends State<MicrophonePage> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            size20h,
+            size40h,
             microphoneCtrl.isRecording
                 ? customText(text: 'Recording...', textStyle: bold16NavyBlue)
                 : customText(
                     text: 'Press button to start recording',
                     textStyle: bold16NavyBlue),
             size20h,
-            Center(
-              child: Container(
-                height: SizesDimensions.height(30),
-                width: SizesDimensions.width(70),
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: primaryBlueColor,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // _audioFile == null
-                    //     ? const Text('No audio selected')
-                    //     : Text('Audio selected: ${_audioFile!.path}'),
-                    //
-                    ElevatedButton(
-                      onPressed: microphoneCtrl.isRecording
-                          ? microphoneCtrl.stopRecording
-                          : microphoneCtrl.startRecording,
-                      child: Text(microphoneCtrl.isRecording
-                          ? 'Stop Recording'
-                          : 'Start Recording'),
-                    ),
-                    size20h,
-                    Row(
-                      children: [
-                        customText(
-                            text: 'Note - book (n)', textStyle: bold16White),
-                        size20w,
-                        // GestureDetector(
-                        //   onTap: microphoneCtrl.pickAudio,
-                        //   child: Container(
-                        //     width: 30.0,
-                        //     height: 30.0,
-                        //     padding: const EdgeInsets.all(5),
-                        //     decoration: BoxDecoration(
-                        //       color: kYellowffde59,
-                        //       shape: BoxShape.circle,
-                        //     ),
-                        //     child: SvgPicture.asset(
-                        //       '$imgUrl$playImage',
-                        //       colorFilter: ColorFilter.mode(
-                        //         primaryBlueColor,
-                        //         BlendMode.srcIn,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                    size10h,
-                    customText(
-                        text: '(with form, sound button, definition)',
-                        textStyle: regular12White,
-                        maxLines: 3,
-                        textAlign: TextAlign.center),
-                  ],
+            GestureDetector(
+              onTap: microphoneCtrl.isRecording
+                  ? microphoneCtrl.stopRecording
+                  : microphoneCtrl.startRecording,
+              child: Center(
+                child: SvgPicture.asset(
+                  '$imgUrl$roundMicImage',
+                  height: SizesDimensions.height(12),
+                  width: SizesDimensions.width(12),
+                  colorFilter: ColorFilter.mode(
+                    microphoneCtrl.isRecording
+                        ? primaryBlueColor
+                        : secDarkBlueNavyColor,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),
+            size100h,
+            if (microphoneController.speechToSpeechModel != null)
+              Center(
+                child: Container(
+                  // height: SizesDimensions.height(30),
+                  width: SizesDimensions.width(70),
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: primaryBlueColor,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // _audioFile == null
+                      //     ? const Text('No audio selected')
+                      //     : Text('Audio selected: ${_audioFile!.path}'),
+                      //
+                      size20h,
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: SizesDimensions.width(40),
+                            child: customText(
+                                text:
+                                    '${microphoneController.speechToSpeechModel?.translatedText}',
+                                textStyle: bold16White,
+                                maxLines: 10),
+                          ),
+                          size20w,
+                          GestureDetector(
+                            onTap: () async {
+                              final text = microphoneController
+                                      .speechToSpeechModel?.translatedText ??
+                                  'No text available';
+                              await microphoneCtrl.speak(text);
+                            },
+                            child: Container(
+                              width: 30.0,
+                              height: 30.0,
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: kYellowffde59,
+                                shape: BoxShape.circle,
+                              ),
+                              child: SvgPicture.asset(
+                                '$imgUrl$playImage',
+                                colorFilter: ColorFilter.mode(
+                                  primaryBlueColor,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      size20h,
+                    ],
+                  ),
+                ),
+              ),
           ],
         );
       }),

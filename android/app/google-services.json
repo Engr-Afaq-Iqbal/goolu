@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "377839320538",
+    "project_id": "goolu-fddd7",
+    "storage_bucket": "goolu-fddd7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377839320538:android:d65e7bacf1c3403dffd4e3",
+        "android_client_info": {
+          "package_name": "com.example.goolu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnKnRM5-Zx5l6x3JJKivqaSApRXFkbcJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377839320538:android:d9c47c6418d08a08ffd4e3",
+        "android_client_info": {
+          "package_name": "com.goolu.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnKnRM5-Zx5l6x3JJKivqaSApRXFkbcJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
