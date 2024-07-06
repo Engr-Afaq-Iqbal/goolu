@@ -17,8 +17,58 @@ tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
 
+//buildscript {
+//    ext.kotlin_version = '1.8.0'
+//    repositories {
+//        google()
+//        mavenCentral()
+//    }
+//    dependencies {
+//        classpath 'com.android.tools.build:gradle:8.1.4'
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//        classpath 'com.google.gms:google-services:4.4.2'
+//    }
+//}
+
+//buildscript {
+//    ext.kotlin_version = '1.9.0'
+//    repositories {
+//        google()
+//        mavenCentral()
+//    }
+//
+//    dependencies {
+//        classpath 'com.android.tools.build:gradle:8.1.4'
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//        classpath 'com.google.gms:google-services:4.4.2'
+//    }
+//}
+
+//buildscript {
+//    ext.kotlin_version = '1.5.0'
+//    ext.anko_version='0.10.8'
+//    repositories {
+//        jcenter()
+//        maven {
+//            url 'https://maven.google.com/'
+//            name 'Google'
+//        }
+//        google()
+//    }
+//    dependencies {
+//        classpath 'com.android.tools.build:gradle:8.3.2' // Make sure this version matches your Android Gradle Plugin version
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.23"
+//        classpath 'com.google.gms:google-services:4.4.2'
+//        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.1'
+//        // NOTE: Do not place your application dependencies here; they belong
+//        // in the individual module build.gradle files
+//        // Add the dependency for the Performance Monitoring plugin
+//    }
+//}
+
+
 buildscript {
-    ext.kotlin_version = '1.9.24'
+    ext.kotlin_version = '1.9.0'
     repositories {
         google()
         mavenCentral()
@@ -26,5 +76,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:8.1.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.4.2' // Ensure this is the latest version
     }
 }

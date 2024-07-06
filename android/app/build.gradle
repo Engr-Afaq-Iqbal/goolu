@@ -8,6 +8,12 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
@@ -31,13 +37,25 @@ android {
     compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_1_8
+//        targetCompatibility = JavaVersion.VERSION_1_8
+//    }
 
-    kotlinOptions{
-        jvmTarget = JavaVersion.VERSION_1_8
+//    kotlinOptions{
+//        jvmTarget = JavaVersion.VERSION_1_8
+//    }
+
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
     }
 
     defaultConfig {
@@ -45,7 +63,7 @@ android {
         applicationId = "com.example.goolu"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = 21
+        minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
@@ -62,4 +80,17 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:32.3.2') // Use the Firebase BoM
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation platform('com.google.firebase:firebase-bom:31.1.1') // Firebase Bill of Materials
+//    implementation 'com.google.firebase:firebase-auth' // Firebase Authentication
+//    implementation 'com.android.support:multidex:1.0.3'
+//    implementation 'com.google.firebase:firebase-analytics'
+    // Add other Firebase dependencies as needed
 }

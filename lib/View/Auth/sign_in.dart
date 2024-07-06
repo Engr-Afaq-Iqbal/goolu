@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:goolu/View/Auth/sign_up.dart';
@@ -164,8 +165,17 @@ class _SignInScreenState extends State<SignInScreen> {
 
     FocusScope.of(context).unfocus();
     showProgress();
-    Get.offAll(() => const AppBottomNavigationBar(),
-        transition: Transition.downToUp, duration: const Duration(seconds: 1));
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: authenticationCtrl.emailCtrl.text,
+            password: authenticationCtrl.passwordCtrl.text)
+        .then((value) {
+      Get.offAll(() => const AppBottomNavigationBar(),
+          transition: Transition.downToUp,
+          duration: const Duration(seconds: 1));
+      logger.i(value);
+    });
+
     // bool login = await authenticationCtrl.postLogin(isLogin: true);
     // if (!login) {
     //   stopProgress();

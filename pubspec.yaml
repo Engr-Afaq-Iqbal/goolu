@@ -60,12 +60,16 @@ dependencies:
   flutter_tts: ^3.8.5
   permission_handler: ^11.3.1
   file_picker: ^8.0.5
-  flutter_sound: ^9.2.12
+  flutter_sound: ^9.6.0
   dio: ^5.4.3+1
-  firebase_core:
-  cloud_firestore:
-  firebase_storage:
-  firebase_auth:
+#  firebase_auth: ^4.2.1
+#  firebase_core: ^2.4.0
+  firebase_core: ^2.18.0
+  firebase_auth: ^4.11.0
+  cloud_firestore: ^4.17.0
+#  cloud_firestore: ^4.17.5
+#  firebase_storage:
+#  firebase_auth: ^4.11.0
 
 
 dev_dependencies:

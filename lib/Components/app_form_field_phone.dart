@@ -149,10 +149,10 @@ class _AppFormFieldPhoneState extends State<AppFormFieldPhone> {
               focusNode: widget.focusNode,
               // validator: widget.validator,
               validator: (value) {
-                if (widget.validator!(value) != null) {
-                  return widget.validator!(value);
-                }
-                return null;
+                // if (widget.validator!(value) != null) {
+                //   return widget.validator!(value);
+                // }
+                // return null;
               },
               decoration: InputDecoration(
                 // isDense: widget.isDense ??
