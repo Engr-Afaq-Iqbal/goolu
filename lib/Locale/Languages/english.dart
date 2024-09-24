@@ -60,5 +60,20 @@ Map<String, String> english() {
     'phoneNumber': 'Phone Number',
     'verificationCodeCheck': 'Verification code check',
     'platformAgreement': 'Platform Agreement',
+    'welcomeToGoolYouSayIt': 'Welcome to Gool-u\ncan you say it?',
+    'continue': 'Continue',
+    'selectImagesFromGalleryOrCamera': 'Select images from gallery or camera',
+    'sendRequest': 'Send Request',
+    'noTextAvailable': 'No text available',
+    'definition': 'Definition',
+    'wordOfTheDay': 'Word of the day',
+    'withFormSoundButtonDefinition': '(with form, sound button, definition)',
+    'mixedUpSentenceWithWordOfTheDay':
+        'Mixed up sentence with\nword\nof the day',
+    'tryAgain': 'Try again',
+    'level': 'Level',
+    'logout': 'Logout',
+    'recording': 'Recording',
+    'pressButtonToStartRecording': 'Press button to start recording',
   };
 }

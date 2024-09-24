@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import '../Config/app_config.dart';
-import '../Theme/colors.dart';
+import '../Utils/dimensions.dart';
 import '../Utils/font_styles.dart';
+import '../Utils/utils.dart';
 
 class AppFormField extends StatefulWidget {
   final String? labelText;
@@ -30,50 +32,61 @@ class AppFormField extends StatefulWidget {
   final EdgeInsets? padding;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final Widget? suffix;
   final Function()? onEditingComp;
   final int? maxLength;
   final double? width;
   final Widget? child;
+  final Color borderColor;
+  final Color fieldBgColor;
   final TextStyle? textStyle;
+  final bool contextMenuBuilder;
+  final TextAlign textAlign;
+  final Widget? suffix;
+  final double? borderRadius;
+  const AppFormField({
+    super.key,
+    this.labelText,
+    this.hintText,
+    this.title,
+    this.isLabel = true,
+    this.icon,
+    this.keyboardType = TextInputType.text,
+    this.isPasswordField = false,
+    this.controller,
+    this.focusNode,
+    this.enabled = true,
+    this.height,
+    this.maxLines = 1,
+    this.onTap,
+    this.readOnly = false,
+    this.isDense,
+    this.isOutlineBorder = true,
+    this.isBorderColorApply = true,
+    this.inputFormatterList,
+    this.validator,
+    this.onChanged,
+    this.margin,
+    this.padding = const EdgeInsets.only(bottom: 15),
+    this.prefixIcon,
+    this.suffixIcon,
+    this.onEditingComp,
+    this.maxLength,
+    this.width,
+    this.child,
+    this.suffix,
+    this.borderColor = Colors.grey,
+    this.fieldBgColor = Colors.white,
+    this.textStyle,
+    this.contextMenuBuilder = false,
+    this.textAlign = TextAlign.start,
+    this.borderRadius,
+  });
 
-  const AppFormField(
-      {super.key,
-      this.labelText,
-      this.hintText,
-      this.title,
-      this.isLabel = true,
-      this.icon,
-      this.keyboardType = TextInputType.text,
-      this.isPasswordField = false,
-      this.controller,
-      this.focusNode,
-      this.enabled = true,
-      this.height,
-      this.maxLines = 1,
-      this.onTap,
-      this.readOnly = false,
-      this.isDense,
-      this.isOutlineBorder = true,
-      this.isBorderColorApply = true,
-      this.inputFormatterList,
-      this.validator,
-      this.onChanged,
-      this.margin,
-      this.padding = const EdgeInsets.only(bottom: 15),
-      this.prefixIcon,
-      this.suffixIcon,
-      this.onEditingComp,
-      this.maxLength,
-      this.width,
-      this.child,
-      this.suffix,
-      this.textStyle});
   @override
-  AppFormFieldState createState() => AppFormFieldState();
+  State<AppFormField> createState() => _AppFormFieldState();
 }
 
-class AppFormFieldState extends State<AppFormField> {
+class _AppFormFieldState extends State<AppFormField> {
   late FocusNode _internalFocusNode;
   bool _obscureText = true;
   @override
@@ -100,7 +113,6 @@ class AppFormFieldState extends State<AppFormField> {
   Widget build(BuildContext context) {
     final isFocused = _internalFocusNode.hasFocus;
     return Container(
-      // width: widget.width,
       constraints: BoxConstraints(
         /// TODO: TextField Responsiveness
         minWidth:
@@ -111,20 +123,94 @@ class AppFormFieldState extends State<AppFormField> {
         ,
         maxWidth: widget.width ?? double.infinity,
       ),
+      width: Get.width,
       height: widget.height,
-      margin: widget.margin,
-      padding: widget.padding,
+      padding: EdgeInsets.symmetric(
+        horizontal: SizesDimensions.width(2.0),
+      ),
+      decoration: BoxDecoration(
+        color: widget.fieldBgColor,
+        border: Border.all(
+          width: 1,
+          color: widget.borderColor,
+        ),
+        borderRadius: BorderRadius.circular(
+          widget.borderRadius ?? Dimensions.radiusDefault,
+        ),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (widget.title != null)
-            Text(widget.title!,
-                style: const TextStyle(fontWeight: FontWeight.w500)),
+            customText(text: widget.title!, textStyle: bold14NavyBlue),
+          // Text(widget.title!,
+          //     style: const TextStyle(fontWeight: FontWeight.w500)),
           widget.child ??
               TextFormField(
+                textAlign: widget.textAlign,
+                contextMenuBuilder: widget.contextMenuBuilder
+                    ? (context, editableTextState) {
+                        return AdaptiveTextSelectionToolbar(
+                          anchors: editableTextState.contextMenuAnchors,
+                          children: [
+                            TextSelectionToolbarTextButton(
+                              onPressed: () {
+                                editableTextState.copySelection(
+                                    SelectionChangedCause.toolbar);
+                              },
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: SizesDimensions.width(3)),
+                              child: customText(
+                                text: 'copy'.tr,
+                                textStyle: regular14NavyBlue,
+                              ),
+                            ),
+                            TextSelectionToolbarTextButton(
+                              onPressed: () {
+                                editableTextState.cutSelection(
+                                    SelectionChangedCause.toolbar);
+                              },
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: SizesDimensions.width(3)),
+                              child: customText(
+                                  text: 'cut'.tr, textStyle: regular14NavyBlue),
+                            ),
+                            TextSelectionToolbarTextButton(
+                              onPressed: () {
+                                editableTextState
+                                    .pasteText(SelectionChangedCause.toolbar);
+                              },
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: SizesDimensions.width(3)),
+                              child: customText(
+                                  text: 'paste'.tr,
+                                  textStyle: regular14NavyBlue),
+                            ),
+                            TextSelectionToolbarTextButton(
+                              onPressed: () {
+                                editableTextState
+                                    .selectAll(SelectionChangedCause.toolbar);
+                              },
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: SizesDimensions.width(3)),
+                              child: customText(
+                                  text: 'selectAll'.tr,
+                                  textStyle: regular14NavyBlue),
+                            ),
+                          ],
+                        );
+                      }
+                    : null,
+                // toolbarOptions: const ToolbarOptions(
+                //   copy: true,
+                //   paste: true,
+                //   cut: true,
+                //   selectAll: true,
+                // ),
                 maxLength: widget.maxLength,
                 focusNode: widget.focusNode,
+                enableInteractiveSelection: true,
                 // validator: widget.validator,
                 validator: widget.validator != null
                     ? (value) {
@@ -134,7 +220,7 @@ class AppFormFieldState extends State<AppFormField> {
                         // Custom email validation
                         if (widget.keyboardType == TextInputType.emailAddress &&
                             !isValidEmail(value)) {
-                          return 'Please enter a valid email address';
+                          return 'pleaseEnterAValidEmailAddress'.tr;
                         }
                         return null;
                       }
@@ -142,7 +228,7 @@ class AppFormFieldState extends State<AppFormField> {
                         // Custom email validation
                         if (widget.keyboardType == TextInputType.emailAddress &&
                             !isValidEmail(value)) {
-                          return 'Please enter a valid email address';
+                          return 'pleaseEnterAValidEmailAddress'.tr;
                         }
                         return null;
                       },
@@ -150,14 +236,19 @@ class AppFormFieldState extends State<AppFormField> {
                   // isDense: widget.isDense ??
                   //     ResponsiveWrapper.of(context).isSmallerThan(DESKTOP),
                   // // filled: true,
+                  counterText: '',
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   labelText: (widget.isLabel && widget.title == null)
                       ? widget.labelText
                       : null,
                   hintText: (widget.hintText != null) ? widget.hintText : null,
-                  hintStyle: regular14NavyBlue,
-                  labelStyle: bold12NavyBlue,
+                  hintStyle: regular14NavyBlue.copyWith(
+                    color: Theme.of(context).iconTheme.color!,
+                  ),
+                  labelStyle: bold14NavyBlue.copyWith(
+                    color: Theme.of(context).iconTheme.color,
+                  ),
                   prefixIcon: (widget.prefixIcon != null)
                       ? widget.prefixIcon
                       : (widget.icon != null)
@@ -170,10 +261,12 @@ class AppFormFieldState extends State<AppFormField> {
                       : AppStyles.underlineBorder,
                   enabledBorder: widget.isOutlineBorder
                       ? OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.radiusLarge),
                           borderSide: BorderSide(
                             color: isFocused
-                                ? primaryBlueColor
-                                : secDarkBlueNavyColor,
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).colorScheme.surfaceBright,
                           ),
                         )
                       : AppStyles.underlineBorder,
@@ -188,7 +281,10 @@ class AppFormFieldState extends State<AppFormField> {
                           ? _buildPasswordFieldVisibilityToggle()
                           : null,
                 ),
-                style: widget.textStyle ?? bold14NavyBlue,
+                style: widget.textStyle ??
+                    regular14NavyBlue.copyWith(
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                 keyboardType: widget.keyboardType,
                 inputFormatters: widget.inputFormatterList ??
                     ((widget.keyboardType == TextInputType.number)
@@ -203,7 +299,7 @@ class AppFormFieldState extends State<AppFormField> {
                               ]
                             : []),
 
-                cursorColor: primaryBlueColor,
+                cursorColor: Theme.of(context).colorScheme.primary,
                 obscureText: widget.isPasswordField ? _obscureText : false,
                 controller: widget.controller,
                 enabled: widget.enabled,
@@ -230,18 +326,10 @@ class AppFormFieldState extends State<AppFormField> {
     return GestureDetector(
       child: Icon(
         _obscureText ? Icons.visibility_off : Icons.visibility,
-        color: secDarkGreyIconColor,
+        color:
+            Theme.of(context).colorScheme.surfaceBright, //secDarkGreyIconColor,
       ),
       onTap: () => setState(() => _obscureText = !_obscureText),
     );
-  }
-
-  // Function to validate email address using regex
-  bool isValidEmail(String? email) {
-    if (email == null) return false;
-    // Regex pattern for email validation
-    final RegExp regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-        caseSensitive: false, multiLine: false);
-    return regex.hasMatch(email);
   }
 }

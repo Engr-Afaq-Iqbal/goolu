@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:goolu/View/ForgetPassword/set_new_password.dart';
+import 'package:goolu/View/Auth/ForgetPassword/set_new_password.dart';
+import 'package:goolu/View/Auth/sign_in.dart';
 
-import '../../../Components/app_custom_app_bar.dart';
 import '../../../Components/app_custom_button.dart';
 import '../../../Components/app_form_field.dart';
-import '../../../Config/app_config.dart';
+import '../../../Controller/AuthController/forget_password_controller.dart';
 import '../../../Theme/colors.dart';
+import '../../../Utils/dimensions.dart';
 import '../../../Utils/font_styles.dart';
 import '../../../Utils/utils.dart';
-import '../../Controller/AuthController/forget_password_controller.dart';
-import '../../Utils/dimensions.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -45,69 +44,88 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               // bottomLogo(),
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: SizesDimensions.width(2.0),
+                  horizontal: SizesDimensions.width(4.0),
                 ),
                 child: Column(
                   children: [
-                    size60h,
-                    const AppCustomAppBar(),
-                    size20h,
-                    // SvgPicture.asset('${gooluLogoUrl}blomalBColor.svg'),
-                    size20h,
+                    size120h,
                     customText(
-                      text: 'forgotPassword'.tr,
-                      textStyle: bold18Blue,
+                      text: 'Forgot Password',
+                      textAlign: TextAlign.center,
+                      textStyle: bold20NavyBlue.copyWith(
+                        fontSize: 22,
+                        color: kDarkGreen365D64,
+                      ),
+                      maxLines: 2,
                     ),
-                    size5h,
+                    size30h,
                     customText(
-                      text: 'enterYourEmailAddressToReset'.tr,
-                      textStyle: regular16NavyBlue,
-                    ),
-                    size60h,
+                        text:
+                            'Enter the email address registered with\nyour account. We\'ll send you a link to\nreset your password',
+                        textAlign: TextAlign.center,
+                        textStyle: regular18NavyBlue,
+                        maxLines: 3),
+                    size70h,
                     AppFormField(
+                      fieldBgColor: kF8F9FF,
+                      borderColor: kDarkGreen5b99a5,
                       controller: forgetPassCtrl.forgetEmailCtrl,
-                      labelText: 'emailAddress'.tr,
-                      hintText: 'accountname@goolu.com',
+                      labelText: 'Email',
+                      hintText: 'accountname@domain.com',
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? v) {
                         if (v!.isEmpty) {
-                          return 'emailRequired'.tr;
+                          return 'Email required';
                         }
                         return null;
                       },
                     ),
-                    size20h,
+                    size50h,
                     AppCustomButton(
                       title: customText(
-                        text: 'sendEmail'.tr,
-                        textStyle: bold14White,
+                        text: 'Submit',
+                        textStyle: regular16White.copyWith(fontSize: 18),
                       ),
+                      enableLoading: true,
                       onTap: forgetPasswordHandler,
-                      borderRadius: 4,
+                      borderRadius: Dimensions.radiusDoubleExtraLarge,
+                      verticalPadding: 10,
                     ),
-                    const Spacer(),
-                    AppStyles.dividerLine(width: Get.width),
-                    size30h,
+                    size50h,
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        customText(
-                          text: 'dontHaveAnAccount'.tr,
-                          textStyle: regular14NavyBlue,
-                        ),
-                        size10w,
                         GestureDetector(
                           onTap: () {
-                            // Get.to(() => const ChooseAccountType());
+                            Get.offAll(() => const SignInScreen());
                           },
                           child: customText(
-                            text: 'requestAccount'.tr,
-                            textStyle: bold14Blue,
+                            text: 'Already have an account'.tr,
+                            textStyle: regular18NavyBlue.copyWith(
+                              color: secDarkBlueNavyColor,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    size40h,
+                    size10h,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Get.offAll(() => const SignInScreen());
+                          },
+                          child: customText(
+                            text: 'Login to your account',
+                            textStyle: regular14PrimaryBlue.copyWith(
+                              color: kDarkGreen365D64,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

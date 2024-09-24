@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
+import 'package:goolu/Components/app_custom_button.dart';
 import 'package:goolu/Utils/font_styles.dart';
 
 import '../../Config/app_config.dart';
-import '../../Controller/AuthController/auth_controller.dart';
 import '../../Theme/colors.dart';
 import '../../Utils/dimensions.dart';
 import '../../Utils/image_urls.dart';
@@ -24,10 +24,10 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     flutterTts.setCompletionHandler(() {
-      print("Speech completed");
+      debugPrint("Speech completed");
     });
     flutterTts.setErrorHandler((msg) {
-      print("Error: $msg");
+      debugPrint("Error: $msg");
     });
   }
 
@@ -48,151 +48,225 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Image.asset(
-          '$gooluLogoUrl$gooluImage',
-          height: 40,
-        ),
-        bottom: PreferredSize(
-          preferredSize:
-              const Size.fromHeight(4.0), // Height of the bottom line
-          child: Container(
-            color: kYellowffde59, // Color of the bottom line
-            height: 5.0, // Thickness of the bottom line
-          ),
-        ),
-        leading: Builder(
-          builder: (context) => // Ensure Scaffold is in context
-              IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () {
-                    Get.find<AuthController>()
-                        .scaffoldKey
-                        .currentState
-                        ?.openDrawer();
-                  }),
-        ),
-      ),
-      // drawer: Drawer(
-      //   width: SizesDimensions.width(60),
-      //   child: const DrawerDesign(),
-      // ),
+      appBar: AppStyles().customAppBar(),
+      resizeToAvoidBottomInset: false,
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          size20h,
-          Center(
+          Expanded(
             child: Container(
-              height: SizesDimensions.height(20),
-              width: SizesDimensions.width(70),
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: primaryBlueColor,
+              width: Get.width,
+              padding: EdgeInsets.symmetric(
+                vertical: SizesDimensions.height(3),
+                horizontal: SizesDimensions.width(5),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(Dimensions.radiusDoubleExtraLarge),
+                    topRight:
+                        Radius.circular(Dimensions.radiusDoubleExtraLarge)),
+                color: kLightYellow.withOpacity(0.3),
+              ),
+              child: Stack(
                 children: [
-                  customText(text: 'Word of the day', textStyle: bold16White),
-                  size20h,
-                  Row(
-                    children: [
-                      customText(
-                          text: 'Note - book (n)', textStyle: bold16White),
-                      size20w,
-                      GestureDetector(
-                        onTap: _speak,
-                        child: Container(
-                          width: 30.0,
-                          height: 30.0,
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: kYellowffde59, // Background color
-                            shape:
-                                BoxShape.circle, // Makes the container circular
-                          ),
-                          child: SvgPicture.asset(
-                            '$imgUrl$playImage',
-                            color: primaryBlueColor,
+                  Positioned(
+                    top: 100,
+                    left: 0,
+                    right: 0,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                        Dimensions.radiusDoubleExtraLarge,
+                      ),
+                      child: Container(
+                        height: SizesDimensions.height(60),
+                        decoration: BoxDecoration(
+                          color: primaryBlueColor,
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.radiusDoubleExtraLarge),
+                        ),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Container(
+                                // height: SizesDimensions.height(20),
+                                // width: SizesDimensions.width(90),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 20),
+                                decoration: BoxDecoration(
+                                  color: kLightBlue32A3B8,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 0,
+                                      blurRadius: 1,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(
+                                      Dimensions.radiusDoubleExtraLarge),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    customText(
+                                        text: 'wordOfTheDay'.tr,
+                                        textStyle: bold16White.copyWith(
+                                          fontSize: 18,
+                                        )),
+                                    size20h,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                customText(
+                                                    text: 'Note-book (n)',
+                                                    textStyle:
+                                                        regular14White.copyWith(
+                                                      fontSize: 18,
+                                                    )),
+                                                size30w,
+                                                GestureDetector(
+                                                  onTap: _speak,
+                                                  child: SvgPicture.asset(
+                                                    '$imgUrl$speakerYellowImg',
+                                                    color: kWhite,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            size10h,
+                                            SizedBox(
+                                              width: SizesDimensions.width(45),
+                                              child: customText(
+                                                  text:
+                                                      'withFormSoundButtonDefinition'
+                                                          .tr,
+                                                  textStyle: regular12White
+                                                      .copyWith(fontSize: 12),
+                                                  maxLines: 2,
+                                                  textAlign: TextAlign.start),
+                                            ),
+                                          ],
+                                        ),
+                                        SvgPicture.asset(
+                                            '$imgUrl$dashBoardStudyImg'),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // if (robotCtrl.showAnswers == true)
+                              Column(
+                                children: [
+                                  size20h,
+                                  customText(
+                                    text: 'Sentence Building',
+                                    textStyle: bold18NavyBlue.copyWith(
+                                      fontSize: 18,
+                                      color: k003366,
+                                    ),
+                                  ),
+                                  size10h,
+                                  SizedBox(
+                                    width: SizesDimensions.width(85),
+                                    child: customText(
+                                      text:
+                                          'Rearrange the words into the blanks to build the sentence.',
+                                      maxLines: 2,
+                                      textAlign: TextAlign.center,
+                                      textStyle: regular12NavyBlue.copyWith(
+                                        fontSize: 12,
+                                        color: k003366,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                height: 180,
+                                margin: const EdgeInsets.all(20),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 20),
+                                decoration: BoxDecoration(
+                                  color: kD6ECF0,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 0,
+                                      blurRadius: 1,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(
+                                      Dimensions.radiusDoubleExtraLarge),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        AppCustomButton(
+                                          title: customText(
+                                              text: 'Check',
+                                              textStyle: bold16White),
+                                          onTap: null,
+                                          horizontalPadding: 25,
+                                          borderRadius:
+                                              Dimensions.radiusSingleExtraLarge,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  size10h,
-                  customText(
-                      text: '(with form, sound button, definition)',
-                      textStyle: regular12White,
-                      maxLines: 3,
-                      textAlign: TextAlign.center),
+                  Positioned(
+                      top: 16, child: SvgPicture.asset('$imgUrl$ladyImg')),
+                  Positioned(
+                    left: 120,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            customText(
+                              text: 'Daily Tasks',
+                              textStyle: bold14NavyBlue.copyWith(
+                                fontSize: 14,
+                              ),
+                            ),
+                            size10h,
+                            tickWithText(title: 'Sentence Building'),
+                            tickWithText(title: 'Situation Practice'),
+                            tickWithText(
+                              title: 'Image Description',
+                              isGrey: true,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  size20h,
                 ],
               ),
             ),
           ),
-          size20h,
-          Container(
-            // height: SizesDimensions.height(30),
-            width: SizesDimensions.width(70),
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: kRedFF624D, width: 2)),
-            child: Column(
-              children: [
-                customText(
-                    text: 'Mixed up sentence with\nword\nof the day',
-                    textStyle: bold16NavyBlue,
-                    maxLines: 4,
-                    textAlign: TextAlign.center),
-                size20h,
-                customText(
-                    text: 'I / need / a / new/ notebook.',
-                    textStyle: bold14NavyBlue,
-                    maxLines: 3,
-                    textAlign: TextAlign.center),
-                size20h,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    box(txt: 'need'),
-                    box(txt: 'I'),
-                    box(txt: 'new'),
-                    box(txt: 'a'),
-                  ],
-                ),
-                size15h,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    box(txt: 'notebook'),
-                  ],
-                ),
-                size20h,
-                Row(
-                  children: [
-                    Container(
-                      // height: SizesDimensions.height(20),
-                      // width: SizesDimensions.width(50),
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: kRedFF624D,
-                      ),
-                      child: Center(
-                        child: customText(
-                            text: 'Try again',
-                            textStyle: regular14White,
-                            maxLines: 3,
-                            textAlign: TextAlign.center),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
+          // box(txt: 'need'),
         ],
       ),
     );
@@ -214,6 +288,36 @@ class _DashboardState extends State<Dashboard> {
             maxLines: 3,
             textAlign: TextAlign.center),
       ),
+    );
+  }
+
+  Row tickWithText({String? title, bool isGrey = false}) {
+    return Row(
+      children: [
+        Container(
+          width: 15,
+          height: 15,
+          padding: const EdgeInsets.all(0),
+          decoration: BoxDecoration(
+            color: isGrey == true
+                ? k7F7F7F.withOpacity(0.3)
+                : kDarkYellow, // Background color
+            shape: BoxShape.circle, // Makes the container circular
+          ),
+          child: Center(
+            child: Icon(
+              Icons.check,
+              color: kWhite,
+              size: 9,
+            ),
+          ),
+        ),
+        size10w,
+        customText(
+          text: '$title',
+          textStyle: regular14NavyBlue.copyWith(fontSize: 12),
+        )
+      ],
     );
   }
 }

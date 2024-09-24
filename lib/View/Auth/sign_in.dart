@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:goolu/Config/app_config.dart';
 import 'package:goolu/View/Auth/sign_up.dart';
 
-import '../../../Config/app_config.dart';
 import '../../../Utils/dimensions.dart';
 import '../../../Utils/font_styles.dart';
 import '../../../Utils/utils.dart';
@@ -11,7 +11,9 @@ import '../../Components/app_bottom_navigation_bar.dart';
 import '../../Components/app_custom_button.dart';
 import '../../Components/app_form_field.dart';
 import '../../Controller/AuthController/auth_controller.dart';
-import '../ForgetPassword/forgot_password.dart';
+import '../../Theme/colors.dart';
+import '../../Utils/image_urls.dart';
+import 'ForgetPassword/forgot_password.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -23,12 +25,6 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   AuthController authenticationCtrl = Get.find<AuthController>();
 
-  // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   authCtrl.disposeSignInControllers();
-  //   super.dispose();
-  // }
   @override
   void initState() {
     authenticationCtrl.initializeLoginControllers();
@@ -55,37 +51,45 @@ class _SignInScreenState extends State<SignInScreen> {
                   // bottomLogo(),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: SizesDimensions.width(3.0),
+                      horizontal: SizesDimensions.width(4.0),
                     ),
                     child: Column(
                       children: [
                         size120h,
-                        Image.asset('${gooluLogoUrl}goolu.png'),
-                        size20h,
                         customText(
-                          text: 'welcomeBack'.tr,
-                          textStyle: bold18Blue,
+                          text: 'Login here',
+                          textAlign: TextAlign.center,
+                          textStyle: bold20NavyBlue.copyWith(
+                            fontSize: 22,
+                            color: kDarkGreen365D64,
+                          ),
+                          maxLines: 2,
                         ),
-                        size5h,
+                        size30h,
                         customText(
-                          text: 'loginToYourPersonalAccount'.tr,
-                          textStyle: regular16NavyBlue,
-                        ),
-                        size40h,
+                            text: 'Welcome back you’ve\nbeen missed!',
+                            textAlign: TextAlign.center,
+                            textStyle: regular18NavyBlue,
+                            maxLines: 3),
+                        size70h,
                         AppFormField(
+                          fieldBgColor: kF8F9FF,
+                          borderColor: kDarkGreen5b99a5,
                           controller: authCtrl.emailCtrl,
-                          labelText: 'emailAddress'.tr,
+                          labelText: 'Email',
                           hintText: 'accountname@domain.com',
                           keyboardType: TextInputType.emailAddress,
                           validator: (String? v) {
                             if (v!.isEmpty) {
-                              return 'emailRequired'.tr;
+                              return 'Email required';
                             }
                             return null;
                           },
                         ),
                         size15h,
                         AppFormField(
+                          fieldBgColor: kF8F9FF,
+                          borderColor: kDarkGreen5b99a5,
                           controller: authCtrl.passwordCtrl,
                           labelText: 'password'.tr,
                           hintText: '********'.tr,
@@ -98,56 +102,79 @@ class _SignInScreenState extends State<SignInScreen> {
                             return null;
                           },
                         ),
-                        size20h,
+                        size50h,
                         GestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
                             Get.to(() => const ForgotPassword());
                           },
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               customText(
                                 text: 'forgetMyPassword'.tr,
-                                textStyle: regular14PrimaryBlue,
+                                textStyle: regular14PrimaryBlue.copyWith(
+                                  color: kDarkGreen365D64,
+                                  fontSize: 14,
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        size5h,
+                        size30h,
                         AppCustomButton(
                           title: customText(
                             text: 'signIn'.tr,
-                            textStyle: bold14White,
+                            textStyle: regular16White.copyWith(fontSize: 18),
                           ),
                           enableLoading: true,
                           onTap: loginHandler,
-                          borderRadius: 4,
+                          borderRadius: Dimensions.radiusDoubleExtraLarge,
+                          verticalPadding: 10,
                         ),
-                        size20h,
-                        const Spacer(),
-                        AppStyles.dividerLine(width: Get.width),
                         size30h,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            customText(
-                              text: 'dontHaveAnAccount'.tr,
-                              textStyle: regular14NavyBlue,
-                            ),
-                            size10w,
                             GestureDetector(
                               onTap: () {
                                 Get.to(() => const SignUpPage());
                               },
                               child: customText(
-                                text: 'requestAccount'.tr,
-                                textStyle: bold14Blue,
+                                text: 'Create new account'.tr,
+                                textStyle: regular18NavyBlue.copyWith(
+                                  color: secDarkBlueNavyColor,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        size40h,
+                        const Spacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            customText(
+                              text: 'Or continue with',
+                              textStyle: regular14PrimaryBlue.copyWith(
+                                color: kDarkGreen365D64,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        size30h,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            methodsBox(imagePath: facebookImg),
+                            size50w,
+                            methodsBox(imagePath: googleImg),
+                            size50w,
+                            methodsBox(imagePath: appleImg),
+                          ],
+                        ),
+                        size15h,
+                        size70h,
                       ],
                     ),
                   ),
@@ -160,25 +187,40 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void loginHandler() async {
-    // if (!authenticationCtrl.signInFormKey.currentState!.validate()) return;
+  Container methodsBox({String? imagePath}) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+          color: kF8F9FF,
+          borderRadius: BorderRadius.circular(Dimensions.radiusLarge)),
+      child: Image.asset('$imgUrl$imagePath'),
+    );
+  }
 
-    FocusScope.of(context).unfocus();
+  void loginHandler() async {
+    if (!authenticationCtrl.signInFormKey.currentState!.validate()) return;
+
+    FocusScope.of(context).requestFocus(FocusNode());
     showProgress();
-    FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: authenticationCtrl.emailCtrl.text,
-            password: authenticationCtrl.passwordCtrl.text)
-        .then((value) {
+
+    try {
+      final userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: authenticationCtrl.emailCtrl.text,
+        password: authenticationCtrl.passwordCtrl.text,
+      );
+      stopProgress();
       Get.offAll(() => const AppBottomNavigationBar(),
           transition: Transition.downToUp,
           duration: const Duration(seconds: 1));
-      logger.i(value);
-    });
 
-    // bool login = await authenticationCtrl.postLogin(isLogin: true);
-    // if (!login) {
-    //   stopProgress();
-    // }
+      logger.i(userCredential);
+    } catch (e) {
+      stopProgress();
+      logger.e(e);
+      showToast(
+        e.toString(),
+      );
+    }
   }
 }

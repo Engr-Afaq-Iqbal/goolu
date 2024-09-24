@@ -23,6 +23,8 @@ class Dimensions {
   static const double radiusDefault = 10.0;
   static const double radiusLarge = 15.0;
   static const double radiusExtraLarge = 20.0;
+  static const double radiusSingleExtraLarge = 25.0;
+  static const double radiusDoubleExtraLarge = 45.0;
   static const double languageScreenLogo = 120.0;
   static const double authLogo = 200.0;
   static const double signUpLogo = 60.0;

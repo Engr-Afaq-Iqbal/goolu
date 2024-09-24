@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
+import '../Controller/AuthController/auth_controller.dart';
 import '../Locale/Languages/arabic.dart';
 import '../Locale/Languages/english.dart';
 import '../Theme/colors.dart';
+import '../Utils/dimensions.dart';
+import '../Utils/image_urls.dart';
 
 String gooluLogoUrl = "assets/gooluLogo/";
 String imgUrl = "assets/images/";
@@ -73,4 +78,22 @@ class AppStyles {
         width: width ?? 0.7,
         color: color ?? secBorderColor,
       );
+  AppBar customAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      title: Image.asset(
+        '$gooluLogoUrl$gooluNewLogo',
+        height: 28,
+        width: 77,
+      ),
+      actions: [
+        GestureDetector(
+            onTap: () {
+              Get.find<AuthController>().scaffoldKey.currentState?.openDrawer();
+            },
+            child: SvgPicture.asset('$imgUrl$menuImg')),
+        size40w,
+      ],
+    );
+  }
 }

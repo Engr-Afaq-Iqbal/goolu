@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import 'package:get/get.dart';
 
+import '../../../Components/app_confirmation_page.dart';
 import '../../../Components/app_custom_button.dart';
 import '../../../Components/app_form_field.dart';
 import '../../../Config/app_config.dart';
+import '../../../Controller/AuthController/forget_password_controller.dart';
 import '../../../Theme/colors.dart';
+import '../../../Utils/dimensions.dart';
 import '../../../Utils/font_styles.dart';
 import '../../../Utils/utils.dart';
-import '../../Components/app_confirmation_page.dart';
-import '../../Controller/AuthController/forget_password_controller.dart';
-import '../../Utils/dimensions.dart';
 
 class SetNewPassword extends StatefulWidget {
   const SetNewPassword({super.key});

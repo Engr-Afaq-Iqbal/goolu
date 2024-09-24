@@ -15,6 +15,8 @@ import '../../Utils/utils.dart';
 import '../ExceptionalController/exceptional_controller.dart';
 
 class MicrophoneController extends GetxController {
+  String selectedLanguage = 'Arabic';
+  String selectedLanguage2 = 'Arabic';
   FlutterSoundRecorder? recorder;
   bool isRecording = false;
   String? filePath;
@@ -98,7 +100,8 @@ class MicrophoneController extends GetxController {
     files['file'] = '$filePath';
 
     Map<String, String> field = {
-      "language": "French",
+      "language_src": selectedLanguage,
+      "language_dst": selectedLanguage2,
     };
 
     showProgress();

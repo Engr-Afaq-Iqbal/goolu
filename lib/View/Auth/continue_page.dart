@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Components/app_custom_button.dart';
 import 'package:goolu/Utils/dimensions.dart';
-import 'package:goolu/View/Auth/sign_in.dart';
+import 'package:goolu/Utils/image_urls.dart';
+import 'package:goolu/View/Auth/welcome_page.dart';
 
 import '../../Components/custom_painter_class.dart';
 import '../../Config/app_config.dart';
@@ -41,7 +42,7 @@ class _ContinuePageState extends State<ContinuePage> {
                       padding: const EdgeInsets.all(20),
                       child: Center(
                         child: customText(
-                            text: 'Welcome to Gool-u\ncan you say it?',
+                            text: 'welcomeToGoolYouSayIt'.tr,
                             textStyle: bold16White,
                             maxLines: 3,
                             textAlign: TextAlign.center),
@@ -49,43 +50,30 @@ class _ContinuePageState extends State<ContinuePage> {
                     ),
                   ),
                 ),
-                // Container(
-                //   padding: const EdgeInsets.all(20),
-                //   margin: const EdgeInsets.symmetric(horizontal: 20),
-                //   height: SizesDimensions.height(10),
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(30),
-                //     color: kYellowffde59,
-                //   ),
-                //   child: Center(
-                //     child: customText(
-                //         text: 'Welcome to Gool-u\ncan you say it?',
-                //         textStyle: bold16White,
-                //         maxLines: 3,
-                //         textAlign: TextAlign.center),
-                //   ),
-                // )
               ],
             ),
             Image.asset(
-              '${gooluLogoUrl}goolu.png',
-              width: SizesDimensions.width(80),
+              '$gooluLogoUrl$gooluNewLogo',
+              width: SizesDimensions.width(90),
             ),
             size150h,
             Padding(
               padding:
                   EdgeInsets.symmetric(horizontal: SizesDimensions.width(20)),
               child: AppCustomButton(
-                padding: EdgeInsets.symmetric(vertical: 15),
+                padding: const EdgeInsets.symmetric(vertical: 15),
                 title: customText(
-                  text: 'Continue',
+                  text: 'continue'.tr,
                   textStyle: bold20White,
                 ),
-                onTap: () {
-                  Get.to(() => const SignInScreen(),
-                      transition: Transition.downToUp,
-                      duration: const Duration(seconds: 1));
+                onTap: () async {
+                  Get.offAll(() => const WelcomePage());
                 },
+                // onTap: () {
+                //   Get.to(() => const SignInScreen(),
+                //       transition: Transition.downToUp,
+                //       duration: const Duration(seconds: 1));
+                // },
                 borderRadius: 10,
               ),
             ),

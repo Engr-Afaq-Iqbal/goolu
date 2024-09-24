@@ -1,0 +1,334 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:goolu/Utils/font_styles.dart';
+
+import '../../Components/app_custom_button.dart';
+import '../../Components/app_form_field.dart';
+import '../../Components/app_form_field_phone.dart';
+import '../../Controller/SideDrawerController/side_drawer_controller.dart';
+import '../../Theme/colors.dart';
+import '../../Utils/dimensions.dart';
+import '../../Utils/utils.dart';
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        hideKeyboard(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+            // automaticallyImplyLeading: false,
+            // leading: SvgPicture.asset(
+            //   '$gooluLogoUrl$dotGooluLogo',
+            //   height: 30,
+            //   width: 30,
+            // ),
+            // title: Row(
+            //   children: [SvgPicture.asset('$gooluLogoUrl$dotGooluLogo')],
+            // ),
+            ),
+        body: GetBuilder<SideDrawerController>(
+            builder: (SideDrawerController sideDrawerCtrl) {
+          return Column(
+            children: [
+              Expanded(
+                child: Container(
+                  width: Get.width,
+                  padding: EdgeInsets.symmetric(
+                    vertical: SizesDimensions.height(3),
+                    horizontal: SizesDimensions.width(3),
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        topLeft:
+                            Radius.circular(Dimensions.radiusDoubleExtraLarge),
+                        topRight:
+                            Radius.circular(Dimensions.radiusDoubleExtraLarge)),
+                    color: kLightYellow.withOpacity(0.3),
+                  ),
+                  child: Column(
+                    children: [
+                      Center(
+                        child: customText(
+                          text: 'Edit profile',
+                          textStyle: bold18NavyBlue,
+                        ),
+                      ),
+                      size20h,
+                      AppFormField(
+                        padding: EdgeInsets.zero,
+                        controller: sideDrawerCtrl.fullNameCtrl,
+                        labelText: 'Full name',
+                        hintText: 'Puerto Rico',
+                        keyboardType: TextInputType.text,
+                        // contextMenuBuilder: true,
+                        validator: (String? v) {
+                          if (v!.isEmpty) {
+                            return 'Full name required';
+                          }
+                          return null;
+                        },
+                        onChanged: (v) {
+                          sideDrawerCtrl.update();
+                        },
+                      ),
+                      size20h,
+                      AppFormField(
+                        padding: EdgeInsets.zero,
+                        controller: sideDrawerCtrl.nickNameCtrl,
+                        labelText: 'Nick name',
+                        hintText: 'puerto_rico',
+                        keyboardType: TextInputType.text,
+                        // contextMenuBuilder: true,
+                        validator: (String? v) {
+                          if (v!.isEmpty) {
+                            return 'Nick name required';
+                          }
+                          return null;
+                        },
+                        onChanged: (v) {
+                          sideDrawerCtrl.update();
+                        },
+                      ),
+                      size20h,
+                      AppFormField(
+                        padding: EdgeInsets.zero,
+                        controller: sideDrawerCtrl.labelCtrl,
+                        labelText: 'Label',
+                        hintText: 'puerto_rico',
+                        keyboardType: TextInputType.emailAddress,
+                        // contextMenuBuilder: true,
+                        validator: (String? v) {
+                          if (v!.isEmpty) {
+                            return 'Nick name required';
+                          }
+                          return null;
+                        },
+                        onChanged: (v) {
+                          sideDrawerCtrl.update();
+                        },
+                      ),
+                      size20h,
+                      AppFormFieldPhone(
+                        padding: EdgeInsets.zero,
+                        controller: sideDrawerCtrl.phoneNumberCtrl,
+                        labelText: 'Phone number',
+                        hintText: '516497520',
+                        keyboardType: TextInputType.number,
+                        // contextMenuBuilder: true,
+                        validator: (String? v) {
+                          if (v!.isEmpty) {
+                            return 'Phone number required';
+                          }
+                          return null;
+                        },
+                        onChanged: (v) {
+                          sideDrawerCtrl.update();
+                        },
+                      ),
+                      size20h,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: SizesDimensions.height(6.0),
+                            width: SizesDimensions.width(45.0),
+                            margin: EdgeInsets.only(
+                              bottom: SizesDimensions.height(0.0),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Align(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    child: customText(
+                                      text: 'Country',
+                                      textStyle: regular14NavyBlue.copyWith(
+                                          color: Theme.of(context)
+                                              .iconTheme
+                                              .color),
+                                    )),
+                                items: sideDrawerCtrl.countryList.map((e) {
+                                  return DropdownMenuItem(
+                                    value: e,
+                                    child: customText(
+                                      text: e,
+                                      textStyle: bold14NavyBlue.copyWith(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                                value: sideDrawerCtrl.selectedItem,
+                                onChanged: (String? value) {
+                                  setState(() {
+                                    sideDrawerCtrl.selectedItem = value;
+                                    // Print selected key and value
+                                    if (value != null) {
+                                      debugPrint('Selected key: $value');
+                                      debugPrint(
+                                          'Selected value: ${sideDrawerCtrl.selectedItem}');
+                                    }
+                                  });
+                                },
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: SizesDimensions.height(50.0),
+                                  width: SizesDimensions.width(50.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(14),
+                                    color:
+                                        Theme.of(context).dialogBackgroundColor,
+                                  ),
+                                  offset: const Offset(-5, 0),
+                                  scrollbarTheme: ScrollbarThemeData(
+                                    radius: const Radius.circular(40),
+                                    thickness: WidgetStateProperty.all(6),
+                                    thumbVisibility:
+                                        WidgetStateProperty.all(true),
+                                  ),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Colors.grey,
+                                      ),
+                                      color: kWhite,
+                                      borderRadius: BorderRadius.circular(
+                                          Dimensions.radiusDefault)),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: SizesDimensions.width(2.0),
+                                  ),
+                                  height: SizesDimensions.height(6.0),
+                                  width: Get.width,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: SizesDimensions.height(6.0),
+                            width: SizesDimensions.width(45.0),
+                            margin: EdgeInsets.only(
+                              bottom: SizesDimensions.height(0.0),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Align(
+                                  alignment: AlignmentDirectional.centerStart,
+                                  child: customText(
+                                    text: 'Gender',
+                                    textStyle: regular14NavyBlue.copyWith(
+                                        color:
+                                            Theme.of(context).iconTheme.color),
+                                  ),
+                                ),
+                                items: sideDrawerCtrl.genderList.map((e) {
+                                  return DropdownMenuItem(
+                                    value: e,
+                                    child: customText(
+                                      text: e,
+                                      textStyle: bold14NavyBlue.copyWith(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                                value: sideDrawerCtrl.selectedGenderItem,
+                                onChanged: (String? value) {
+                                  setState(() {
+                                    sideDrawerCtrl.selectedGenderItem = value;
+                                    // Print selected key and value
+                                    if (value != null) {
+                                      debugPrint('Selected key: $value');
+                                      debugPrint(
+                                          'Selected value: ${sideDrawerCtrl.selectedGenderItem}');
+                                    }
+                                  });
+                                },
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: SizesDimensions.height(50.0),
+                                  width: SizesDimensions.width(50.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(14),
+                                    color:
+                                        Theme.of(context).dialogBackgroundColor,
+                                  ),
+                                  offset: const Offset(-5, 0),
+                                  scrollbarTheme: ScrollbarThemeData(
+                                    radius: const Radius.circular(40),
+                                    thickness: WidgetStateProperty.all(6),
+                                    thumbVisibility:
+                                        WidgetStateProperty.all(true),
+                                  ),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Colors.grey,
+                                      ),
+                                      color: kWhite,
+                                      borderRadius: BorderRadius.circular(
+                                          Dimensions.radiusDefault)),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: SizesDimensions.width(2.0),
+                                  ),
+                                  height: SizesDimensions.height(6.0),
+                                  width: Get.width,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      size20h,
+                      AppFormField(
+                        padding: EdgeInsets.zero,
+                        controller: sideDrawerCtrl.addressCtrl,
+                        labelText: 'Address',
+                        hintText: 'H#123',
+                        keyboardType: TextInputType.text,
+                        // contextMenuBuilder: true,
+                        validator: (String? v) {
+                          if (v!.isEmpty) {
+                            return 'Address required';
+                          }
+                          return null;
+                        },
+                        onChanged: (v) {
+                          sideDrawerCtrl.update();
+                        },
+                      ),
+                      size70h,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppCustomButton(
+                            title: customText(
+                                text: 'Submit', textStyle: regular14White),
+                            onTap: () async {},
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          );
+        }),
+      ),
+    );
+  }
+}

@@ -1,0 +1,86 @@
+Map<String, String> german() {
+  return {
+    'welcomeBack': 'Willkommen zurück',
+    'loginToYourPersonalAccount':
+        'Melden Sie sich bei Ihrem persönlichen Konto an.',
+    'emailAddress': 'E-Mail-Adresse',
+    'emailRequired': 'Email (erforderlich*',
+    'password': 'Passwort',
+    'passwordRequired': 'Passwort erforderlich*',
+    'forgetMyPassword': 'Vergessen Sie mein Passwort!',
+    'forgetMyEmail': 'Vergiss meine E-Mail!',
+    'signIn': 'Anmelden',
+    'keepMeSignedIn': 'Ich möchte angemeldet bleiben',
+    'dontHaveAnAccount': 'Sie haben noch kein Konto?',
+    'requestAccount': 'Konto anfordern',
+    'previous': 'Vorherige',
+    'forgotPassword': 'Passwort vergessen?',
+    'enterYourEmailAddressToReset':
+        'Geben Sie Ihre E-Mail-Adresse ein, um es zurückzusetzen',
+    'sendEmail': 'E-Mail senden',
+    'setNewPassword': 'Neues Passwort festlegen',
+    'createNewPasswordForYourAccount':
+        'Erstellen Sie ein neues Passwort für Ihr Konto',
+    'newPassword': 'Neues Kennwort',
+    'confirmPassword': 'Bestätige das Passwort',
+    'newPasswordRequired': 'Neues Passwort erforderlich*',
+    'confirmPasswordRequired': 'Passwort bestätigen erforderlich*',
+    'confirmNewPasswordAndLogin':
+        'Bestätigen Sie das neue Passwort und melden Sie sich an',
+    'newPasswordSetToYourAccount': 'Neues Passwort für Ihr Konto festgelegt',
+    'yourNewPasswordHasBeenSuccessfullyReset':
+        'Ihr neues Passwort wurde erfolgreich zurückgesetzt',
+    'identityVerification': 'Identitätsprüfung',
+    'anActivitationCodeHasBeenSent':
+        'Ein Aktivierungscode wurde an Ihre im Absher-System registrierte Mobiltelefonnummer gesendet',
+    'didNotReceiveCode': 'Code nicht erhalten?',
+    'resend': 'Erneut senden',
+    'loginOrRegister': 'Anmeldung Registrieren',
+    'investmentFunds': 'Investmentfonds',
+    'viewAll': 'Alle ansehen',
+    'shareWithOthers': 'Mit anderen teilen',
+    'registerNow': 'Jetzt registrieren',
+    'chooseAccountType': 'Wählen Sie den Kontotyp',
+    'selectYourAccountTypeIndividualOrCorporate':
+        'Wählen Sie Ihren Kontotyp „Privatperson“ oder „Firma“ aus',
+    'individualInvestor': 'Einzelinvestor',
+    'youPlanToInvest': 'Sie planen, über Ihr persönliches Konto zu investieren',
+    'alreadyHaveAccount': 'Sie haben bereits ein Konto?',
+    'login': 'Anmeldung',
+    'institutionalInvestor': 'Institutioneller Investor',
+    'youAreBankInsuranceCompanyPensionOrInvestmentAdvisor':
+        'Sie sind eine Bank, eine Versicherung, ein Renten- oder Anlageberater usw.',
+    'completeSignUp': 'Schließen Sie die Anmeldung ab',
+    'createNewAccount': 'Neuen Account erstellen',
+    'fewStepsToStartYourInvestment':
+        'In wenigen Schritten können Sie mit Ihren Investitionen beginnen',
+    'personalProfileInformation': 'Persönliche Profilinformationen',
+    'idOrIqamaNumber': 'ID/Iqama-Nummer',
+    'idOrIqamaNumberRequired': 'ID/Iqama-Nummer erforderlich*',
+    'dateOfBirth': 'Geburtsdatum',
+    'dateOfBirthRequired': 'Geburtsdatum erforderlich*',
+    'gregorian': 'Gregorianisch',
+    'hijri': 'Hijri',
+    'nextStep': 'Nächster Schritt',
+    'phoneNumber': 'Telefonnummer',
+    'verificationCodeCheck': 'Überprüfung des Bestätigungscodes',
+    'platformAgreement': 'Plattformvereinbarung',
+    'welcomeToGoolYouSayIt': 'Willkommen bei Gool-u\nkannst du es sagen?',
+    'continue': 'Weitermachen',
+    'selectImagesFromGalleryOrCamera':
+        'Wählen Sie Bilder aus der Galerie oder Kamera aus',
+    'sendRequest': 'Anfrage senden',
+    'noTextAvailable': 'Kein Text verfügbar',
+    'definition': 'Definition',
+    'wordOfTheDay': 'Wort des Tages',
+    'withFormSoundButtonDefinition': '(mit Formular, Sound-Button, Definition)',
+    'mixedUpSentenceWithWordOfTheDay':
+        'Verwechselter Satz mit\nWort\ndes Tages',
+    'tryAgain': 'Versuchen Sie es erneut',
+    'level': 'Ebene',
+    'logout': 'Ausloggen',
+    'recording': 'Aufzeichnung',
+    'pressButtonToStartRecording':
+        'Drücken Sie die Taste, um die Aufnahme zu starten',
+  };
+}

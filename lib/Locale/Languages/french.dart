@@ -1,0 +1,86 @@
+Map<String, String> french() {
+  return {
+    'welcomeBack': 'Content de te revoir',
+    'loginToYourPersonalAccount': 'Connectez-vous à votre compte personnel.',
+    'emailAddress': 'Adresse e-mail',
+    'emailRequired': 'Email (requis*',
+    'password': 'Mot de passe',
+    'passwordRequired': 'Mot de passe requis*',
+    'forgetMyPassword': 'Oubliez mon mot de passe !',
+    'forgetMyEmail': 'Oubliez mon email !',
+    'signIn': 'Se connecter',
+    'keepMeSignedIn': 'Gardez-moi connecté',
+    'dontHaveAnAccount': 'Vous n\'avez pas de compte ?',
+    'requestAccount': 'Demander un compte',
+    'previous': 'Précédent',
+    'forgotPassword': 'Mot de passe oublié?',
+    'enterYourEmailAddressToReset':
+        'Entrez votre adresse e-mail pour la réinitialiser',
+    'sendEmail': 'Envoyer un e-mail',
+    'setNewPassword': 'Definir un nouveau mot de passe',
+    'createNewPasswordForYourAccount':
+        'Créez un nouveau mot de passe pour votre compte',
+    'newPassword': 'nouveau mot de passe',
+    'confirmPassword': 'Confirmez le mot de passe',
+    'newPasswordRequired': 'Nouveau mot de passe requis*',
+    'confirmPasswordRequired': 'Confirmer le mot de passe requis*',
+    'confirmNewPasswordAndLogin':
+        'Confirmez le nouveau mot de passe et connectez-vous',
+    'newPasswordSetToYourAccount':
+        'Nouveau mot de passe défini pour votre compte',
+    'yourNewPasswordHasBeenSuccessfullyReset':
+        'Votre nouveau mot de passe a été réinitialisé avec succès',
+    'identityVerification': 'vérification d\'identité',
+    'anActivitationCodeHasBeenSent':
+        'Un code d\'activation a été envoyé à votre numéro de mobile enregistré dans le système Absher',
+    'didNotReceiveCode': 'Vous n\'avez pas reçu de code ?',
+    'resend': 'Renvoyer',
+    'loginOrRegister': 'S\'identifier S\'enregistrer',
+    'investmentFunds': 'fonds d\'investissement',
+    'viewAll': 'Voir tout',
+    'shareWithOthers': 'Partager avec les autres',
+    'registerNow': 'S\'inscrire maintenant',
+    'chooseAccountType': 'Choisissez le type de compte',
+    'selectYourAccountTypeIndividualOrCorporate':
+        'Sélectionnez votre type de compte Particulier ou Entreprise',
+    'individualInvestor': 'Investisseur Particulier',
+    'youPlanToInvest': 'Vous envisagez d\'investir avec votre compte personnel',
+    'alreadyHaveAccount': 'Vous avez déjà un compte ?',
+    'login': 'Se connecter',
+    'institutionalInvestor': 'Investisseur institutionnel',
+    'youAreBankInsuranceCompanyPensionOrInvestmentAdvisor':
+        'Vous êtes une banque, une compagnie d\'assurance, un conseiller en pension ou en investissement, etc...',
+    'completeSignUp': 'Terminer l\'inscription',
+    'createNewAccount': 'Créer un nouveau compte',
+    'fewStepsToStartYourInvestment':
+        'Quelques étapes pour démarrer vos investissements',
+    'personalProfileInformation': 'Informations sur le profil personnel',
+    'idOrIqamaNumber': 'Numéro d’identification/Iqama',
+    'idOrIqamaNumberRequired': 'Numéro d\'identification/Iqama requis*',
+    'dateOfBirth': 'Date de naissance',
+    'dateOfBirthRequired': 'Date de naissance requise*',
+    'gregorian': 'grégorien',
+    'hijri': 'Hijri',
+    'nextStep': 'L\'étape suivante',
+    'phoneNumber': 'Numéro de téléphone',
+    'verificationCodeCheck': 'Vérification du code de vérification',
+    'platformAgreement': 'Accord de plateforme',
+    'welcomeToGoolYouSayIt': 'Bienvenue sur Gool. Pouvez-vous le dire ?',
+    'continue': 'Continuer',
+    'selectImagesFromGalleryOrCamera':
+        'Sélectionnez des images de la galerie ou de l\'appareil photo',
+    'sendRequest': 'Envoyer une demande',
+    'noTextAvailable': 'Aucun texte disponible',
+    'definition': 'Définition',
+    'wordOfTheDay': 'Mot du jour',
+    'withFormSoundButtonDefinition':
+        '(avec formulaire, bouton son, définition)',
+    'mixedUpSentenceWithWordOfTheDay': 'Phrase mélangée avec le\nmot\ndu jour',
+    'tryAgain': 'Essayer à nouveau',
+    'level': 'Niveau',
+    'logout': 'Se déconnecter',
+    'recording': 'Enregistrement',
+    'pressButtonToStartRecording':
+        'Appuyez sur le bouton pour démarrer l\'enregistrement',
+  };
+}

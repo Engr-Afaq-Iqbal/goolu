@@ -7,10 +7,11 @@ import '../Config/app_config.dart';
 import '../Theme/colors.dart';
 import '../Utils/dimensions.dart';
 import '../Utils/image_urls.dart';
-import '../View/CameraPage/camera_page.dart';
+import '../View/CameraPage/camera_main.dart';
 import '../View/Dashboard/dashboard.dart';
 import '../View/Drawer/drawer_design.dart';
 import '../View/MicrophonePage/microphone_page.dart';
+import '../View/RobotPage/robot_main.dart';
 
 class AppBottomNavigationBar extends StatefulWidget {
   const AppBottomNavigationBar({
@@ -22,7 +23,7 @@ class AppBottomNavigationBar extends StatefulWidget {
 }
 
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
-  late int currentIndex = 1;
+  late int currentIndex = 0;
   late List<Widget> screens;
 
   @override
@@ -31,9 +32,9 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
     super.initState();
     screens = [
       const Dashboard(),
-      const CameraPage(),
+      const CameraMain(),
       const MicrophonePage(),
-      const CameraPage(),
+      const RobotMain(),
     ];
   }
 
@@ -49,21 +50,21 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
         child: screens[currentIndex],
       ),
       bottomNavigationBar: Container(
-        height: SizesDimensions.height(13.0),
+        height: SizesDimensions.height(9.0),
         decoration: BoxDecoration(
-            color: kFFFFFF,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 2,
-                blurRadius: 3,
-                offset: const Offset(0, 1),
-              ),
-            ],
+            color: kWhite,
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Colors.grey.withOpacity(0.1),
+            //     spreadRadius: 2,
+            //     blurRadius: 3,
+            //     offset: const Offset(0, 1),
+            //   ),
+            // ],
             border: Border(
               top: BorderSide(
                 color: kYellowffde59, // Color of the border
-                width: 5.0, // Thickness of the border
+                width: 1.0, // Thickness of the border
               ),
             ),
             borderRadius: const BorderRadius.only(
@@ -78,45 +79,45 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                '$imgUrl$dashboardImage',
+                '$imgUrl$dashboardIconImg',
                 colorFilter: ColorFilter.mode(
                   (currentIndex == 0) ? primaryBlueColor : secDarkGreyIconColor,
                   BlendMode.srcIn,
                 ),
-                height: 50,
+                height: 35,
               ),
               label: '',
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                '$imgUrl$cameraImage',
+                '$imgUrl$cameraIconImg',
                 colorFilter: ColorFilter.mode(
                   (currentIndex == 1) ? primaryBlueColor : secDarkGreyIconColor,
                   BlendMode.srcIn,
                 ),
-                height: 50,
+                height: 35,
               ),
               label: '',
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                '$imgUrl$micImage',
+                '$imgUrl$micIconImg',
                 colorFilter: ColorFilter.mode(
                   (currentIndex == 2) ? primaryBlueColor : secDarkGreyIconColor,
                   BlendMode.srcIn,
                 ),
-                height: 50,
+                height: 35,
               ),
               label: '',
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                '$imgUrl$speakImage',
+                '$imgUrl$msgIconImg',
                 colorFilter: ColorFilter.mode(
                   (currentIndex == 3) ? primaryBlueColor : secDarkGreyIconColor,
                   BlendMode.srcIn,
                 ),
-                height: 50,
+                height: 35,
               ),
               label: '',
             ),

@@ -16,6 +16,14 @@ abstract class LanguageMenuItems {
   static const List<LanguageMenuItem> firstItems = [
     english,
     arabic,
+    urdu,
+    chinese,
+    phillipino,
+    bengali,
+    spanish,
+    german,
+    french,
+    farsi,
   ];
 
   static const english = LanguageMenuItem(
@@ -23,6 +31,30 @@ abstract class LanguageMenuItems {
   );
   static const arabic = LanguageMenuItem(
     text: 'العربية',
+  );
+  static const urdu = LanguageMenuItem(
+    text: 'Urdu',
+  );
+  static const chinese = LanguageMenuItem(
+    text: 'Chinese',
+  );
+  static const phillipino = LanguageMenuItem(
+    text: 'Phillipino',
+  );
+  static const bengali = LanguageMenuItem(
+    text: 'Bengali',
+  );
+  static const spanish = LanguageMenuItem(
+    text: 'Spanish ',
+  );
+  static const german = LanguageMenuItem(
+    text: 'German',
+  );
+  static const french = LanguageMenuItem(
+    text: 'French',
+  );
+  static const farsi = LanguageMenuItem(
+    text: 'Farsi ',
   );
 
   static Widget buildItem(LanguageMenuItem item) {
@@ -35,17 +67,51 @@ abstract class LanguageMenuItems {
   }
 
   static void onChanged(BuildContext context, LanguageMenuItem item) {
+    final AuthController authController = Get.find<AuthController>();
     switch (item) {
       case LanguageMenuItems.english:
-        Get.find<AuthController>().selectLanguage = 'English';
+        authController.selectLanguage = 'English';
         Get.updateLocale(const Locale('en', 'US'));
-        Get.find<AuthController>().update();
         break;
       case LanguageMenuItems.arabic:
-        Get.find<AuthController>().selectLanguage = 'العربية';
+        authController.selectLanguage = 'العربية';
         Get.updateLocale(const Locale('ar', 'AR'));
-        Get.find<AuthController>().update();
+        break;
+      case LanguageMenuItems.urdu:
+        authController.selectLanguage = 'Urdu';
+        Get.updateLocale(const Locale('ur', 'PK'));
+        break;
+      case LanguageMenuItems.chinese:
+        authController.selectLanguage = 'Chinese';
+        Get.updateLocale(const Locale('zh', 'CN'));
+        break;
+      case LanguageMenuItems.phillipino:
+        authController.selectLanguage = 'Phillipino';
+        Get.updateLocale(const Locale('tl', 'PH'));
+        break;
+      case LanguageMenuItems.bengali:
+        authController.selectLanguage = 'Bengali';
+        Get.updateLocale(const Locale('bn', 'BD'));
+        break;
+      case LanguageMenuItems.spanish:
+        authController.selectLanguage = 'Spanish';
+        Get.updateLocale(const Locale('es', 'ES'));
+        break;
+      case LanguageMenuItems.german:
+        authController.selectLanguage = 'German';
+        Get.updateLocale(const Locale('de', 'DE'));
+        break;
+      case LanguageMenuItems.french:
+        authController.selectLanguage = 'French';
+        Get.updateLocale(const Locale('fr', 'FR'));
+        break;
+      case LanguageMenuItems.farsi:
+        authController.selectLanguage = 'Farsi';
+        Get.updateLocale(const Locale('fa', 'IR'));
+        break;
+      default:
         break;
     }
+    authController.update();
   }
 }

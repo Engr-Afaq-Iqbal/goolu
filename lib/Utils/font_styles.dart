@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../Theme/colors.dart';
 import 'dimensions.dart';
 
-String fontIBMRegular = 'IBMPlexSansRegular';
-String fontIBMBold = 'IBMPlexSansBold';
-String fontFamily = 'IBMPlexSans';
+String fontIBMRegular = 'MontserratMedium';
+String fontIBMBold = 'MontserratBold';
+String fontFamily = 'Montserrat';
 
 Text customText({
   required String text,
@@ -47,6 +47,14 @@ final TextStyle regular12PrimaryBlue = TextStyle(
 
 final TextStyle regular16NavyBlue = TextStyle(
   fontSize: Dimensions.fontSize(16.0),
+  fontFamily: fontFamily,
+  fontWeight: FontWeight.normal,
+  color: secDarkBlueNavyColor,
+  overflow: TextOverflow.ellipsis,
+);
+
+final TextStyle regular18NavyBlue = TextStyle(
+  fontSize: Dimensions.fontSize(18.0),
   fontFamily: fontFamily,
   fontWeight: FontWeight.normal,
   color: secDarkBlueNavyColor,
@@ -257,5 +265,13 @@ final TextStyle bold14Grey = TextStyle(
   fontFamily: fontFamily,
   fontWeight: FontWeight.bold,
   color: kC8C8C8,
+  overflow: TextOverflow.ellipsis,
+);
+
+final TextStyle bold18Green = TextStyle(
+  fontSize: Dimensions.fontSize(18.0),
+  fontFamily: fontFamily,
+  fontWeight: FontWeight.normal,
+  color: kGreen1ED760,
   overflow: TextOverflow.ellipsis,
 );

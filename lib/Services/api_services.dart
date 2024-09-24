@@ -355,11 +355,10 @@ class ApiServices {
         return null;
       } else if (response.statusCode == 400 ||
           response.reasonPhrase == 'Bad Request') {
-        // Get.offAll(() => AppConfirmationPage(
-        //       title: 'error'.tr,
-        //       txt: 'someIssueOccurredInProceedingWithYourRequest'.tr,
-        //       btnTxt: 'goToDashBoard'.tr,
-        //     ));
+        if (decodedBody.containsKey('detail')) {
+          String emailErrorMessage = decodedBody['detail'].join(', ');
+          showToast(emailErrorMessage);
+        }
         logger.i(result);
         return null;
       } else if (success == 'false') {

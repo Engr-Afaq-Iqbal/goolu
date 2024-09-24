@@ -1,11 +1,13 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Controller/MicrophoneController/microphone_controller.dart';
+import 'package:goolu/Model/language_for_api.dart';
 
 import '../../Config/app_config.dart';
-import '../../Controller/AuthController/auth_controller.dart';
+import '../../Model/language_for_api_2.dart';
 import '../../Theme/colors.dart';
 import '../../Utils/dimensions.dart';
 import '../../Utils/font_styles.dart';
@@ -45,124 +47,272 @@ class _MicrophonePageState extends State<MicrophonePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Image.asset(
-          '$gooluLogoUrl$gooluImage',
-          height: 40,
-        ),
-        bottom: PreferredSize(
-          preferredSize:
-              const Size.fromHeight(4.0), // Height of the bottom line
-          child: Container(
-            color: kYellowffde59, // Color of the bottom line
-            height: 5.0, // Thickness of the bottom line
-          ),
-        ),
-        leading: Builder(
-          builder: (context) => // Ensure Scaffold is in context
-              IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () {
-                    Get.find<AuthController>()
-                        .scaffoldKey
-                        .currentState
-                        ?.openDrawer();
-                  }),
-        ),
-      ),
+      appBar: AppStyles().customAppBar(),
       body: GetBuilder<MicrophoneController>(
           builder: (MicrophoneController microphoneCtrl) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            size40h,
-            microphoneCtrl.isRecording
-                ? customText(text: 'Recording...', textStyle: bold16NavyBlue)
-                : customText(
-                    text: 'Press button to start recording',
-                    textStyle: bold16NavyBlue),
-            size20h,
-            GestureDetector(
-              onTap: microphoneCtrl.isRecording
-                  ? microphoneCtrl.stopRecording
-                  : microphoneCtrl.startRecording,
-              child: Center(
-                child: SvgPicture.asset(
-                  '$imgUrl$roundMicImage',
-                  height: SizesDimensions.height(12),
-                  width: SizesDimensions.width(12),
-                  colorFilter: ColorFilter.mode(
-                    microphoneCtrl.isRecording
-                        ? primaryBlueColor
-                        : secDarkBlueNavyColor,
-                    BlendMode.srcIn,
-                  ),
+            Expanded(
+              child: Container(
+                width: Get.width,
+                padding: EdgeInsets.symmetric(
+                  vertical: SizesDimensions.height(3),
+                  horizontal: SizesDimensions.width(5),
                 ),
-              ),
-            ),
-            size100h,
-            if (microphoneController.speechToSpeechModel != null)
-              Center(
-                child: Container(
-                  // height: SizesDimensions.height(30),
-                  width: SizesDimensions.width(70),
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: primaryBlueColor,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // _audioFile == null
-                      //     ? const Text('No audio selected')
-                      //     : Text('Audio selected: ${_audioFile!.path}'),
-                      //
-                      size20h,
-                      Row(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                      topLeft:
+                          Radius.circular(Dimensions.radiusDoubleExtraLarge),
+                      topRight:
+                          Radius.circular(Dimensions.radiusDoubleExtraLarge)),
+                  color: kLightYellow.withOpacity(0.3),
+                ),
+                child: Column(
+                  children: [
+                    size20h,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: kWhite,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 3,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.radiusDoubleExtraLarge)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
-                            width: SizesDimensions.width(40),
-                            child: customText(
-                                text:
-                                    '${microphoneController.speechToSpeechModel?.translatedText}',
-                                textStyle: bold16White,
-                                maxLines: 10),
-                          ),
-                          size20w,
-                          GestureDetector(
-                            onTap: () async {
-                              final text = microphoneController
-                                      .speechToSpeechModel?.translatedText ??
-                                  'No text available';
-                              await microphoneCtrl.speak(text);
-                            },
-                            child: Container(
-                              width: 30.0,
-                              height: 30.0,
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                color: kYellowffde59,
-                                shape: BoxShape.circle,
-                              ),
-                              child: SvgPicture.asset(
-                                '$imgUrl$playImage',
-                                colorFilter: ColorFilter.mode(
-                                  primaryBlueColor,
-                                  BlendMode.srcIn,
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              customButton: customText(
+                                text: microphoneCtrl.selectedLanguage,
+                                textStyle: regular18NavyBlue.copyWith(
+                                  fontSize: 18,
                                 ),
+                              ),
+                              items: [
+                                ...LanguageMenuItemsForApi.firstItems.map(
+                                  (item) =>
+                                      DropdownMenuItem<LanguageMenuItemForApi>(
+                                    value: item,
+                                    child:
+                                        LanguageMenuItemsForApi.buildItem(item),
+                                  ),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                LanguageMenuItemsForApi.onChanged(
+                                    context, value!);
+                              },
+                              dropdownStyleData: DropdownStyleData(
+                                width: SizesDimensions.width(30.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      Dimensions.radiusSmall),
+                                  color: kFFFFFF,
+                                ),
+                                offset: const Offset(0, 8),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                padding: EdgeInsets.only(
+                                    left: Dimensions.radiusLarge,
+                                    right: Dimensions.radiusLarge),
+                              ),
+                            ),
+                          ),
+                          SvgPicture.asset('$imgUrl$doubleArrowImg'),
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              customButton: customText(
+                                text: microphoneCtrl.selectedLanguage2,
+                                textStyle: regular18NavyBlue.copyWith(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              items: [
+                                ...LanguageMenuItemsForApi2.firstItems.map(
+                                  (item) =>
+                                      DropdownMenuItem<LanguageMenuItemForApi2>(
+                                    value: item,
+                                    child: LanguageMenuItemsForApi2.buildItem(
+                                        item),
+                                  ),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                LanguageMenuItemsForApi2.onChanged(
+                                    context, value!);
+                              },
+                              dropdownStyleData: DropdownStyleData(
+                                width: SizesDimensions.width(30.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      Dimensions.radiusSmall),
+                                  color: kFFFFFF,
+                                ),
+                                offset: const Offset(0, 8),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                padding: EdgeInsets.only(
+                                    left: Dimensions.radiusLarge,
+                                    right: Dimensions.radiusLarge),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      size20h,
-                    ],
-                  ),
+                    ),
+                    size30h,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
+                      decoration: BoxDecoration(
+                        color: kWhite,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 3,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusLarge),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              customText(
+                                text: microphoneCtrl.selectedLanguage,
+                                textStyle: regular18NavyBlue.copyWith(
+                                  fontSize: 18,
+                                  color: primaryBlueGradientDarkColor,
+                                ),
+                              ),
+                              size20w,
+                              SvgPicture.asset(
+                                '$imgUrl$speakerImg',
+                                colorFilter: ColorFilter.mode(
+                                  primaryBlueGradientDarkColor,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ],
+                          ),
+                          size20h,
+                          customText(
+                            text: 'Type or speak',
+                            textStyle: regular14DarkGrey.copyWith(
+                              color: kC8C8C8,
+                              fontSize: 16,
+                            ),
+                          ),
+                          size50h,
+                          GestureDetector(
+                            onTap: microphoneCtrl.isRecording
+                                ? microphoneCtrl.stopRecording
+                                : microphoneCtrl.startRecording,
+                            child: SvgPicture.asset(
+                              '$imgUrl$roundMicImage',
+                              height: SizesDimensions.height(6),
+                              width: SizesDimensions.width(6),
+                              colorFilter: ColorFilter.mode(
+                                primaryBlueGradientDarkColor,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    size30h,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
+                      decoration: BoxDecoration(
+                        color: kWhite,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 3,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusLarge),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              customText(
+                                text: microphoneController
+                                        .speechToSpeechModel?.translatedText ??
+                                    microphoneCtrl.selectedLanguage2,
+                                textStyle: regular18NavyBlue.copyWith(
+                                  fontSize: 18,
+                                  color: primaryBlueGradientDarkColor,
+                                ),
+                                maxLines: 10,
+                              ),
+                              size20w,
+                              GestureDetector(
+                                onTap: () async {
+                                  final text = microphoneController
+                                          .speechToSpeechModel
+                                          ?.translatedText ??
+                                      'noTextAvailable'.tr;
+                                  await microphoneCtrl.speak(text);
+                                },
+                                child: SvgPicture.asset(
+                                  '$imgUrl$speakerImg',
+                                  colorFilter: ColorFilter.mode(
+                                    primaryBlueGradientDarkColor,
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          size20h,
+                          customText(
+                            text: 'What are you doing?',
+                            textStyle: regular14DarkGrey.copyWith(
+                              color: kC8C8C8,
+                              fontSize: 16,
+                            ),
+                          ),
+                          size50h,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SvgPicture.asset('$imgUrl$copyImg'),
+                              size50w,
+                              SvgPicture.asset('$imgUrl$shareImg'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
+            ),
           ],
         );
       }),

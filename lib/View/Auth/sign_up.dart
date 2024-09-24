@@ -6,13 +6,12 @@ import 'package:goolu/View/Auth/sign_in.dart';
 
 import '../../../Components/app_custom_button.dart';
 import '../../../Components/app_form_field.dart';
-import '../../../Components/app_form_field_phone.dart';
 import '../../../Config/app_config.dart';
 import '../../../Utils/dimensions.dart';
 import '../../../Utils/font_styles.dart';
-import '../../Components/app_custom_app_bar.dart';
 import '../../Controller/AuthController/sign_up_controller.dart';
-import '../../Services/auth_service.dart';
+import '../../Theme/colors.dart';
+import '../../Utils/image_urls.dart';
 import '../../Utils/utils.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -23,7 +22,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final AuthService _authService = AuthService();
+  // final AuthService _authService = AuthService();
   SignupController signCtrl = Get.find<SignupController>();
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -48,15 +47,15 @@ class _SignUpPageState extends State<SignUpPage> {
           'uid': user.uid,
           'createdAt': FieldValue.serverTimestamp(),
         });
-        print('User created and data stored successfully.');
+        debugPrint('User created and data stored successfully.');
       }
     } on FirebaseAuthException catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
       // Handle errors here
     }
   }
 
-  Future<void> signUp() async {
+  Future<bool> signUp() async {
     try {
       await firebaseAuth
           .createUserWithEmailAndPassword(
@@ -64,15 +63,18 @@ class _SignUpPageState extends State<SignUpPage> {
         password: signCtrl.passwordCtrl.text.trim(),
       )
           .then((val) {
-        Get.to(const SignInScreen());
+        Get.offAll(const SignInScreen());
         logger.i(val);
       });
+      return true;
       // Sign-up successful, navigate to home or another scree
     } on FirebaseAuthException catch (e) {
       // Handle error
       logger.e(e.message);
+      return false;
     } catch (e) {
       logger.e('An unknown error occurred.');
+      return false;
     }
   }
 
@@ -90,109 +92,152 @@ class _SignUpPageState extends State<SignUpPage> {
             key: signUpCtrl.signUpFormKey,
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: SizesDimensions.width(3.0),
+                horizontal: SizesDimensions.width(4.0),
               ),
               child: Column(
                 children: [
-                  size60h,
-                  const AppCustomAppBar(),
-                  Image.asset(
-                    '${gooluLogoUrl}goolu.png',
-                    width: SizesDimensions.width(45),
-                  ),
-                  size20h,
+                  size120h,
                   customText(
-                    text: 'createNewAccount'.tr,
-                    textStyle: bold18Blue,
-                  ),
-                  size20h,
-                  size20h,
-                  customText(
-                    text: 'personalProfileInformation'.tr,
-                    textStyle: bold16NavyBlue,
-                  ),
-                  size20h,
-                  SizedBox(
-                    height: SizesDimensions.height(47.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          size15h,
-                          AppFormField(
-                            controller: signUpCtrl.emailCtrl,
-                            labelText: 'emailAddress'.tr,
-                            hintText: 'accountname@domain.com',
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (String? v) {
-                              if (v!.isEmpty) {
-                                return 'emailRequired'.tr;
-                              }
-                              return null;
-                            },
-                          ),
-                          AppFormFieldPhone(
-                            maxLength: 9,
-                            controller: signUpCtrl.phoneNumberCtrl,
-                            labelText: 'phoneNumber'.tr,
-                            hintText: 'phoneNumber'.tr,
-                            keyboardType: TextInputType.number,
-                          ),
-                          size15h,
-                          // AppFormField(
-                          //   controller: signUpCtrl.dateOfBirthCtrl,
-                          //   labelText: 'dateOfBirth'.tr,
-                          //   hintText: 'dateOfBirth'.tr,
-                          //   readOnly: true,
-                          //   keyboardType: TextInputType.emailAddress,
-                          //   validator: (String? v) {
-                          //     if (v!.isEmpty) {
-                          //       return 'dateOfBirthRequired'.tr;
-                          //     }
-                          //     return null;
-                          //   },
-                          // ),
-                          AppFormField(
-                            controller: signUpCtrl.passwordCtrl,
-                            labelText: 'password'.tr,
-                            hintText: '********'.tr,
-                            keyboardType: TextInputType.text,
-                            isPasswordField: true,
-                            validator: (String? v) {
-                              if (v!.isEmpty) {
-                                return 'passwordRequired'.tr;
-                              }
-                              return null;
-                            },
-                          ),
-                          AppFormField(
-                            controller: signUpCtrl.confirmPasswordCtrl,
-                            labelText: 'confirmPassword'.tr,
-                            hintText: '********'.tr,
-                            keyboardType: TextInputType.text,
-                            isPasswordField: true,
-                            validator: (String? v) {
-                              if (v!.isEmpty) {
-                                return 'confirmPasswordRequired'.tr;
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
-                      ),
+                    text: 'Create Account',
+                    textAlign: TextAlign.center,
+                    textStyle: bold20NavyBlue.copyWith(
+                      fontSize: 22,
+                      color: kDarkGreen365D64,
                     ),
+                    maxLines: 2,
                   ),
-                  const Spacer(),
-                  AppStyles.dividerLine(width: Get.width),
-                  size20h,
+                  size30h,
+                  customText(
+                      text:
+                          'Create your account so you start learning\nfrom today!',
+                      textAlign: TextAlign.center,
+                      textStyle: regular18NavyBlue,
+                      maxLines: 3),
+                  size70h,
+                  Column(
+                    children: [
+                      size15h,
+                      AppFormField(
+                          fieldBgColor: kF8F9FF,
+                          borderColor: kDarkGreen5b99a5,
+                          controller: signUpCtrl.emailCtrl,
+                          labelText: 'Email',
+                          hintText: 'accountname@domain.com',
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (String? v) {
+                            if (v!.isEmpty) {
+                              return 'Email required';
+                            }
+                            return null;
+                          }),
+                      // AppFormFieldPhone(
+                      //   maxLength: 9,
+                      //   controller: signUpCtrl.phoneNumberCtrl,
+                      //   labelText: 'phoneNumber'.tr,
+                      //   hintText: 'phoneNumber'.tr,
+                      //   keyboardType: TextInputType.number,
+                      // ),
+                      size15h,
+                      // AppFormField(
+                      //   controller: signUpCtrl.dateOfBirthCtrl,
+                      //   labelText: 'dateOfBirth'.tr,
+                      //   hintText: 'dateOfBirth'.tr,
+                      //   readOnly: true,
+                      //   keyboardType: TextInputType.emailAddress,
+                      //   validator: (String? v) {
+                      //     if (v!.isEmpty) {
+                      //       return 'dateOfBirthRequired'.tr;
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
+                      AppFormField(
+                        fieldBgColor: kF8F9FF,
+                        borderColor: kDarkGreen5b99a5,
+                        controller: signUpCtrl.passwordCtrl,
+                        labelText: 'password'.tr,
+                        hintText: '********'.tr,
+                        keyboardType: TextInputType.text,
+                        isPasswordField: true,
+                        validator: (String? v) {
+                          if (v!.isEmpty) {
+                            return 'passwordRequired'.tr;
+                          }
+                          return null;
+                        },
+                      ),
+                      size15h,
+                      AppFormField(
+                        fieldBgColor: kF8F9FF,
+                        borderColor: kDarkGreen5b99a5,
+                        controller: signUpCtrl.confirmPasswordCtrl,
+                        labelText: 'confirmPassword'.tr,
+                        hintText: '********'.tr,
+                        keyboardType: TextInputType.text,
+                        isPasswordField: true,
+                        validator: (String? v) {
+                          if (v!.isEmpty) {
+                            return 'confirmPasswordRequired'.tr;
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                  size30h,
                   AppCustomButton(
                     title: customText(
-                      text: 'nextStep'.tr,
-                      textStyle: bold14White,
+                      text: 'Sign Up',
+                      textStyle: regular16White.copyWith(fontSize: 18),
                     ),
+                    enableLoading: true,
                     onTap: nextStepHandler,
-                    borderRadius: 4,
+                    borderRadius: Dimensions.radiusDoubleExtraLarge,
+                    verticalPadding: 10,
                   ),
-                  size20h,
+                  size30h,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(() => const SignInScreen());
+                        },
+                        child: customText(
+                          text: 'Already have an account'.tr,
+                          textStyle: regular18NavyBlue.copyWith(
+                            color: secDarkBlueNavyColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      customText(
+                        text: 'Or continue with',
+                        textStyle: regular14PrimaryBlue.copyWith(
+                          color: kDarkGreen365D64,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  size30h,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      methodsBox(imagePath: facebookImg),
+                      size50w,
+                      methodsBox(imagePath: googleImg),
+                      size50w,
+                      methodsBox(imagePath: appleImg),
+                    ],
+                  ),
+                  size15h,
+                  size70h,
                 ],
               ),
             ),
@@ -202,12 +247,25 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  Container methodsBox({String? imagePath}) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+          color: kF8F9FF,
+          borderRadius: BorderRadius.circular(Dimensions.radiusLarge)),
+      child: Image.asset('$imgUrl$imagePath'),
+    );
+  }
+
   void nextStepHandler() async {
     if (!Get.find<SignupController>().signUpFormKey.currentState!.validate()) {
       return;
     }
-
-    signUp();
+    showProgress();
+    bool isSignUp = await signUp();
+    if (!isSignUp) {
+      stopProgress();
+    }
     // signUpFunc(
     //   signCtrl.emailCtrl.text.trim(),
     //   signCtrl.passwordCtrl.text.trim(),

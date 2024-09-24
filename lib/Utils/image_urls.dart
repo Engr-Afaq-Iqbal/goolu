@@ -1,4 +1,6 @@
 const String gooluImage = 'goolu.png';
+const String dotGooluLogo = 'dotGooluLogo.svg';
+const String gooluNewLogo = 'gooluNewLogo.png';
 
 const String cameraImage = 'camera.svg';
 const String micImage = 'mic.svg';
@@ -6,7 +8,45 @@ const String speakImage = 'speak.svg';
 
 const String playImage = 'play.svg';
 const String downArrowImage = 'downArrow.svg';
-const String languageImage = 'language.svg';
-const String levelImage = 'level.svg';
-const String dashboardImage = 'dashboard.svg';
 const String roundMicImage = 'roundMic.svg';
+
+const String galleryImage = 'gallery.svg';
+// const String profileImg = 'profileImg.svg';
+const String profileImg = 'image.png';
+const String saudiFlagImage = 'saudiFlag.png';
+
+const String send1 = 'send1.svg';
+
+///Icons for new app design
+const String aboutImg = 'about.svg';
+const String userImg = 'user.svg';
+const String levelImg = 'level.svg';
+const String bellImg = 'bell.svg';
+const String languageImg = 'language.svg';
+const String subscriptionImg = 'subscription.svg';
+const String profileUserImg = 'profileUser.svg';
+const String subscriptionBgImg = 'subscriptionBackground.png';
+const String cameraIconImg = 'cameraIcon.svg';
+const String dashboardIconImg = 'dashboardIcon.svg';
+const String micIconImg = 'micIcon.svg';
+const String msgIconImg = 'msgIcon.svg';
+const String lockImg = 'lock.svg';
+const String soundImg = 'sound.svg';
+const String imageFootball = 'imageFootball.svg';
+const String booksImg = 'books.png';
+const String facebookImg = 'facebook.png';
+const String googleImg = 'google.png';
+const String appleImg = 'apple.png';
+const String uploadArrowImg = 'uploadArrow.svg';
+const String menuImg = 'menu.svg';
+const String doubleArrowImg = 'doubleArrow.svg';
+const String speakerImg = 'speaker.svg';
+const String speakerYellowImg = 'speakerYellow.svg';
+const String copyImg = 'copy.svg';
+const String shareImg = 'share.svg';
+const String sendArrowImg = 'sendArrow.svg';
+const String orderCoffeeImg = 'orderCoffee.png';
+const String bottomRoundImg = 'bottomRound.svg';
+const String whiteMicImg = 'whiteMic.svg';
+const String ladyImg = 'lady.svg';
+const String dashBoardStudyImg = 'dashboardStudy.svg';

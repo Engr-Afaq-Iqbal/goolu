@@ -15,7 +15,7 @@ showProgress() {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
       child: progressIndicator(),
     ),
-    barrierDismissible: true,
+    barrierDismissible: false,
   );
 }
 
@@ -50,13 +50,14 @@ showToast(String msg, {BuildContext? context}) async {
   );
 }
 
-// bottomLogo() {
-//   return Positioned(
-//     left: 0,
-//     bottom: -SizesDimensions.height(3.0),
-//     child: SvgPicture.asset(
-//       '${gooluLogoUrl}bigB.svg',
-//       width: SizesDimensions.width(60.0),
-//     ),
-//   );
-// }
+void hideKeyboard(BuildContext context) {
+  FocusScope.of(context).requestFocus(FocusNode());
+}
+
+bool isValidEmail(String? email) {
+  if (email == null) return false;
+  // Regex pattern for email validation
+  final RegExp regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+      caseSensitive: false, multiLine: false);
+  return regex.hasMatch(email);
+}

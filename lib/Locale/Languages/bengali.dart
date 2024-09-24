@@ -1,0 +1,86 @@
+Map<String, String> bengali() {
+  return {
+    'welcomeBack': 'উইলকোমেন জুরুক',
+    'loginToYourPersonalAccount':
+        'Melden Sie sich bei Ihrem persönlichen Konto an.',
+    'emailAddress': 'ই-মেইল ঠিকানা',
+    'emailRequired': 'ইমেইল (erforderlich*',
+    'password': 'পাসওয়ার্ড',
+    'passwordRequired': 'পাসওয়ার্ড erforderlich*',
+    'forgetMyPassword': 'ভার্জেসেন সি মেইন পাসওয়ার্ট!',
+    'forgetMyEmail': 'আমার কাছে ই-মেইল!',
+    'signIn': 'আনমেলডেন',
+    'keepMeSignedIn': 'Ich möchte angemeldet bleiben',
+    'dontHaveAnAccount': 'Sie haben noch kein Konto?',
+    'requestAccount': 'আপনার সাথে যোগাযোগ করুন',
+    'previous': 'ভোরেরিজ',
+    'forgotPassword': 'পাসওয়ার্ড vergessen?',
+    'enterYourEmailAddressToReset':
+        'Geben Sie Ihre E-Mail-Adresse ein, um es zurückzusetzen',
+    'sendEmail': 'ই-মেইল পাঠানো হয়েছে',
+    'setNewPassword': 'নতুন পাসওয়ার্ড ফেস্টলেজেন',
+    'createNewPasswordForYourAccount':
+        'Erstellen Sie ein neues Passwort für Ihr Konto',
+    'newPassword': 'Neues Kennwort',
+    'confirmPassword': 'সেরা পাসওয়ার্ড',
+    'newPasswordRequired': 'Neues Password erforderlich*',
+    'confirmPasswordRequired': 'পাসওয়ার্ড bestätigen erforderlich*',
+    'confirmNewPasswordAndLogin':
+        'Bestätigen Sie das neue Passwort und melden Sie sich an',
+    'newPasswordSetToYourAccount': 'Neues Passwort für Ihr Konto fesgelegt',
+    'yourNewPasswordHasBeenSuccessfullyReset':
+        'Ihr neues Passwort wurde erfolgreich zurückgesetzt',
+    'identityVerification': 'আইডেন্টিটাসপ্রুফুং',
+    'anActivitationCodeHasBeenSent':
+        'Ein Aktivierungscode wurde an Ihre im Absher-System registrierte Mobiltelefonnummer gesendet',
+    'didNotReceiveCode': 'কোড nicht erhalten?',
+    'resend': 'Erneut পাঠানো হয়েছে',
+    'loginOrRegister': 'আনমেলডং রেজিস্ট্রিরেন',
+    'investmentFunds': 'বিনিয়োগ অনুরাগী',
+    'viewAll': 'আলে আনসেহেন',
+    'shareWithOthers': 'মিট অ্যান্ডেরেন টেইলেন',
+    'registerNow': 'Jetzt রেজিস্ট্রি',
+    'chooseAccountType': 'Wählen Sie den Kontotyp',
+    'selectYourAccountTypeIndividualOrCorporate':
+        'Wählen Sie Ihren Kontotyp "Privatperson" বা "Firma" aus',
+    'individualInvestor': 'Einzelinvestor',
+    'youPlanToInvest': 'Sie planen, über Ihr persönliches Konto zu investieren',
+    'alreadyHaveAccount': 'Sie haben bereits ein Konto?',
+    'login': 'আনমেলডং',
+    'institutionalInvestor': 'প্রতিষ্ঠানের বিনিয়োগকারী',
+    'youAreBankInsuranceCompanyPensionOrInvestmentAdvisor':
+        'Sie sind eine Bank, eine Versicherung, ein Renten-oder Anlageberater usw.',
+    'completeSignUp': 'Schließen Sie die Anmeldung ab',
+    'createNewAccount': 'Neuen অ্যাকাউন্ট erstellen',
+    'fewStepsToStartYourInvestment':
+        'In wenigen Schritten können Sie mit Ihren Investitionen beginnen',
+    'personalProfileInformation': 'ব্যক্তিগত প্রোফাইল তথ্য',
+    'idOrIqamaNumber': 'আইডি/ইকামা-নম্বর',
+    'idOrIqamaNumberRequired': 'আইডি/ইকামা-সংখ্যা erforderlich*',
+    'dateOfBirth': 'গেবার্টসডাটাম',
+    'dateOfBirthRequired': 'Geburtsdatum erforderlich*',
+    'gregorian': 'গ্রেগরিয়ানিস',
+    'hijri': 'হিজরি',
+    'nextStep': 'নাচস্টার স্ক্রিট',
+    'phoneNumber': 'টেলিফোন নম্বর',
+    'verificationCodeCheck': 'Überprüfung des Bestätigungscodes',
+    'platformAgreement': 'প্ল্যাটফর্মভেরেইনবারুং',
+    'welcomeToGoolYouSayIt': 'উইলকোমেন বেই গুল-উ\nকানস্ট ডু এস সেজেন?',
+    'continue': 'ওয়েটারমাচেন',
+    'selectImagesFromGalleryOrCamera':
+        'Wählen Sie Bilder aus der galerie oder Camera aus',
+    'sendRequest': 'অ্যানফ্রেজ পাঠানো হয়েছে',
+    'noTextAvailable': 'Kein Text verfügbar',
+    'definition': 'সংজ্ঞা',
+    'wordOfTheDay': 'ওয়ার্ট দেস ট্যাগেস',
+    'withFormSoundButtonDefinition': '(মিট ফর্মুলার, সাউন্ড-বোতাম, সংজ্ঞা)',
+    'mixedUpSentenceWithWordOfTheDay':
+        'Verwechselter Satz mit\nWort\ndes Tages',
+    'tryAgain': 'Versuchen Sie es erneut',
+    'level': 'এবেনে',
+    'logout': 'Ausloggen',
+    'recording': 'আউফজেইচনং',
+    'pressButtonToStartRecording':
+        'Drücken Sie die Taste, um die Aufnahme zu starten',
+  };
+}

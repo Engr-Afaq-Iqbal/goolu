@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../Config/app_config.dart';
 import '../Theme/colors.dart';
 import '../Utils/dimensions.dart';
 import '../Utils/font_styles.dart';
+import '../Utils/image_urls.dart';
 
 class AppFormFieldPhone extends StatefulWidget {
   final String? labelText;
@@ -115,44 +115,47 @@ class _AppFormFieldPhoneState extends State<AppFormFieldPhone> {
         horizontal: SizesDimensions.width(2.0),
       ),
       decoration: BoxDecoration(
-          border: Border.all(width: 1, color: secDarkBlueNavyColor),
-          borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
+          color: kWhite,
+          border: Border.all(width: 1, color: Colors.grey),
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
       child: Row(
         children: [
+          size30w,
           ClipRRect(
             borderRadius: BorderRadius.circular(3),
             child: Image.asset(
-              '${imgUrl}saudiFlag.png',
-              height: SizesDimensions.height(2.5),
-              width: SizesDimensions.width(3.7),
+              '$imgUrl$saudiFlagImage',
+              height: SizesDimensions.height(4),
+              width: SizesDimensions.width(6),
             ),
           ),
           size10w,
-          customText(
-            text: '(+966)',
-            textStyle: bold12NavyBlue,
-          ),
-          SvgPicture.asset(
-            '${imgUrl}downArrow.svg',
-            colorFilter: ColorFilter.mode(
-              secDarkBlueNavyColor,
-              BlendMode.srcIn,
-            ),
-          ),
-          size10w,
-          AppStyles.dividerLineVertical(color: kC8C8C8, width: 2),
-          size10w,
+          // customText(
+          //   text: '(+966)',
+          //   textStyle: bold12NavyBlue.copyWith(
+          //       color: Theme.of(context).iconTheme.color),
+          // ),
+          // SvgPicture.asset(
+          //   '$imgUrl$downArrowImage',
+          //   colorFilter: ColorFilter.mode(
+          //     Theme.of(context).iconTheme.color!,
+          //     BlendMode.srcIn,
+          //   ),
+          // ),
+          // size10w,
+          // AppStyles.dividerLineVertical(color: kC8C8C8, width: 2),
+          // size10w,
           SizedBox(
-            width: SizesDimensions.width(50.0),
+            width: SizesDimensions.width(60.0),
             child: TextFormField(
               maxLength: widget.maxLength,
               focusNode: widget.focusNode,
               // validator: widget.validator,
               validator: (value) {
-                // if (widget.validator!(value) != null) {
-                //   return widget.validator!(value);
-                // }
-                // return null;
+                if (widget.validator!(value) != null) {
+                  return widget.validator!(value);
+                }
+                return null;
               },
               decoration: InputDecoration(
                 // isDense: widget.isDense ??
@@ -161,10 +164,16 @@ class _AppFormFieldPhoneState extends State<AppFormFieldPhone> {
                 counterText: '',
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                labelText: null,
+                labelText: (widget.isLabel && widget.title == null)
+                    ? widget.labelText
+                    : null,
                 hintText: (widget.hintText != null) ? widget.hintText : null,
-                hintStyle: regular14NavyBlue,
-                labelStyle: bold12NavyBlue,
+                hintStyle: regular14NavyBlue.copyWith(
+                  color: Theme.of(context).iconTheme.color,
+                ),
+                labelStyle: bold14NavyBlue.copyWith(
+                  color: Colors.grey,
+                ),
                 prefixIcon: (widget.prefixIcon != null)
                     ? widget.prefixIcon
                     : (widget.icon != null)
@@ -174,7 +183,9 @@ class _AppFormFieldPhoneState extends State<AppFormFieldPhone> {
                 enabledBorder: InputBorder.none, // No border when enabled
                 focusedBorder: InputBorder.none,
               ),
-              style: bold14NavyBlue,
+              style: regular14NavyBlue.copyWith(
+                color: Theme.of(context).iconTheme.color,
+              ),
               keyboardType: widget.keyboardType,
               inputFormatters: widget.inputFormatterList ??
                   ((widget.keyboardType == TextInputType.number)
@@ -186,7 +197,7 @@ class _AppFormFieldPhoneState extends State<AppFormFieldPhone> {
                             ]
                           : []),
 
-              cursorColor: primaryBlueColor,
+              cursorColor: Theme.of(context).colorScheme.primary,
               obscureText: widget.isPasswordField ? _obscureText : false,
               controller: widget.controller,
               enabled: widget.enabled,
