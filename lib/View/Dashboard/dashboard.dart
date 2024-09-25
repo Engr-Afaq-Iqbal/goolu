@@ -78,7 +78,7 @@ class _DashboardState extends State<Dashboard> {
                         Dimensions.radiusDoubleExtraLarge,
                       ),
                       child: Container(
-                        height: SizesDimensions.height(60),
+                        height: SizesDimensions.height(63),
                         decoration: BoxDecoration(
                           color: primaryBlueColor,
                           borderRadius: BorderRadius.circular(
@@ -189,7 +189,7 @@ class _DashboardState extends State<Dashboard> {
                                 ],
                               ),
                               Container(
-                                height: 180,
+                                height: 200,
                                 margin: const EdgeInsets.all(20),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 20),
@@ -209,6 +209,26 @@ class _DashboardState extends State<Dashboard> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
+                                    // Display the selected words in a row with lines beneath
+                                    selectedWord(),
+                                    size10h,
+                                    // Word selection containers
+                                    Wrap(
+                                      spacing: 15,
+                                      runSpacing: 5,
+                                      children:
+                                          List.generate(words.length, (index) {
+                                        return GestureDetector(
+                                          onTap: () =>
+                                              toggleWordSelection(index),
+                                          child: wordBox(
+                                            word: words[index],
+                                            isSelected: isSelected[index],
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                    size10h,
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -272,6 +292,145 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
+  ///New logic
+  // List of words
+  List<String> words = ['I', 'am', 'ready', 'to', 'write'];
+
+  // Track selected words in the correct order
+  List<String> selectedWordList = [];
+
+  // Track whether the word is selected or not
+  List<bool> isSelected = List.generate(5, (index) => false);
+
+  // Update the selected word when tapping on the container
+  void toggleWordSelection(int index) {
+    setState(() {
+      if (isSelected[index]) {
+        // If the word is already selected, remove it from the list
+        selectedWordList.remove(words[index]);
+        isSelected[index] = false;
+      } else {
+        // If the word is not selected, add it to the end of the list
+        selectedWordList.add(words[index]);
+        isSelected[index] = true;
+      }
+    });
+  }
+
+  // Function to build the selected word row with divider lines
+  // Function to build the selected word row
+
+  // Function to build the selected word row with dividers always showing
+  Widget selectedWord() {
+    return Wrap(
+      spacing: 10,
+      children: List.generate(
+        words.length,
+        (index) {
+          return Column(
+            children: [
+              customText(
+                  text: selectedWordList.length > index
+                      ? selectedWordList[index]
+                      : '',
+                  textStyle: regular12NavyBlue.copyWith(
+                    color: secDarkBlueNavyColor,
+                    fontSize: 12,
+                  )),
+              AppStyles.dividerLine(
+                width: 40,
+                // height: 5,
+                color: secDarkBlueNavyColor,
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  // WordBox widget to display each word in the container
+  Widget wordBox({String? word, bool isSelected = false, int? position}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 5,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: isSelected
+            ? [
+                BoxShadow(
+                  color: Colors.yellow.withOpacity(0.7),
+                  spreadRadius: 1,
+                  blurRadius: 2,
+                  offset: const Offset(0, 1),
+                ),
+              ]
+            : [],
+        color: Colors.white,
+        border: Border.all(
+          color: isSelected ? Colors.yellow : Colors.white,
+        ),
+      ),
+      child: customText(
+          text: word ?? '',
+          textStyle: regular12NavyBlue.copyWith(
+              fontSize: 12,
+              color: isSelected ? secDarkBlueNavyColor : secDarkGreyIconColor)),
+    );
+  }
+
+  // if (position != null)
+  // Padding(
+  // padding: const EdgeInsets.only(left: 5),
+  // child: Text(
+  // '($position)', // Show the position number
+  // style: TextStyle(
+  // fontSize: 12,
+  // color: Colors.red, // Adjust color/style of position number
+  // ),
+  // ),
+  // ),
+
+  ///Ends
+
+  // wordBox({
+  //   String? word,
+  //   bool isSelected = true,
+  // }) {
+  //   return Container(
+  //     padding: const EdgeInsets.symmetric(
+  //       horizontal: 12,
+  //       vertical: 5,
+  //     ),
+  //     decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(
+  //           Dimensions.radiusExtraLarge,
+  //         ),
+  //         boxShadow: isSelected == true
+  //             ? [
+  //                 BoxShadow(
+  //                   color: kLightYellow.withOpacity(1),
+  //                   spreadRadius: 1,
+  //                   blurRadius: 2,
+  //                   offset: const Offset(0, 1),
+  //                 ),
+  //               ]
+  //             : [],
+  //         color: kWhite,
+  //         border: Border.all(
+  //           color: isSelected == true ? kLightYellow : kWhite,
+  //         )),
+  //     child: customText(
+  //       text: '$word',
+  //       textStyle: regular12NavyBlue.copyWith(
+  //         fontSize: 12,
+  //       ),
+  //     ),
+  //   );
+  // }
+
   Container box({String? txt}) {
     return Container(
       // height: SizesDimensions.height(20),
@@ -320,4 +479,88 @@ class _DashboardState extends State<Dashboard> {
       ],
     );
   }
+
+  // List<String> selectedWordList = ['', '', '', '', ''];
+  // Row selectedWord() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //     children: [
+  //       Column(
+  //         children: [
+  //           customText(
+  //             text: selectedWordList[0] ?? '',
+  //             textStyle: regular14NavyBlue.copyWith(
+  //               fontSize: 12,
+  //             ),
+  //           ),
+  //           AppStyles.dividerLine(
+  //             width: 40,
+  //             // height: 5,
+  //             color: secDarkBlueNavyColor,
+  //           ),
+  //         ],
+  //       ),
+  //       Column(
+  //         children: [
+  //           customText(
+  //             text: selectedWordList[1] ?? '',
+  //             textStyle: regular14NavyBlue.copyWith(
+  //               fontSize: 12,
+  //             ),
+  //           ),
+  //           AppStyles.dividerLine(
+  //             width: 40,
+  //             // height: 5,
+  //             color: secDarkBlueNavyColor,
+  //           ),
+  //         ],
+  //       ),
+  //       Column(
+  //         children: [
+  //           customText(
+  //             text: selectedWordList[2] ?? '',
+  //             textStyle: regular14NavyBlue.copyWith(
+  //               fontSize: 12,
+  //             ),
+  //           ),
+  //           AppStyles.dividerLine(
+  //             width: 40,
+  //             // height: 5,
+  //             color: secDarkBlueNavyColor,
+  //           ),
+  //         ],
+  //       ),
+  //       Column(
+  //         children: [
+  //           customText(
+  //             text: selectedWordList[3] ?? '',
+  //             textStyle: regular14NavyBlue.copyWith(
+  //               fontSize: 12,
+  //             ),
+  //           ),
+  //           AppStyles.dividerLine(
+  //             width: 40,
+  //             // height: 5,
+  //             color: secDarkBlueNavyColor,
+  //           ),
+  //         ],
+  //       ),
+  //       Column(
+  //         children: [
+  //           customText(
+  //             text: selectedWordList[4] ?? '',
+  //             textStyle: regular14NavyBlue.copyWith(
+  //               fontSize: 12,
+  //             ),
+  //           ),
+  //           AppStyles.dividerLine(
+  //             width: 40,
+  //             // height: 5,
+  //             color: secDarkBlueNavyColor,
+  //           ),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
 }

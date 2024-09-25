@@ -1,4 +1,4 @@
-package com.example.goolu
+package com.goolu.sa
 
 import io.flutter.embedding.android.FlutterActivity
 
