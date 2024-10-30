@@ -20,6 +20,22 @@ class RobotTopic extends StatefulWidget {
 }
 
 class _RobotTopicState extends State<RobotTopic> {
+  RobotController robotCtrl = Get.find<RobotController>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    robotCtrl.isSend = false;
+    robotCtrl.questionsList.clear();
+    robotCtrl.answerList.clear();
+    robotCtrl.questionCtrl.clear();
+    robotCtrl.answerCtrl.clear();
+    robotCtrl.isSend = false;
+    robotCtrl.questionAnswer = -1;
+    robotCtrl.showAnswers = false;
+    robotCtrl.initSpeech();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +68,16 @@ class _RobotTopicState extends State<RobotTopic> {
                       children: [
                         GestureDetector(
                             onTap: () {
+                              robotCtrl.isSend = false;
+                              robotCtrl.questionsList.clear();
+                              robotCtrl.answerList.clear();
+                              robotCtrl.questionCtrl.clear();
+                              robotCtrl.answerCtrl.clear();
+                              robotCtrl.isSend = false;
+                              robotCtrl.questionAnswer = -1;
+                              robotCtrl.showAnswers = false;
+                              robotCtrl.generateAnswersModel = null;
+                              robotCtrl.update();
                               Get.back();
                             },
                             child: const Icon(Icons.arrow_back)),
@@ -84,9 +110,11 @@ class _RobotTopicState extends State<RobotTopic> {
                       borderRadius: BorderRadius.circular(
                           Dimensions.radiusSingleExtraLarge),
                       child: Container(
-                        height: SizesDimensions.height(72),
+                        height: robotCtrl.showAnswers == true
+                            ? SizesDimensions.height(72)
+                            : SizesDimensions.height(20),
                         decoration: BoxDecoration(
-                          color: primaryBlueColor,
+                          color: primaryColor,
                           borderRadius: BorderRadius.circular(
                               Dimensions.radiusSingleExtraLarge),
                         ),
@@ -130,7 +158,7 @@ class _RobotTopicState extends State<RobotTopic> {
                                             padding: EdgeInsets.zero,
                                             borderRadius:
                                                 Dimensions.radiusExtraLarge,
-                                            controller: robotCtrl.questionCtrl,
+                                            controller: robotCtrl.topicCtrl,
                                             // labelText: 'Question',
                                             hintText: 'Text here',
                                             keyboardType: TextInputType.text,
@@ -152,6 +180,7 @@ class _RobotTopicState extends State<RobotTopic> {
 
                                               robotCtrl
                                                   .generateQuestionAndAnswersFunction();
+                                              robotCtrl.update();
                                             } else {
                                               showToast(
                                                   'Please enter your topic');
@@ -183,50 +212,80 @@ class _RobotTopicState extends State<RobotTopic> {
                                   ],
                                 ),
                               ),
-                              // if (robotCtrl.showAnswers == true)
-                              Column(
-                                children: [
-                                  size20h,
-                                  customText(
-                                    text: 'Questions / Answers',
-                                    textStyle: bold18NavyBlue.copyWith(
-                                      fontSize: 16,
-                                      color: k003366,
+                              if (robotCtrl.showAnswers == true)
+                                Column(
+                                  children: [
+                                    size20h,
+                                    customText(
+                                      text: 'Questions / Answers',
+                                      textStyle: bold18NavyBlue.copyWith(
+                                        fontSize: 16,
+                                        color: k003366,
+                                      ),
                                     ),
-                                  ),
-                                  size10h,
-                                  const RobotTopicWidget(
-                                    answer:
-                                        'Weather is this and Climate is that. Weather is this and Climate is that. Weather is this and Climate is that. Weather is this and Climate is that',
-                                    questions:
-                                        'What is the Difference between weather and climate?',
-                                  ),
-                                  const RobotTopicWidget(
-                                    answer:
-                                        'Weather is this and Climate is that. Weather is this and Climate is that. Weather is this and Climate is that. Weather is this and Climate is that',
-                                    questions:
-                                        'What is the Difference between weather and climate?',
-                                  ),
-                                  const RobotTopicWidget(
-                                    answer:
-                                        'Weather is this and Climate is that. Weather is this and Climate is that. Weather is this and Climate is that. Weather is this and Climate is that',
-                                    questions:
-                                        'What is the Difference between weather and climate?',
-                                  ),
-                                  const RobotTopicWidget(
-                                    answer:
-                                        'Weather is this and Climate is that. Weather is this and Climate is that. Weather is this and Climate is that. Weather is this and Climate is that',
-                                    questions:
-                                        'What is the Difference between weather and climate?',
-                                  ),
-                                  const RobotTopicWidget(
-                                    answer:
-                                        'Weather is this and Climate is that. Weather is this and Climate is that. Weather is this and Climate is that. Weather is this and Climate is that',
-                                    questions:
-                                        'What is the Difference between weather and climate?',
-                                  ),
-                                ],
-                              )
+                                    size10h,
+                                    RobotTopicWidget(
+                                      answer:
+                                          '${robotCtrl.questionAnswerModel?.answer1}',
+                                      questions:
+                                          '${robotCtrl.questionAnswerModel?.question1}',
+                                    ),
+                                    RobotTopicWidget(
+                                      answer:
+                                          '${robotCtrl.questionAnswerModel?.answer2}',
+                                      questions:
+                                          '${robotCtrl.questionAnswerModel?.question2}',
+                                    ),
+                                    RobotTopicWidget(
+                                      answer:
+                                          '${robotCtrl.questionAnswerModel?.answer3}',
+                                      questions:
+                                          '${robotCtrl.questionAnswerModel?.question3}',
+                                    ),
+                                    RobotTopicWidget(
+                                      answer:
+                                          '${robotCtrl.questionAnswerModel?.answer4}',
+                                      questions:
+                                          '${robotCtrl.questionAnswerModel?.question4}',
+                                    ),
+                                    RobotTopicWidget(
+                                      answer:
+                                          '${robotCtrl.questionAnswerModel?.answer5}',
+                                      questions:
+                                          '${robotCtrl.questionAnswerModel?.question5}',
+                                    ),
+                                    RobotTopicWidget(
+                                      answer:
+                                          '${robotCtrl.questionAnswerModel?.answer6}',
+                                      questions:
+                                          '${robotCtrl.questionAnswerModel?.question6}',
+                                    ),
+                                    RobotTopicWidget(
+                                      answer:
+                                          '${robotCtrl.questionAnswerModel?.answer7}',
+                                      questions:
+                                          '${robotCtrl.questionAnswerModel?.question7}',
+                                    ),
+                                    RobotTopicWidget(
+                                      answer:
+                                          '${robotCtrl.questionAnswerModel?.answer8}',
+                                      questions:
+                                          '${robotCtrl.questionAnswerModel?.question8}',
+                                    ),
+                                    RobotTopicWidget(
+                                      answer:
+                                          '${robotCtrl.questionAnswerModel?.answer9}',
+                                      questions:
+                                          '${robotCtrl.questionAnswerModel?.question9}',
+                                    ),
+                                    RobotTopicWidget(
+                                      answer:
+                                          '${robotCtrl.questionAnswerModel?.answer10}',
+                                      questions:
+                                          '${robotCtrl.questionAnswerModel?.question10}',
+                                    ),
+                                  ],
+                                )
                             ],
                           ),
                         ),

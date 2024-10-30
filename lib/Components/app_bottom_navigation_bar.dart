@@ -81,7 +81,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
               icon: SvgPicture.asset(
                 '$imgUrl$dashboardIconImg',
                 colorFilter: ColorFilter.mode(
-                  (currentIndex == 0) ? primaryBlueColor : secDarkGreyIconColor,
+                  (currentIndex == 0) ? primaryColor : secDarkGreyIconColor,
                   BlendMode.srcIn,
                 ),
                 height: 35,
@@ -92,7 +92,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
               icon: SvgPicture.asset(
                 '$imgUrl$cameraIconImg',
                 colorFilter: ColorFilter.mode(
-                  (currentIndex == 1) ? primaryBlueColor : secDarkGreyIconColor,
+                  (currentIndex == 1) ? primaryColor : secDarkGreyIconColor,
                   BlendMode.srcIn,
                 ),
                 height: 35,
@@ -103,7 +103,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
               icon: SvgPicture.asset(
                 '$imgUrl$micIconImg',
                 colorFilter: ColorFilter.mode(
-                  (currentIndex == 2) ? primaryBlueColor : secDarkGreyIconColor,
+                  (currentIndex == 2) ? primaryColor : secDarkGreyIconColor,
                   BlendMode.srcIn,
                 ),
                 height: 35,
@@ -114,7 +114,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
               icon: SvgPicture.asset(
                 '$imgUrl$msgIconImg',
                 colorFilter: ColorFilter.mode(
-                  (currentIndex == 3) ? primaryBlueColor : secDarkGreyIconColor,
+                  (currentIndex == 3) ? primaryColor : secDarkGreyIconColor,
                   BlendMode.srcIn,
                 ),
                 height: 35,
@@ -125,7 +125,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
           currentIndex: currentIndex,
           elevation: 0,
           unselectedItemColor: secDarkGreyIconColor,
-          selectedItemColor: primaryBlueColor,
+          selectedItemColor: primaryColor,
           onTap: (index) {
             setState(() {
               currentIndex = index;

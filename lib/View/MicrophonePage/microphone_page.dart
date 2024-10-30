@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Controller/MicrophoneController/microphone_controller.dart';
 import 'package:goolu/Model/language_for_api.dart';
+import 'package:goolu/Utils/utils.dart';
 
 import '../../Config/app_config.dart';
 import '../../Model/language_for_api_2.dart';
@@ -202,21 +203,25 @@ class _MicrophonePageState extends State<MicrophonePage> {
                                   color: primaryBlueGradientDarkColor,
                                 ),
                               ),
-                              size20w,
-                              SvgPicture.asset(
-                                '$imgUrl$speakerImg',
-                                colorFilter: ColorFilter.mode(
-                                  primaryBlueGradientDarkColor,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
+                              // size20w,
+                              // SvgPicture.asset(
+                              //   '$imgUrl$speakerImg',
+                              //   colorFilter: ColorFilter.mode(
+                              //     primaryBlueGradientDarkColor,
+                              //     BlendMode.srcIn,
+                              //   ),
+                              // ),
                             ],
                           ),
                           size20h,
                           customText(
-                            text: 'Type or speak',
+                            text: microphoneCtrl.isRecording
+                                ? 'Recording ...'
+                                : 'Speak',
                             textStyle: regular14DarkGrey.copyWith(
-                              color: kC8C8C8,
+                              color: microphoneCtrl.isRecording
+                                  ? kRedFF5757
+                                  : kC8C8C8,
                               fontSize: 16,
                             ),
                           ),
@@ -225,13 +230,42 @@ class _MicrophonePageState extends State<MicrophonePage> {
                             onTap: microphoneCtrl.isRecording
                                 ? microphoneCtrl.stopRecording
                                 : microphoneCtrl.startRecording,
-                            child: SvgPicture.asset(
-                              '$imgUrl$roundMicImage',
-                              height: SizesDimensions.height(6),
-                              width: SizesDimensions.width(6),
-                              colorFilter: ColorFilter.mode(
-                                primaryBlueGradientDarkColor,
-                                BlendMode.srcIn,
+                            child: Container(
+                              width: 45,
+                              height: 45,
+                              padding: const EdgeInsets.all(0),
+                              decoration: BoxDecoration(
+                                color: microphoneCtrl.isRecording
+                                    ? kRedFFB7B8
+                                    : k003366,
+                                boxShadow: microphoneCtrl.isRecording
+                                    ? [
+                                        BoxShadow(
+                                          color: kRedFE5657.withOpacity(0.8),
+                                          spreadRadius: 3,
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 0),
+                                        ),
+                                      ]
+                                    : [],
+                                border: Border.all(
+                                  color: microphoneCtrl.isRecording
+                                      ? kRedFF9090
+                                      : Colors.transparent,
+                                  width: 7,
+                                ),
+                                shape: BoxShape
+                                    .circle, // Makes the container circular
+                              ),
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  '$imgUrl$whiteMicImg',
+                                  color: microphoneCtrl.isRecording
+                                      ? kRedFE5657
+                                      : kWhite,
+                                  height: SizesDimensions.height(6),
+                                  width: SizesDimensions.width(6),
+                                ),
                               ),
                             ),
                           ),
@@ -261,9 +295,7 @@ class _MicrophonePageState extends State<MicrophonePage> {
                           Row(
                             children: [
                               customText(
-                                text: microphoneController
-                                        .speechToSpeechModel?.translatedText ??
-                                    microphoneCtrl.selectedLanguage2,
+                                text: microphoneCtrl.selectedLanguage2,
                                 textStyle: regular18NavyBlue.copyWith(
                                   fontSize: 18,
                                   color: primaryBlueGradientDarkColor,
@@ -290,18 +322,40 @@ class _MicrophonePageState extends State<MicrophonePage> {
                             ],
                           ),
                           size20h,
-                          customText(
-                            text: 'What are you doing?',
-                            textStyle: regular14DarkGrey.copyWith(
-                              color: kC8C8C8,
-                              fontSize: 16,
+                          SizedBox(
+                            height: SizesDimensions.height(15),
+                            // width: SizesDimensions.width(30),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  customText(
+                                    text: microphoneController
+                                            .speechToSpeechModel
+                                            ?.translatedText ??
+                                        'Nothing is translated',
+                                    textStyle: regular14DarkGrey.copyWith(
+                                      color: kC8C8C8,
+                                      fontSize: 16,
+                                    ),
+                                    maxLines: 30,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          size50h,
+                          size20h,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              SvgPicture.asset('$imgUrl$copyImg'),
+                              GestureDetector(
+                                  onTap: () {
+                                    copyToClipboard(
+                                      microphoneController.speechToSpeechModel
+                                              ?.translatedText ??
+                                          'Nothing is translated',
+                                    );
+                                  },
+                                  child: SvgPicture.asset('$imgUrl$copyImg')),
                               size50w,
                               SvgPicture.asset('$imgUrl$shareImg'),
                             ],

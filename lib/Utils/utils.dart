@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -27,7 +28,7 @@ progressIndicator({double? height, double? width}) =>
           width: width,
           child: CircularProgressIndicator(
             backgroundColor: Colors.grey,
-            color: primaryBlueColor,
+            color: primaryColor,
             strokeWidth: 2.5,
           ),
         ),
@@ -60,4 +61,11 @@ bool isValidEmail(String? email) {
   final RegExp regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
       caseSensitive: false, multiLine: false);
   return regex.hasMatch(email);
+}
+
+copyToClipboard(String text) {
+  Clipboard.setData(ClipboardData(
+    text: text,
+  ));
+  // showToast('copied'.tr);
 }

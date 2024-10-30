@@ -57,5 +57,10 @@
     <string>We need to save your recordings</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We need to access your photo library</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Scan your card to add it automatically</string>
+    <key>NSCameraUsageDescription
+    &lt;string&gt;To scan cards&lt;/string&gt;</key>
+    <string>To scan cards</string>
 </dict>
 </plist>

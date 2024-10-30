@@ -87,7 +87,7 @@ class _RobotSituationDetailsState extends State<RobotSituationDetails> {
                           height: SizesDimensions.height(50),
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
-                            color: primaryBlueColor,
+                            color: primaryColor,
                             borderRadius: BorderRadius.circular(
                                 Dimensions.radiusSingleExtraLarge),
                           ),

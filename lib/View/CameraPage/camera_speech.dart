@@ -58,7 +58,7 @@ class CameraSpeech extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               customText(
-                                text: 'Speech',
+                                text: 'Describe an Image',
                                 textStyle: regular18NavyBlue.copyWith(
                                   fontSize: 22,
                                 ),

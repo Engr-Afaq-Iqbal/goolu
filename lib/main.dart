@@ -3,7 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:upgrader/upgrader.dart';
@@ -13,15 +15,19 @@ import 'Controller/ScreenController/app_controller.dart';
 import 'Locale/language_cubit.dart';
 import 'Locale/translation.dart';
 import 'Theme/theme.dart';
-import 'Utils/utils.dart';
 import 'View/Splash/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
+  await Firebase.initializeApp();
   AppController.initializeControllers();
-  await Firebase.initializeApp().whenComplete(() {
-    logger.i('completed');
-  });
+  Stripe.publishableKey =
+      "pk_test_51Pzz9X04ZKHb327KhWIJup7GC8YHxmi3VONUeptKIQ3USEo1G2HJrsZXwmZA7wuR3qCX81qRJofULGvq2MlxwIL000DgHApJMI";
+
+  // await Firebase.initializeApp().whenComplete(() {
+  //   logger.i('completed');
+  // });
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );

@@ -54,7 +54,7 @@ class _RobotConversationScreenState extends State<RobotConversationScreen> {
                         child: Container(
                           height: SizesDimensions.height(72),
                           decoration: BoxDecoration(
-                            color: primaryBlueColor,
+                            color: primaryColor,
                             borderRadius: BorderRadius.circular(
                                 Dimensions.radiusSingleExtraLarge),
                           ),

@@ -209,6 +209,7 @@ class _SignInScreenState extends State<SignInScreen> {
         email: authenticationCtrl.emailCtrl.text,
         password: authenticationCtrl.passwordCtrl.text,
       );
+      AuthController.fetchAndStoreUserData();
       stopProgress();
       Get.offAll(() => const AppBottomNavigationBar(),
           transition: Transition.downToUp,

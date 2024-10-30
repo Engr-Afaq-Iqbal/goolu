@@ -163,9 +163,8 @@ class _SubscriptionMainState extends State<SubscriptionMain> {
               decoration: BoxDecoration(
                 // Change the border color based on the selected state
                 border: Border.all(
-                  color: isSelected
-                      ? primaryBlueColor
-                      : Colors.grey.withOpacity(0.7),
+                  color:
+                      isSelected ? primaryColor : Colors.grey.withOpacity(0.7),
                   width: 2,
                 ),
                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
@@ -203,7 +202,7 @@ class _SubscriptionMainState extends State<SubscriptionMain> {
                     horizontal: SizesDimensions.width(1),
                     vertical: SizesDimensions.height(0.6)),
                 decoration: BoxDecoration(
-                  color: primaryBlueColor,
+                  color: primaryColor,
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                 ),
                 child: Center(

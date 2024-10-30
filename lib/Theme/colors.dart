@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Color primaryBlueColor = const Color(0xff79CCDC);
+Color primaryColor = const Color(0xff79CCDC);
 Color primaryBlueGradientDarkColor = const Color(0xff314395);
 Color secDarkBlueNavyColor = Colors.black;
 Color secDarkGreyIconColor = const Color(0xff292D32);
@@ -13,6 +13,10 @@ Color kLightGreen79ccdc = const Color(0xff79ccdc);
 Color kLightBlue32A3B8 = const Color(0xff32A3B8);
 Color kLightBlue35B0C8 = const Color(0xff35B0C8);
 Color kRedFF624D = const Color(0xffFF624D);
+Color kRedFF5757 = const Color(0xffFF5757);
+Color kRedFE5657 = const Color(0xffFE5657);
+Color kRedFFB7B8 = const Color(0xffFFB7B8);
+Color kRedFF9090 = const Color(0xffFF9090);
 Color kOrangeF79E1B = const Color(0xffF79E1B);
 Color kYellowffde59 = const Color(0xffffde59);
 Color kLightYellow = const Color(0xffFDE583);
@@ -53,7 +57,7 @@ Color getFillColor(Set<WidgetState> states) {
   // Check if the checkbox is checked
   if (states.contains(WidgetState.selected)) {
     // If checked, return the active color
-    return primaryBlueColor;
+    return primaryColor;
   } else {
     // If not checked, return grey
     // return Colors.grey;

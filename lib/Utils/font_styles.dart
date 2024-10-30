@@ -25,7 +25,7 @@ final TextStyle regular16PrimaryBlue = TextStyle(
   fontSize: Dimensions.fontSize(16.0),
   fontFamily: fontFamily,
   fontWeight: FontWeight.normal,
-  color: primaryBlueColor,
+  color: primaryColor,
   overflow: TextOverflow.ellipsis,
 );
 
@@ -33,7 +33,7 @@ final TextStyle regular14PrimaryBlue = TextStyle(
   fontSize: Dimensions.fontSize(14.0),
   fontFamily: fontFamily,
   fontWeight: FontWeight.normal,
-  color: primaryBlueColor,
+  color: primaryColor,
   overflow: TextOverflow.ellipsis,
 );
 
@@ -41,7 +41,7 @@ final TextStyle regular12PrimaryBlue = TextStyle(
   fontSize: Dimensions.fontSize(12.0),
   fontFamily: fontFamily,
   fontWeight: FontWeight.normal,
-  color: primaryBlueColor,
+  color: primaryColor,
   overflow: TextOverflow.ellipsis,
 );
 
@@ -168,7 +168,7 @@ final TextStyle bold14Blue = TextStyle(
   fontSize: Dimensions.fontSize(14.0),
   fontFamily: fontFamily,
   fontWeight: FontWeight.bold,
-  color: primaryBlueColor,
+  color: primaryColor,
   overflow: TextOverflow.ellipsis,
 );
 
@@ -176,7 +176,7 @@ final TextStyle bold18Blue = TextStyle(
   fontSize: Dimensions.fontSize(18.0),
   fontFamily: fontFamily,
   fontWeight: FontWeight.bold,
-  color: primaryBlueColor,
+  color: primaryColor,
   overflow: TextOverflow.ellipsis,
 );
 
@@ -184,7 +184,7 @@ final TextStyle bold24Blue = TextStyle(
   fontSize: Dimensions.fontSize(24.0),
   fontFamily: fontFamily,
   fontWeight: FontWeight.bold,
-  color: primaryBlueColor,
+  color: primaryColor,
   overflow: TextOverflow.ellipsis,
 );
 
@@ -192,7 +192,7 @@ final TextStyle bold16Blue = TextStyle(
   fontSize: Dimensions.fontSize(16.0),
   fontFamily: fontFamily,
   fontWeight: FontWeight.bold,
-  color: primaryBlueColor,
+  color: primaryColor,
   overflow: TextOverflow.ellipsis,
 );
 
@@ -200,7 +200,7 @@ final TextStyle bold32Blue = TextStyle(
   fontSize: Dimensions.fontSize(32.0),
   fontFamily: fontFamily,
   fontWeight: FontWeight.bold,
-  color: primaryBlueColor,
+  color: primaryColor,
   overflow: TextOverflow.ellipsis,
 );
 
@@ -216,7 +216,7 @@ final TextStyle bold12Blue = TextStyle(
   fontSize: Dimensions.fontSize(12.0),
   fontFamily: fontFamily,
   fontWeight: FontWeight.bold,
-  color: primaryBlueColor,
+  color: primaryColor,
   overflow: TextOverflow.ellipsis,
 );
 

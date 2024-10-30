@@ -1,7 +1,13 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../Model/UserModel/usersModel.dart';
+import '../../Services/storage_sevices.dart';
+import '../../Utils/utils.dart';
 
 class AuthController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -63,6 +69,33 @@ class AuthController extends GetxController {
         update();
       }
     });
+  }
+
+  /// Store User Data after Login
+  static Future<void> fetchAndStoreUserData() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      try {
+        // Fetch the user data from Firestore using the user ID
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+
+        // Check if the document exists
+        if (userDoc.exists) {
+          Map<String, dynamic>? userData =
+              userDoc.data() as Map<String, dynamic>?;
+          if (userData != null) {
+            // Store the fetched user data locally
+            UserModel user = UserModel.fromMap(userData);
+            await AppStorage.setUserData(user);
+          }
+        }
+      } catch (e) {
+        logger.e("Error fetching user data: $e");
+      }
+    }
   }
 
   String formatDuration(int seconds) {

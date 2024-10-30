@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Components/app_custom_button.dart';
-import 'package:goolu/Controller/AuthController/auth_controller.dart';
+import 'package:goolu/Controller/SideDrawerController/side_drawer_controller.dart';
+import 'package:goolu/Services/storage_sevices.dart';
 import 'package:goolu/View/Auth/sign_in.dart';
 import 'package:goolu/View/Drawer/profile_page.dart';
 
@@ -15,16 +16,31 @@ import '../../Utils/image_urls.dart';
 import '../../Utils/utils.dart';
 import '../Subscription/subscription_main.dart';
 import 'about_us_page.dart';
-import 'cfer_page.dart';
 import 'language_page.dart';
 import 'notifications_page.dart';
 
-class DrawerDesign extends StatelessWidget {
+class DrawerDesign extends StatefulWidget {
   const DrawerDesign({super.key});
 
   @override
+  State<DrawerDesign> createState() => _DrawerDesignState();
+}
+
+class _DrawerDesignState extends State<DrawerDesign> {
+  @override
+  void initState() {
+    // Get.find<SideDrawerController>().loadUserData();
+    logger.i(
+        'Is storage has user data --->>>${AppStorage.isStorageHasUserData()}');
+    logger.i('user data --->>>${AppStorage.getUserData()?.username}');
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GetBuilder<AuthController>(builder: (AuthController authCtrl) {
+    return GetBuilder<SideDrawerController>(
+        builder: (SideDrawerController sideDrawerCtrl) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,11 +60,11 @@ class DrawerDesign extends StatelessWidget {
                 ),
                 size20h,
                 customText(
-                  text: 'John Doe',
+                  text: '${AppStorage.getUserData()?.username}',
                   textStyle: bold14NavyBlue,
                 ),
                 customText(
-                  text: 'johndoe@gmail.com',
+                  text: '${AppStorage.getUserData()?.email}',
                   textStyle: regular12NavyBlue.copyWith(
                       color: secDarkBlueNavyColor.withOpacity(0.7)),
                 ),
@@ -78,16 +94,16 @@ class DrawerDesign extends StatelessWidget {
                     txt: 'Profile',
                   ),
                 ),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Get.to(() => const CferPage());
-                  },
-                  child: iconWithText(
-                    icons: levelImg,
-                    txt: 'CFER',
-                  ),
-                ),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     Get.to(() => const CferPage());
+                //   },
+                //   child: iconWithText(
+                //     icons: levelImg,
+                //     txt: 'CFER',
+                //   ),
+                // ),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {

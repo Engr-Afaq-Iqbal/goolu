@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:goolu/Controller/AuthController/forget_password_controller.dart';
+import 'package:goolu/Controller/DashboardController/dashboard_controller.dart';
 import 'package:goolu/Controller/MicrophoneController/microphone_controller.dart';
 import 'package:goolu/Controller/RobotController/robot_controller.dart';
 import 'package:goolu/Controller/SideDrawerController/side_drawer_controller.dart';
@@ -19,5 +20,6 @@ class AppController {
     Get.put(CameraController());
     Get.put(RobotController());
     Get.put(SideDrawerController());
+    Get.put(DashboardController());
   }
 }

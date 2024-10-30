@@ -70,7 +70,7 @@ class _AppRadioButtonWithTitleQuestState
                       robotCtrl.update();
                     });
                   },
-                  activeColor: primaryBlueColor,
+                  activeColor: primaryColor,
                   value: 0,
                 ),
                 SizedBox(
@@ -109,7 +109,7 @@ class _AppRadioButtonWithTitleQuestState
                       robotCtrl.update();
                     });
                   },
-                  activeColor: primaryBlueColor,
+                  activeColor: primaryColor,
                   value: 1,
                 ),
                 SizedBox(
@@ -149,7 +149,7 @@ class _AppRadioButtonWithTitleQuestState
                         robotCtrl.update();
                       });
                     },
-                    activeColor: primaryBlueColor,
+                    activeColor: primaryColor,
                     value: 2,
                   ),
                   SizedBox(
@@ -186,7 +186,7 @@ class _AppRadioButtonWithTitleQuestState
                         robotCtrl.update();
                       });
                     },
-                    activeColor: primaryBlueColor,
+                    activeColor: primaryColor,
                     value: 3,
                   ),
                   SizedBox(
@@ -223,7 +223,7 @@ class _AppRadioButtonWithTitleQuestState
                         robotCtrl.update();
                       });
                     },
-                    activeColor: primaryBlueColor,
+                    activeColor: primaryColor,
                     value: 4,
                   ),
                   SizedBox(

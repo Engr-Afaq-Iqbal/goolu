@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../Config/app_config.dart';
 import '../Utils/dimensions.dart';
 import '../Utils/font_styles.dart';
 import '../Utils/utils.dart';
@@ -255,25 +254,29 @@ class _AppFormFieldState extends State<AppFormField> {
                           ? Icon(widget.icon,
                               color: Colors.grey.withOpacity(0.4))
                           : null,
-                  border: widget.isOutlineBorder
-                      ? AppStyles.outlineBorder(context,
-                          isBorderColorApply: widget.isBorderColorApply)
-                      : AppStyles.underlineBorder,
-                  enabledBorder: widget.isOutlineBorder
-                      ? OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.radiusLarge),
-                          borderSide: BorderSide(
-                            color: isFocused
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context).colorScheme.surfaceBright,
-                          ),
-                        )
-                      : AppStyles.underlineBorder,
-                  focusedBorder: widget.isOutlineBorder
-                      ? AppStyles.outlineBorder(context,
-                          isBorderColorApply: widget.isBorderColorApply)
-                      : AppStyles.underlineBorder,
+
+                  border: InputBorder.none,
+                  // widget.isOutlineBorder
+                  //     ? AppStyles.outlineBorder(context,
+                  //         isBorderColorApply: widget.isBorderColorApply)
+                  //     : AppStyles.underlineBorder,
+                  enabledBorder: InputBorder.none,
+                  // widget.isOutlineBorder
+                  //     ? OutlineInputBorder(
+                  //         borderRadius:
+                  //             BorderRadius.circular(Dimensions.radiusLarge),
+                  //         borderSide: BorderSide(
+                  //           color: isFocused
+                  //               ? Theme.of(context).colorScheme.primary
+                  //               : Theme.of(context).colorScheme.surfaceBright,
+                  //         ),
+                  //       )
+                  //     : AppStyles.underlineBorder,
+                  focusedBorder: InputBorder.none,
+                  // widget.isOutlineBorder
+                  //     ? AppStyles.outlineBorder(context,
+                  //         isBorderColorApply: widget.isBorderColorApply)
+                  //     : AppStyles.underlineBorder,
                   suffix: (widget.suffix != null) ? widget.suffix : null,
                   suffixIcon: (widget.suffixIcon != null)
                       ? widget.suffixIcon

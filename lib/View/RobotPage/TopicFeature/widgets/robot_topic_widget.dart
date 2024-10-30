@@ -8,7 +8,7 @@ import '../../../../Theme/colors.dart';
 import '../../../../Utils/dimensions.dart';
 import '../../../../Utils/font_styles.dart';
 import '../../../../Utils/image_urls.dart';
-import '../advanced_robot_topic.dart';
+import '../../AdvancedFeature/advanced_robot_topic.dart';
 
 class RobotTopicWidget extends StatefulWidget {
   final String answer;
@@ -73,7 +73,7 @@ class _RobotTopicWidgetState extends State<RobotTopicWidget> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    microphoneCtrl.speak(widget.answer);
+                    microphoneCtrl.speak(widget.questions);
                   },
                   child: SvgPicture.asset(
                     '$imgUrl$speakerYellowImg',
@@ -98,6 +98,7 @@ class _RobotTopicWidgetState extends State<RobotTopicWidget> {
                       Get.to(() => AdvancedRobotTopic(
                             question: widget.questions,
                             answer: widget.answer,
+                            route: '/topic',
                           ));
                     },
                     child: Container(

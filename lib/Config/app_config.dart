@@ -39,7 +39,7 @@ class AppStyles {
         borderRadius: BorderRadius.circular(5),
         borderSide: BorderSide(
           width: 0.5,
-          color: isBorderColorApply ? primaryBlueColor : Colors.transparent,
+          color: isBorderColorApply ? primaryColor : Colors.transparent,
         ),
       );
 
@@ -48,12 +48,12 @@ class AppStyles {
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
           width: 0.5,
-          color: isBorderColorApply ? primaryBlueColor : Colors.transparent,
+          color: isBorderColorApply ? primaryColor : Colors.transparent,
         ),
       );
 
-  static UnderlineInputBorder underlineBorder = UnderlineInputBorder(
-    borderSide: BorderSide(color: primaryBlueColor),
+  static UnderlineInputBorder underlineBorder = const UnderlineInputBorder(
+    borderSide: BorderSide(color: Colors.transparent),
   );
 
   /// Divider Line

@@ -4,7 +4,7 @@ import '../Utils/font_styles.dart';
 import 'colors.dart';
 
 ThemeData appTheme = ThemeData(
-  primaryColor: primaryBlueColor,
+  primaryColor: primaryColor,
   colorScheme: ColorScheme.fromSwatch(
     primarySwatch: createMaterialColor(Color(int.parse('ff5271FB', radix: 16))),
   ).copyWith(

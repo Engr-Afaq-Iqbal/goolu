@@ -71,6 +71,9 @@ dependencies:
 #  cloud_firestore: ^4.17.5
 #  firebase_storage:
 #  firebase_auth: ^4.11.0
+  flutter_stripe: ^11.2.0
+  speech_to_text:
+  csv: ^6.0.0
 
 
 dev_dependencies:
@@ -99,6 +102,7 @@ flutter:
   assets:
     - assets/images/
     - assets/gooluLogo/
+    - assets/word.csv
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

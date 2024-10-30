@@ -8,6 +8,7 @@ import 'package:goolu/Controller/RobotController/robot_controller.dart';
 import 'package:goolu/Theme/colors.dart';
 import 'package:goolu/Utils/dimensions.dart';
 import 'package:goolu/Utils/utils.dart';
+import 'package:goolu/View/RobotPage/AdvancedFeature/advanced_robot_topic.dart';
 
 import '../../../Utils/font_styles.dart';
 import '../../../Utils/image_urls.dart';
@@ -22,7 +23,6 @@ class RobotGeneral extends StatefulWidget {
 class _RobotGeneralState extends State<RobotGeneral> {
   RobotController robotCtrl = Get.find<RobotController>();
   MicrophoneController microphoneCtrl = Get.find<MicrophoneController>();
-  String dummyText = 'Pen is made of plastic and metal';
   @override
   void initState() {
     // TODO: implement initState
@@ -32,10 +32,9 @@ class _RobotGeneralState extends State<RobotGeneral> {
     robotCtrl.questionCtrl.clear();
     robotCtrl.answerCtrl.clear();
     robotCtrl.isSend = false;
-    // robotCtrl.showAnswers = true;
     robotCtrl.questionAnswer = -1;
     robotCtrl.showAnswers = false;
-
+    robotCtrl.initSpeech();
     super.initState();
   }
 
@@ -75,6 +74,16 @@ class _RobotGeneralState extends State<RobotGeneral> {
                         children: [
                           GestureDetector(
                               onTap: () {
+                                robotCtrl.isSend = false;
+                                robotCtrl.questionsList.clear();
+                                robotCtrl.answerList.clear();
+                                robotCtrl.questionCtrl.clear();
+                                robotCtrl.answerCtrl.clear();
+                                robotCtrl.isSend = false;
+                                robotCtrl.questionAnswer = -1;
+                                robotCtrl.showAnswers = false;
+                                robotCtrl.generateAnswersModel = null;
+                                robotCtrl.update();
                                 Get.back();
                               },
                               child: const Icon(Icons.arrow_back)),
@@ -104,9 +113,11 @@ class _RobotGeneralState extends State<RobotGeneral> {
                         borderRadius: BorderRadius.circular(
                             Dimensions.radiusSingleExtraLarge),
                         child: Container(
-                          height: SizesDimensions.height(72),
+                          height: robotCtrl.showAnswers == true
+                              ? SizesDimensions.height(72)
+                              : SizesDimensions.height(20),
                           decoration: BoxDecoration(
-                            color: primaryBlueColor,
+                            color: primaryColor,
                             borderRadius: BorderRadius.circular(
                                 Dimensions.radiusSingleExtraLarge),
                           ),
@@ -173,7 +184,7 @@ class _RobotGeneralState extends State<RobotGeneral> {
 
                                                 robotCtrl
                                                     .checkGrammarFunction();
-                                                robotCtrl.showAnswers = true;
+
                                                 robotCtrl.update();
                                               } else {
                                                 showToast(
@@ -207,32 +218,57 @@ class _RobotGeneralState extends State<RobotGeneral> {
                                     ],
                                   ),
                                 ),
-                                // if (robotCtrl.showAnswers == true)
-                                Column(
-                                  children: [
-                                    size20h,
-                                    customText(
-                                      text: 'Answers',
-                                      textStyle: bold18NavyBlue.copyWith(
-                                        fontSize: 18,
-                                        color: k003366,
+                                if (robotCtrl.showAnswers == true)
+                                  Column(
+                                    children: [
+                                      size20h,
+                                      customText(
+                                        text: 'Answers',
+                                        textStyle: bold18NavyBlue.copyWith(
+                                          fontSize: 18,
+                                          color: k003366,
+                                        ),
                                       ),
-                                    ),
-                                    size10h,
-                                    customText(
-                                      text: 'Pick an answer to practice',
-                                      textStyle: regular18NavyBlue.copyWith(
-                                        fontSize: 14,
-                                        color: k003366,
+                                      size10h,
+                                      customText(
+                                        text: 'Pick an answer to practice',
+                                        textStyle: regular18NavyBlue.copyWith(
+                                          fontSize: 14,
+                                          color: k003366,
+                                        ),
                                       ),
-                                    ),
-                                    answersBox(answer: dummyText),
-                                    answersBox(answer: dummyText),
-                                    answersBox(answer: dummyText),
-                                    answersBox(answer: dummyText),
-                                    answersBox(answer: dummyText),
-                                  ],
-                                )
+                                      answersBox(
+                                        answer: robotCtrl.generateAnswersModel
+                                                ?.option1 ??
+                                            '',
+                                        question: robotCtrl.questionCtrl.text,
+                                      ),
+                                      answersBox(
+                                        answer: robotCtrl.generateAnswersModel
+                                                ?.option2 ??
+                                            '',
+                                        question: robotCtrl.questionCtrl.text,
+                                      ),
+                                      answersBox(
+                                        answer: robotCtrl.generateAnswersModel
+                                                ?.option3 ??
+                                            '',
+                                        question: robotCtrl.questionCtrl.text,
+                                      ),
+                                      answersBox(
+                                        answer: robotCtrl.generateAnswersModel
+                                                ?.option4 ??
+                                            '',
+                                        question: robotCtrl.questionCtrl.text,
+                                      ),
+                                      answersBox(
+                                        answer: robotCtrl.generateAnswersModel
+                                                ?.option5 ??
+                                            '',
+                                        question: robotCtrl.questionCtrl.text,
+                                      ),
+                                    ],
+                                  )
                               ],
                             ),
                           ),
@@ -242,102 +278,6 @@ class _RobotGeneralState extends State<RobotGeneral> {
                   ),
                 ),
               ),
-              // if (robotCtrl.showAnswers == false)
-              //   Column(
-              //     children: [
-              //       if (robotCtrl.isSend == true)
-              //         AppRadioButtonWithTitleQuest(
-              //           title: robotCtrl.questionCtrl.text,
-              //           radio1txt: '${robotCtrl.generateAnswersModel?.option1}',
-              //           radio2txt: '${robotCtrl.generateAnswersModel?.option2}',
-              //           radio3txt: '${robotCtrl.generateAnswersModel?.option3}',
-              //           radio4txt: '${robotCtrl.generateAnswersModel?.option4}',
-              //           radio5txt: '${robotCtrl.generateAnswersModel?.option5}',
-              //         ),
-              //       if (robotCtrl.isSend == true)
-              //         customText(
-              //           text: 'Enter your answer',
-              //           textStyle: bold18NavyBlue,
-              //         ),
-              //       if (robotCtrl.isSend == true)
-              //         AppFormField(
-              //           padding: EdgeInsets.zero,
-              //           controller: robotCtrl.answerCtrl,
-              //           labelText: 'Your Selected Answer',
-              //           hintText: 'Type answer...',
-              //           keyboardType: TextInputType.text,
-              //           validator: (String? v) {
-              //             if (v!.isEmpty) {
-              //               return 'Answer Required';
-              //             }
-              //             return null;
-              //           },
-              //           suffixIcon: GestureDetector(
-              //             onTap: () {
-              //               FocusScope.of(context).requestFocus(FocusNode());
-              //               String result;
-              //               switch (robotCtrl.questionAnswer) {
-              //                 case 0:
-              //                   result =
-              //                       '${robotCtrl.generateAnswersModel?.option1}';
-              //                   break;
-              //                 case 1:
-              //                   result =
-              //                       '${robotCtrl.generateAnswersModel?.option2}';
-              //                   break;
-              //                 case 2:
-              //                   result =
-              //                       '${robotCtrl.generateAnswersModel?.option3}';
-              //                   break;
-              //                 case 3:
-              //                   result =
-              //                       '${robotCtrl.generateAnswersModel?.option4}';
-              //                   break;
-              //                 case 4:
-              //                   result =
-              //                       '${robotCtrl.generateAnswersModel?.option5}';
-              //                   break;
-              //                 default:
-              //                   result = "Invalid value";
-              //               }
-              //               if (robotCtrl.answerCtrl.text.isNotEmpty) {
-              //                 if (robotCtrl.answerCtrl.text == result) {
-              //                   robotCtrl.isSend = true;
-              //                   showToast('Your answer is correct');
-              //                   robotCtrl.questionsList
-              //                       .add(robotCtrl.questionCtrl.text);
-              //                   robotCtrl.answerList
-              //                       .add(robotCtrl.answerCtrl.text);
-              //                   robotCtrl.questionCtrl.clear();
-              //                   robotCtrl.answerCtrl.clear();
-              //                   robotCtrl.isSend = false;
-              //                   // robotCtrl.showAnswers = true;
-              //                   robotCtrl.questionAnswer = -1;
-              //                   robotCtrl.update();
-              //                 } else {
-              //                   showToast('Your type incorrect answer');
-              //                 }
-              //               } else {
-              //                 showToast('Please enter your answer');
-              //               }
-              //             },
-              //             child: Padding(
-              //               padding: const EdgeInsets.all(8.0),
-              //               child: SvgPicture.asset(
-              //                 '$imgUrl$send1',
-              //                 // height: SizesDimensions.height(8),
-              //                 colorFilter: ColorFilter.mode(
-              //                   secDarkBlueNavyColor,
-              //                   BlendMode.srcIn,
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       // size10h,
-              //       // if (robotCtrl.questionsList.isNotEmpty)
-              //     ],
-              //   ),
             ],
           );
         }),
@@ -345,7 +285,7 @@ class _RobotGeneralState extends State<RobotGeneral> {
     );
   }
 
-  Container answersBox({required String answer}) {
+  Container answersBox({required String answer, required String question}) {
     return Container(
       margin: const EdgeInsets.only(
         top: 10,
@@ -371,19 +311,30 @@ class _RobotGeneralState extends State<RobotGeneral> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: 24.0,
-            height: 24.0,
-            padding: const EdgeInsets.all(0),
-            decoration: BoxDecoration(
-              color: k7F7F7F.withOpacity(0.3), // Background color
-              shape: BoxShape.circle, // Makes the container circular
-            ),
-            child: Center(
-              child: Icon(
-                Icons.check,
-                color: kWhite,
-                size: 18,
+          GestureDetector(
+            onTap: () {
+              Get.to(
+                AdvancedRobotTopic(
+                  answer: answer,
+                  question: question,
+                  route: '/general',
+                ),
+              );
+            },
+            child: Container(
+              width: 24.0,
+              height: 24.0,
+              padding: const EdgeInsets.all(0),
+              decoration: BoxDecoration(
+                color: k7F7F7F.withOpacity(0.3), // Background color
+                shape: BoxShape.circle, // Makes the container circular
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.check,
+                  color: kWhite,
+                  size: 18,
+                ),
               ),
             ),
           ),

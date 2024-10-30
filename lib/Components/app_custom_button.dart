@@ -72,7 +72,7 @@ class _AppCustomButtonState extends State<AppCustomButton> {
                 horizontal: widget.horizontalPadding),
             backgroundColor: widget.bgColor != null || widget.isOutLinedButton
                 ? widget.bgColor
-                : primaryBlueColor,
+                : primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
                 widget.borderRadius ??

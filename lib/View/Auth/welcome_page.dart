@@ -26,15 +26,8 @@ class WelcomePage extends StatelessWidget {
               // colorFilter:
               // ColorFilter.mode(primaryBlueColor, BlendMode.srcIn),
             ),
-            Image.asset(
-              '$gooluLogoUrl$gooluNewLogo',
-
-              // colorFilter:
-              // ColorFilter.mode(primaryBlueColor, BlendMode.srcIn),
-            ),
-            size50h,
             customText(
-              text: 'Welcome to\nGOOLU',
+              text: 'Welcome to',
               textAlign: TextAlign.center,
               textStyle: bold20NavyBlue.copyWith(
                 fontSize: 22,
@@ -43,20 +36,28 @@ class WelcomePage extends StatelessWidget {
               maxLines: 2,
             ),
             size30h,
+            Image.asset(
+              '$gooluLogoUrl$gooluNewLogo',
+
+              // colorFilter:
+              // ColorFilter.mode(primaryBlueColor, BlendMode.srcIn),
+            ),
+            size70h,
             customText(
-                text:
-                    'Explore interactive lessons and track your progress as you master new skills.',
-                textAlign: TextAlign.center,
-                textStyle: regular18NavyBlue,
-                maxLines: 3),
+              text:
+                  'Practice speaking English and track your progress as you develop in your listening and speaking skills',
+              textAlign: TextAlign.center,
+              textStyle: regular18NavyBlue,
+              maxLines: 4,
+            ),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AppCustomButton(
                   horizontalPadding: 55,
-                  verticalPadding: 10,
-                  borderRadius: Dimensions.radiusExtraLarge,
+                  verticalPadding: 15,
+                  borderRadius: Dimensions.radiusSingleExtraLarge,
                   title: customText(text: 'Login', textStyle: bold16White),
                   onTap: () {
                     Get.to(() => const SignInScreen());
@@ -68,17 +69,18 @@ class WelcomePage extends StatelessWidget {
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 55, vertical: 10),
+                        horizontal: 55, vertical: 15),
                     decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.radiusExtraLarge),
+                        borderRadius: BorderRadius.circular(
+                            Dimensions.radiusSingleExtraLarge),
                         border: Border.all(
-                          color: primaryBlueColor,
+                          color: primaryColor,
                         )),
                     child: customText(
                         text: 'Register',
                         textStyle: regular16PrimaryBlue.copyWith(
-                            color: secDarkBlueNavyColor)),
+                          color: secDarkBlueNavyColor,
+                        )),
                   ),
                 )
               ],

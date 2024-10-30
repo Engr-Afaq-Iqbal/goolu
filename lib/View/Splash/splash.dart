@@ -8,7 +8,7 @@ import '../../Config/app_config.dart';
 import '../../Controller/AuthController/auth_controller.dart';
 import '../../Theme/colors.dart';
 import '../../Utils/image_urls.dart';
-import '../Auth/sign_in.dart';
+import '../Auth/welcome_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen>
         } else {
           // No token found, navigate to SignIn screen
           Future.delayed(const Duration(seconds: 1), () {
-            Get.offAll(() => const SignInScreen(),
+            Get.offAll(() => const WelcomePage(),
                 transition: Transition.downToUp,
                 duration: const Duration(seconds: 1));
           });

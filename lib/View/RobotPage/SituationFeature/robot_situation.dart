@@ -81,7 +81,7 @@ class _RobotSituationState extends State<RobotSituation> {
                       Container(
                         // height: SizesDimensions.height(72),
                         decoration: BoxDecoration(
-                          color: primaryBlueColor,
+                          color: primaryColor,
                           borderRadius: BorderRadius.circular(
                               Dimensions.radiusSingleExtraLarge),
                         ),

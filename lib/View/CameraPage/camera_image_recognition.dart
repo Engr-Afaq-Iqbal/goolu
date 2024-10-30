@@ -49,6 +49,10 @@ class CameraImageRecognition extends StatelessWidget {
                       children: [
                         GestureDetector(
                             onTap: () {
+                              cameraCtrl.file = null;
+                              cameraCtrl.imageDetectionModel = null;
+                              Get.find<MicrophoneController>().stopSpeaking();
+                              cameraCtrl.update();
                               Get.back();
                             },
                             child: const Icon(Icons.arrow_back)),
@@ -73,7 +77,6 @@ class CameraImageRecognition extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     size50h,
                     customText(
                       text: 'Upload your image',
@@ -83,128 +86,135 @@ class CameraImageRecognition extends StatelessWidget {
                       ),
                     ),
                     size30h,
-                    // if (cameraCtrl.file == null)
-                    GestureDetector(
-                      onTap: () {
-                        Get.find<DialogController>().showDialog(
-                          AlertDialog(
-                            clipBehavior: Clip.hardEdge,
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 0),
-                            content: AppDocumentUploadDialog(
-                              onTapGallery: () async {
-                                bool isPdf =
-                                    await cameraCtrl.uploadImageFromGallery();
-                                if (isPdf == true) {
-                                  stopProgress();
-                                }
-                              },
-                              onTapPdf: () async {
-                                bool isPdf =
-                                    await cameraCtrl.uploadImageFromCamera();
-                                if (isPdf == true) {
-                                  stopProgress();
-                                }
-                              },
+                    if (cameraCtrl.file == null)
+                      GestureDetector(
+                        onTap: () {
+                          Get.find<DialogController>().showDialog(
+                            AlertDialog(
+                              clipBehavior: Clip.hardEdge,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 0),
+                              content: AppDocumentUploadDialog(
+                                onTapGallery: () async {
+                                  bool isPdf =
+                                      await cameraCtrl.uploadImageFromGallery();
+                                  if (isPdf == true) {
+                                    stopProgress();
+                                  }
+                                },
+                                onTapPdf: () async {
+                                  bool isPdf =
+                                      await cameraCtrl.uploadImageFromCamera();
+                                  if (isPdf == true) {
+                                    stopProgress();
+                                  }
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                        child: Center(
+                          child: DottedBorder(
+                            strokeWidth: 0.5,
+                            strokeCap: StrokeCap.butt,
+                            borderType: BorderType.RRect,
+                            radius: const Radius.circular(
+                                Dimensions.radiusDoubleExtraLarge),
+                            padding: const EdgeInsets.all(0),
+                            dashPattern: const [5, 6],
+                            child: Container(
+                              width: SizesDimensions.width(90),
+                              height: SizesDimensions.height(30.0),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(
+                                      Dimensions.radiusDoubleExtraLarge)),
+                              // Set background color to white
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  size20h,
+                                  SvgPicture.asset(
+                                    '$imgUrl$uploadArrowImg',
+                                    height: 75,
+                                  ),
+                                  size30h,
+                                  customText(
+                                    text:
+                                        'Upload image from gallery\nor\nCapture from camera',
+                                    textStyle: regular14NavyBlue.copyWith(
+                                        color: Colors.grey.withOpacity(0.8)),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        );
-                      },
-                      child: Center(
-                        child: DottedBorder(
-                          strokeWidth: 0.5,
-                          strokeCap: StrokeCap.butt,
-                          borderType: BorderType.RRect,
-                          radius: const Radius.circular(
+                        ),
+                      ),
+                    if (cameraCtrl.file != null)
+                      Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
                               Dimensions.radiusDoubleExtraLarge),
-                          padding: const EdgeInsets.all(0),
-                          dashPattern: const [5, 6],
                           child: Container(
-                            width: SizesDimensions.width(90),
-                            height: SizesDimensions.height(30.0),
+                            width: SizesDimensions.width(80.0),
+                            height: SizesDimensions.height(25.0),
+                            // margin: EdgeInsets.symmetric(
+                            //     horizontal: SizesDimensions.width(0.5)),
+                            // padding: EdgeInsets.symmetric(
+                            //     horizontal: SizesDimensions.width(2)),
                             decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(
-                                    Dimensions.radiusDoubleExtraLarge)),
-                            // Set background color to white
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              borderRadius: BorderRadius.circular(
+                                Dimensions.radiusExtraLarge,
+                              ),
+                            ),
+                            child: Stack(
                               children: [
-                                size20h,
-                                SvgPicture.asset(
-                                  '$imgUrl$uploadArrowImg',
-                                  height: 75,
+                                Image.file(
+                                  cameraCtrl.file!,
+                                  fit: BoxFit.contain,
+                                  width: SizesDimensions.width(80.0),
+                                  height: SizesDimensions.height(25.0),
                                 ),
-                                size30h,
-                                customText(
-                                  text:
-                                      'Upload image from gallery\nor\nCapture from camera',
-                                  textStyle: regular14NavyBlue.copyWith(
-                                      color: Colors.grey.withOpacity(0.8)),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 3,
-                                ),
+                                Positioned(
+                                  right: 20,
+                                  top: 15,
+                                  child: GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () {
+                                      cameraCtrl.file = null;
+
+                                      cameraCtrl.file = null;
+                                      cameraCtrl.imageDetectionModel = null;
+                                      Get.find<MicrophoneController>()
+                                          .stopSpeaking();
+                                      cameraCtrl.update();
+                                    },
+                                    child: Container(
+                                      width: SizesDimensions.width(8),
+                                      height: SizesDimensions.height(4),
+                                      decoration: BoxDecoration(
+                                        color: kWhite,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.close_rounded,
+                                        color: kRedFF624D,
+                                        size: 25,
+                                      ),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    // if (cameraCtrl.file != null)
-                    //   Center(
-                    //     child: ClipRRect(
-                    //       borderRadius:
-                    //           BorderRadius.circular(Dimensions.radiusDefault),
-                    //       child: Container(
-                    //         width: SizesDimensions.width(80.0),
-                    //         height: SizesDimensions.height(25.0),
-                    //         // margin: EdgeInsets.symmetric(
-                    //         //     horizontal: SizesDimensions.width(0.5)),
-                    //         // padding: EdgeInsets.symmetric(
-                    //         //     horizontal: SizesDimensions.width(2)),
-                    //         decoration: BoxDecoration(
-                    //             borderRadius: BorderRadius.circular(
-                    //                 Dimensions.radiusExtraLarge)),
-                    //         child: Stack(
-                    //           children: [
-                    //             Image.file(
-                    //               cameraCtrl.file!,
-                    //               fit: BoxFit.fill,
-                    //               width: SizesDimensions.width(80.0),
-                    //               height: SizesDimensions.height(25.0),
-                    //             ),
-                    //             Positioned(
-                    //               right: 10,
-                    //               top: 10,
-                    //               child: GestureDetector(
-                    //                 behavior: HitTestBehavior.translucent,
-                    //                 onTap: () {
-                    //                   cameraCtrl.file = null;
-                    //                   cameraCtrl.update();
-                    //                 },
-                    //                 child: Container(
-                    //                   width: SizesDimensions.width(6),
-                    //                   height: SizesDimensions.height(3),
-                    //                   decoration: BoxDecoration(
-                    //                     color: kWhite,
-                    //                     shape: BoxShape.circle,
-                    //                   ),
-                    //                   child: Icon(
-                    //                     Icons.close_rounded,
-                    //                     color: kRedFF624D,
-                    //                     size: 20,
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             )
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
                     size30h,
-                    if (cameraCtrl.file != null)
+                    if (cameraCtrl.imageDetectionModel == null)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -214,6 +224,8 @@ class CameraImageRecognition extends StatelessWidget {
                                     cameraCtrl.sendImageFeature1();
                                   }
                                 : null,
+                            horizontalPadding: 25,
+                            verticalPadding: 20,
                             title: Center(
                               child: customText(
                                 text: 'Upload',
@@ -247,7 +259,7 @@ class CameraImageRecognition extends StatelessWidget {
                               Row(
                                 children: [
                                   SizedBox(
-                                    width: SizesDimensions.width(30),
+                                    width: SizesDimensions.width(50),
                                     child: customText(
                                         text:
                                             '${cameraCtrl.imageDetectionModel?.word}',
@@ -277,15 +289,23 @@ class CameraImageRecognition extends StatelessWidget {
                               ),
                               size30h,
                               SizedBox(
-                                width: SizesDimensions.width(60),
-                                child: customText(
-                                  text:
-                                      '${cameraCtrl.imageDetectionModel?.definition}',
-                                  textStyle: regular14NavyBlue,
-                                  maxLines: 10,
+                                height: SizesDimensions.height(20),
+                                // width: SizesDimensions.width(30),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      customText(
+                                        text:
+                                            '${cameraCtrl.imageDetectionModel?.definition}',
+                                        textStyle: regular16NavyBlue.copyWith(
+                                          fontSize: 14,
+                                        ),
+                                        maxLines: 30,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              size20h,
                             ],
                           ),
                         ),

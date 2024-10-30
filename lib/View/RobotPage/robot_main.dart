@@ -23,20 +23,6 @@ class RobotMain extends StatefulWidget {
 
 class _RobotMainState extends State<RobotMain> {
   @override
-  void initState() {
-    // Get.find<AccountInfoController>().fetchAddressDetails();
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    // Get.find<HomeController>().clearAllModelData();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
@@ -63,7 +49,7 @@ class _RobotMainState extends State<RobotMain> {
                   children: [
                     Center(
                       child: customText(
-                        text: 'Practice',
+                        text: 'Practice speaking',
                         textStyle: regular18NavyBlue.copyWith(
                           fontSize: 18,
                         ),
@@ -75,7 +61,7 @@ class _RobotMainState extends State<RobotMain> {
                       width: SizesDimensions.width(50),
                       height: 2,
                     ),
-                    size30h,
+                    size120h,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

@@ -72,7 +72,7 @@ class CferPage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 0,
                         ),
                       ],
@@ -92,7 +92,7 @@ class CferPage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 1,
                         ),
                       ],
@@ -112,7 +112,7 @@ class CferPage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 2,
                         ),
                       ],
@@ -132,7 +132,7 @@ class CferPage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 3,
                         ),
                       ],
@@ -152,7 +152,7 @@ class CferPage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 4,
                         ),
                       ],
@@ -172,7 +172,7 @@ class CferPage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 5,
                         ),
                       ],

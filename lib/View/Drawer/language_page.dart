@@ -72,7 +72,7 @@ class LanguagePage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 0,
                         ),
                       ],
@@ -92,7 +92,7 @@ class LanguagePage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 1,
                         ),
                       ],
@@ -118,7 +118,7 @@ class LanguagePage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 2,
                         ),
                       ],
@@ -138,7 +138,7 @@ class LanguagePage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 3,
                         ),
                       ],
@@ -158,7 +158,7 @@ class LanguagePage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 4,
                         ),
                       ],
@@ -178,7 +178,7 @@ class LanguagePage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 5,
                         ),
                       ],
@@ -198,7 +198,7 @@ class LanguagePage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 6,
                         ),
                       ],
@@ -218,7 +218,7 @@ class LanguagePage extends StatelessWidget {
 
                             sideDrawerCtrl.update();
                           },
-                          activeColor: primaryBlueColor,
+                          activeColor: primaryColor,
                           value: 7,
                         ),
                       ],

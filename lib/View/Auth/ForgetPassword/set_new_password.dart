@@ -81,7 +81,7 @@ class _SetNewPasswordState extends State<SetNewPassword> {
                         fieldHeight: SizesDimensions.height(6.0),
                         fieldWidth: SizesDimensions.width(11.0),
                         borderWidth: 2.0,
-                        activeBorderColor: primaryBlueColor,
+                        activeBorderColor: primaryColor,
                         activeBackgroundColor: kFFFFFF,
                         borderRadius: BorderRadius.circular(4.0),
                         keyboardType: TextInputType.number,

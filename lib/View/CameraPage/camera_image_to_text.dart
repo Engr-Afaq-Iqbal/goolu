@@ -49,6 +49,10 @@ class CameraImageToText extends StatelessWidget {
                       children: [
                         GestureDetector(
                             onTap: () {
+                              cameraCtrl.file2 = null;
+                              cameraCtrl.cameraPageFeature2Model = null;
+                              Get.find<MicrophoneController>().stopSpeaking();
+                              cameraCtrl.update();
                               Get.back();
                             },
                             child: const Icon(Icons.arrow_back)),
@@ -59,7 +63,7 @@ class CameraImageToText extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             customText(
-                              text: 'Image to Text',
+                              text: 'Text Recognition',
                               textStyle: regular18NavyBlue.copyWith(
                                 fontSize: 20,
                               ),
@@ -151,62 +155,66 @@ class CameraImageToText extends StatelessWidget {
                           ),
                         ),
                       ),
-                    // if (cameraCtrl.file2 != null)
-                    //   Center(
-                    //     child: ClipRRect(
-                    //       borderRadius:
-                    //           BorderRadius.circular(Dimensions.radiusDefault),
-                    //       child: Container(
-                    //         width: SizesDimensions.width(80.0),
-                    //         height: SizesDimensions.height(25.0),
-                    //         // margin: EdgeInsets.symmetric(
-                    //         //     horizontal: SizesDimensions.width(0.5)),
-                    //         // padding: EdgeInsets.symmetric(
-                    //         //     horizontal: SizesDimensions.width(2)),
-                    //         decoration: BoxDecoration(
-                    //             borderRadius: BorderRadius.circular(
-                    //                 Dimensions.radiusExtraLarge)),
-                    //         child: Stack(
-                    //           children: [
-                    //             Image.file(
-                    //               cameraCtrl.file2!,
-                    //               fit: BoxFit.fill,
-                    //               width: SizesDimensions.width(80.0),
-                    //               height: SizesDimensions.height(25.0),
-                    //             ),
-                    //             Positioned(
-                    //               right: 10,
-                    //               top: 10,
-                    //               child: GestureDetector(
-                    //                 behavior: HitTestBehavior.translucent,
-                    //                 onTap: () {
-                    //                   cameraCtrl.file2 = null;
-                    //                   cameraCtrl.update();
-                    //                 },
-                    //                 child: Container(
-                    //                   width: SizesDimensions.width(6),
-                    //                   height: SizesDimensions.height(3),
-                    //                   decoration: BoxDecoration(
-                    //                     color: kWhite,
-                    //                     shape: BoxShape.circle,
-                    //                   ),
-                    //                   child: Icon(
-                    //                     Icons.close_rounded,
-                    //                     color: kRedFF624D,
-                    //                     size: 20,
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             )
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    size30h,
                     if (cameraCtrl.file2 != null)
+                      Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.radiusDoubleExtraLarge),
+                          child: Container(
+                            width: SizesDimensions.width(80.0),
+                            height: SizesDimensions.height(25.0),
+                            // margin: EdgeInsets.symmetric(
+                            //     horizontal: SizesDimensions.width(0.5)),
+                            // padding: EdgeInsets.symmetric(
+                            //     horizontal: SizesDimensions.width(2)),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    Dimensions.radiusExtraLarge)),
+                            child: Stack(
+                              children: [
+                                Image.file(
+                                  cameraCtrl.file2!,
+                                  fit: BoxFit.contain,
+                                  width: SizesDimensions.width(80.0),
+                                  height: SizesDimensions.height(25.0),
+                                ),
+                                Positioned(
+                                  right: 20,
+                                  top: 15,
+                                  child: GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () {
+                                      cameraCtrl.file2 = null;
+                                      cameraCtrl.cameraPageFeature2Model = null;
+                                      Get.find<MicrophoneController>()
+                                          .stopSpeaking();
+                                      cameraCtrl.update();
+                                    },
+                                    child: Container(
+                                      width: SizesDimensions.width(8),
+                                      height: SizesDimensions.height(4),
+                                      decoration: BoxDecoration(
+                                        color: kWhite,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.close_rounded,
+                                        color: kRedFF624D,
+                                        size: 25,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    size30h,
+                    // if (cameraCtrl.file2 != null)
+                    if (cameraCtrl.cameraPageFeature2Model == null)
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           AppCustomButton(
                             onTap: cameraCtrl.file2 != null
@@ -214,16 +222,18 @@ class CameraImageToText extends StatelessWidget {
                                     cameraCtrl.sendImageFeature2();
                                   }
                                 : null,
+                            horizontalPadding: 25,
+                            verticalPadding: 20,
                             title: Center(
                               child: customText(
                                 text: 'Upload',
-                                textStyle: bold14White,
+                                textStyle: bold16White,
                               ),
                             ),
                           ),
                         ],
                       ),
-                    size30h,
+                    if (cameraCtrl.cameraPageFeature2Model == null) size30h,
                     if (cameraCtrl.cameraPageFeature2Model != null)
                       Center(
                         child: Container(
@@ -243,18 +253,17 @@ class CameraImageToText extends StatelessWidget {
                               //     ? const Text('No audio selected')
                               //     : Text('Audio selected: ${_audioFile!.path}'),
                               //
-                              size20h,
+                              size10h,
                               Row(
                                 children: [
-                                  SizedBox(
-                                    width: SizesDimensions.width(30),
-                                    child: customText(
-                                        text:
-                                            '${cameraCtrl.cameraPageFeature2Model?.detectedText}',
-                                        textStyle: bold20White,
-                                        maxLines: 10),
+                                  customText(
+                                    text: 'Text in image:',
+                                    textStyle: bold20White.copyWith(
+                                      fontSize: 20,
+                                    ),
+                                    maxLines: 2,
                                   ),
-                                  // size20w,
+                                  size40w,
                                   GestureDetector(
                                     onTap: () async {
                                       final text = cameraCtrl
@@ -277,17 +286,25 @@ class CameraImageToText extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              size30h,
+                              size20h,
                               SizedBox(
-                                width: SizesDimensions.width(60),
-                                child: customText(
-                                  text:
-                                      '${cameraCtrl.imageDetectionModel?.definition}',
-                                  textStyle: regular14NavyBlue,
-                                  maxLines: 10,
+                                height: SizesDimensions.height(25),
+                                // width: SizesDimensions.width(30),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      customText(
+                                        text:
+                                            '${cameraCtrl.cameraPageFeature2Model?.detectedText}',
+                                        textStyle: regular16NavyBlue.copyWith(
+                                          fontSize: 14,
+                                        ),
+                                        maxLines: 30,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              size20h,
                             ],
                           ),
                         ),
@@ -296,231 +313,6 @@ class CameraImageToText extends StatelessWidget {
                 ),
               ),
             ),
-            // size30h,
-            // // if (cameraCtrl.file2 == null)
-            // //   GestureDetector(
-            // //     onTap: () {
-            // //       Get.find<DialogController>().showDialog(
-            // //         AlertDialog(
-            // //             clipBehavior: Clip.hardEdge,
-            // //             contentPadding: const EdgeInsets.symmetric(
-            // //                 vertical: 15, horizontal: 0),
-            // //             content: AppDocumentUploadDialog(
-            // //               onTapGallery: () async {
-            // //                 bool isPdf =
-            // //                     await cameraCtrl.uploadImageFromGallery2();
-            // //                 if (isPdf == true) {
-            // //                   stopProgress();
-            // //                 }
-            // //               },
-            // //               onTapPdf: () async {
-            // //                 bool isPdf =
-            // //                     await cameraCtrl.uploadImageFromCamera2();
-            // //                 if (isPdf == true) {
-            // //                   stopProgress();
-            // //                 }
-            // //               },
-            // //             )),
-            // //       );
-            // //     },
-            // //     child: Center(
-            // //       child: DottedBorder(
-            // //         strokeWidth: 0.5,
-            // //         strokeCap: StrokeCap.butt,
-            // //         borderType: BorderType.RRect,
-            // //         radius: const Radius.circular(Dimensions.radiusDefault),
-            // //         padding: const EdgeInsets.all(0),
-            // //         dashPattern: const [5, 6],
-            // //         child: SizedBox(
-            // //           width: SizesDimensions.width(80.0),
-            // //           height: SizesDimensions.height(25.0),
-            // //           child: Column(
-            // //             mainAxisAlignment: MainAxisAlignment.center,
-            // //             crossAxisAlignment: CrossAxisAlignment.center,
-            // //             children: [
-            // //               Icon(
-            // //                 Icons.upload,
-            // //                 color: secDarkBlueNavyColor,
-            // //                 size: 40,
-            // //               ),
-            // //               size20h,
-            // //               customText(
-            // //                 text: 'selectImagesFromGalleryOrCamera'.tr,
-            // //                 textStyle: bold14NavyBlue,
-            // //                 textAlign: TextAlign.center,
-            // //                 maxLines: 3,
-            // //               ),
-            // //             ],
-            // //           ),
-            // //         ),
-            // //       ),
-            // //     ),
-            // //   ),
-            // if (cameraCtrl.file2 != null)
-            //   Center(
-            //     child: ClipRRect(
-            //       borderRadius:
-            //           BorderRadius.circular(Dimensions.radiusDefault),
-            //       child: Container(
-            //         width: SizesDimensions.width(80.0),
-            //         height: SizesDimensions.height(25.0),
-            //         // margin: EdgeInsets.symmetric(
-            //         //     horizontal: SizesDimensions.width(0.5)),
-            //         // padding: EdgeInsets.symmetric(
-            //         //     horizontal: SizesDimensions.width(2)),
-            //         decoration: BoxDecoration(
-            //             borderRadius: BorderRadius.circular(
-            //                 Dimensions.radiusExtraLarge)),
-            //         child: Stack(
-            //           children: [
-            //             Image.file(
-            //               cameraCtrl.file2!,
-            //               fit: BoxFit.fill,
-            //               width: SizesDimensions.width(80.0),
-            //               height: SizesDimensions.height(25.0),
-            //             ),
-            //             Positioned(
-            //               right: 10,
-            //               top: 10,
-            //               child: GestureDetector(
-            //                 behavior: HitTestBehavior.translucent,
-            //                 onTap: () {
-            //                   cameraCtrl.file2 = null;
-            //                   cameraCtrl.update();
-            //                 },
-            //                 child: Container(
-            //                   width: SizesDimensions.width(6),
-            //                   height: SizesDimensions.height(3),
-            //                   decoration: BoxDecoration(
-            //                     color: kWhite,
-            //                     shape: BoxShape.circle,
-            //                   ),
-            //                   child: Icon(
-            //                     Icons.close_rounded,
-            //                     color: kRedFF624D,
-            //                     size: 20,
-            //                   ),
-            //                 ),
-            //               ),
-            //             )
-            //           ],
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // size30h,
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     AppCustomButton(
-            //       title: customText(
-            //         text: 'sendRequest'.tr,
-            //         textStyle: bold14White,
-            //       ),
-            //       onTap: cameraCtrl.file2 != null
-            //           ? () {
-            //               cameraCtrl.sendImageFeature2();
-            //             }
-            //           : null,
-            //       borderRadius: 4,
-            //     ),
-            //   ],
-            // ),
-            // size30h,
-            // if (cameraCtrl.cameraPageFeature2Model != null)
-            //   Center(
-            //     child: Container(
-            //       // height: SizesDimensions.height(30),
-            //       width: SizesDimensions.width(80),
-            //       padding: const EdgeInsets.all(20),
-            //       decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(20),
-            //         color: primaryBlueColor,
-            //       ),
-            //       child: Column(
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           // _audioFile == null
-            //           //     ? const Text('No audio selected')
-            //           //     : Text('Audio selected: ${_audioFile!.path}'),
-            //           //
-            //           size20h,
-            //           Row(
-            //             children: [
-            //               SizedBox(
-            //                 width: SizesDimensions.width(40),
-            //                 child: customText(
-            //                     text:
-            //                         '${cameraCtrl.cameraPageFeature2Model?.detectedText}',
-            //                     textStyle: bold16White,
-            //                     maxLines: 10),
-            //               ),
-            //               size20w,
-            //               GestureDetector(
-            //                 onTap: () async {
-            //                   final text = cameraCtrl
-            //                           .cameraPageFeature2Model?.detectedText
-            //                           .toString() ??
-            //                       'noTextAvailable'.tr;
-            //                   await Get.find<MicrophoneController>()
-            //                       .speak(text);
-            //                 },
-            //                 child: Container(
-            //                   width: 30.0,
-            //                   height: 30.0,
-            //                   padding: const EdgeInsets.all(5),
-            //                   decoration: BoxDecoration(
-            //                     color: kYellowffde59,
-            //                     shape: BoxShape.circle,
-            //                   ),
-            //                   child: SvgPicture.asset(
-            //                     '$imgUrl$playImage',
-            //                     colorFilter: ColorFilter.mode(
-            //                       primaryBlueColor,
-            //                       BlendMode.srcIn,
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //           size10h,
-            //           AppStyles.dividerLine(color: kWhite),
-            //           size20h,
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // Center(
-            //   child: Container(
-            //     height: SizesDimensions.height(25),
-            //     width: SizesDimensions.width(80),
-            //     decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
-            //       border: Border.all(
-            //         width: 1,
-            //         color: kBCC8FF,
-            //       ),
-            //     ),
-            //     child: Center(
-            //       child: Row(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           customText(
-            //             text: 'Upload Document',
-            //             textStyle: bold16NavyBlue,
-            //           ),
-            //           size10w,
-            //           Icon(
-            //             Icons.upload,
-            //             color: secDarkBlueNavyColor,
-            //           )
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // )
           ],
         );
       }),

@@ -53,7 +53,7 @@ class AppDocumentUploadDialog extends StatelessWidget {
                       height: 60,
                       width: 60,
                       colorFilter:
-                          ColorFilter.mode(primaryBlueColor, BlendMode.srcIn),
+                          ColorFilter.mode(primaryColor, BlendMode.srcIn),
                     ),
                     size10h,
                     customText(
@@ -73,7 +73,7 @@ class AppDocumentUploadDialog extends StatelessWidget {
                       height: 60,
                       width: 60,
                       colorFilter:
-                          ColorFilter.mode(primaryBlueColor, BlendMode.srcIn),
+                          ColorFilter.mode(primaryColor, BlendMode.srcIn),
                     ),
                     size10h,
                     customText(

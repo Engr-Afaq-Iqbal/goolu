@@ -67,7 +67,7 @@ class _CameraMainState extends State<CameraMain> {
                       width: SizesDimensions.width(50),
                       height: 2,
                     ),
-                    size30h,
+                    size120h,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -85,7 +85,7 @@ class _CameraMainState extends State<CameraMain> {
                             Get.to(() => const CameraImageToText());
                           },
                           child: box(
-                            txt: 'Image to\nText',
+                            txt: 'Text Recognition',
                             boxColor: kDarkGreen5b99a5,
                           ),
                         ),

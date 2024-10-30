@@ -15,7 +15,7 @@ import '../../Utils/utils.dart';
 import '../ExceptionalController/exceptional_controller.dart';
 
 class MicrophoneController extends GetxController {
-  String selectedLanguage = 'Arabic';
+  String selectedLanguage = 'English';
   String selectedLanguage2 = 'Arabic';
   FlutterSoundRecorder? recorder;
   bool isRecording = false;
@@ -94,6 +94,10 @@ class MicrophoneController extends GetxController {
     await flutterTts.speak(txt);
   }
 
+  Future<void> stopSpeaking() async {
+    await flutterTts.stop();
+  }
+
   SpeechToSpeechModel? speechToSpeechModel;
   Future<bool> sendSpeech() async {
     Map<String, String> files = {};
@@ -122,7 +126,10 @@ class MicrophoneController extends GetxController {
       await ExceptionController().exceptionAlert(
         errorMsg: '$error',
         exceptionFormat: ApiServices.methodExceptionFormat(
-            'POST', ApiUrls.speechToSpeechApi, error, stackTrace),
+            'POST',
+            ApiUrls.speechToSpeechApi,
+            'An unknown error occurred, please try again later!',
+            stackTrace),
       );
       throw '$error';
     });
