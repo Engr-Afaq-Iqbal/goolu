@@ -41,7 +41,7 @@ class _CameraSpeechState extends State<CameraSpeech>
   @override
   void initState() {
     // fetchUserData();
-
+    cameraSpeechController.wordsSpoken.clear();
     cameraSpeechController.isResult = false;
     cameraSpeechController.initSpeech();
     cameraSpeechController.fetchAndDisplayData(

@@ -111,80 +111,7 @@ class CameraSpeechController extends GetxController {
     return null; // Return null if no "false" document or answer is found
   }
 
-  // ///function to fetch the data not working properly
-  // void fetchUserData() async {
-  //   List<Map<String, dynamic>> data =
-  //       await fetchData('2', '${AppStorage.getUserData()?.userId}');
-  //   for (var item in data) {
-  //     logger.i('Image URL: ${item['url']}');
-  //     logger.i('Answers: ${item['answers']}');
-  //   }
-  //   update();
-  // }
-  //
-  // Future<List<Map<String, dynamic>>> fetchData(
-  //     String featureId, String userId) async {
-  //   List<Map<String, dynamic>> results = [];
-  //
-  //   try {
-  //     // Access the nested collection path
-  //     var featureRef = _firestore
-  //         .collection('feature1CUsers')
-  //         .doc(userId)
-  //         .collection('0'); // Assuming featureId is '0' or '2' etc.
-  //
-  //     // Get all documents within this nested path
-  //     var snapshot = await featureRef.get();
-  //
-  //     for (var doc in snapshot.docs) {
-  //       Map<String, dynamic> data = doc.data();
-  //
-  //       // Check if mainResult is 'false' before adding to results
-  //       if (data['mainResult'] == 'false') {
-  //         // Retrieve image URL and answers if mainResult is 'false'
-  //         String imageUrl = data['url'];
-  //         List<dynamic> answers = data['answers'];
-  //
-  //         // Add this to the results list
-  //         results.add({
-  //           'url': imageUrl,
-  //           'answers': answers,
-  //         });
-  //       }
-  //     }
-  //   } catch (e) {
-  //     logger.e('Error fetching data: $e');
-  //   }
-  //   update();
-  //   return results;
-  // }
-
-  ///upload user record
-  // Future<void> uploadImageData(String userId, String imageUrl,
-  //     List<Map<String, dynamic>> answers, int index) async {
-  //   try {
-  //     // Reference to Firestore
-  //     final firestore = FirebaseFirestore.instance;
-  //
-  //     // Path: feature1C -> userId -> positive -> index
-  //     await firestore
-  //         .collection('feature1C')
-  //         .doc('${AppStorage.getUserData()?.userId}')
-  //         .collection('positive')
-  //         .doc(index
-  //             .toString()) // Each document indexed by a unique integer as string
-  //         .set({
-  //       'url': imageUrl,
-  //       'answers': answers,
-  //     });
-  //
-  //     logger.i("Data uploaded successfully!");
-  //   } catch (e) {
-  //     logger.e("Error uploading data: $e");
-  //   }
-  // }
-
-  Future<void> uploadImageData(String userId, String imageUrl,
+  Future<void> uploadImageDataNegative(String userId, String imageUrl,
       List<Map<String, dynamic>> answers, int index) async {
     try {
       // Reference to Firestore
@@ -192,10 +119,10 @@ class CameraSpeechController extends GetxController {
 
       // Path: feature1C -> userId -> positive -> index
       await firestore
-          .collection('feature1CDataPositive')
-          .doc('positive')
+          .collection('feature1CDataNegative')
+          .doc('negative')
           .collection('0') // Sub-collection named with the index as a string
-          .doc('1')
+          .doc('$index')
           .set({
         'url': imageUrl,
         'answers': answers,
@@ -209,7 +136,7 @@ class CameraSpeechController extends GetxController {
     update();
   }
 
-  Future<void> uploadImageDataNegative(String userId, String imageUrl,
+  Future<void> uploadImageData(String userId, String imageUrl,
       List<Map<String, dynamic>> answers, int index) async {
     try {
       // Reference to Firestore
@@ -217,10 +144,10 @@ class CameraSpeechController extends GetxController {
 
       // Path: feature1C -> userId -> positive -> index
       await firestore
-          .collection('feature1CDataNegative')
-          .doc('negative')
+          .collection('feature1CDataPositive')
+          .doc('positive')
           .collection('0') // Sub-collection named with the index as a string
-          .doc('1')
+          .doc('$index')
           .set({
         'url': imageUrl,
         'answers': answers,
@@ -238,21 +165,24 @@ class CameraSpeechController extends GetxController {
     String userId = '${AppStorage.getUserData()?.userId}';
     //https://drive.google.com/file/d/1HXoGjw-ed0eE5-21LAJb5i0-U3wyejMB/view?usp=sharing
     String imageUrl =
-        'https://drive.google.com/uc?id=1HXoGjw-ed0eE5-21LAJb5i0-U3wyejMB';
+        'https://drive.google.com/file/d/19Wbw2wWUm1D8mJXQHY5p-_SXjCksXCTC';
     int index =
-        0; // This is the index for the document in the 'positive' sub-collection
+        4; // This is the index for the document in the 'positive' sub-collection
 
     List<Map<String, dynamic>> answers = [
       {
-        'text': 'what is today',
+        'text':
+            'There is a family playing a board game together at the airport. They are making the most of their waiting time with fun',
         'result': 'false',
       },
       {
-        'text': 'what is happening',
+        'text':
+            'There are parents and their kids gathered around a game at an airport table. This family knows how to turn waiting into a joyful experience.',
         'result': 'false',
       },
       {
-        'text': 'what is tomorrow',
+        'text':
+            'There is a family happily playing a game while waiting at the airport. Their laughter suggests they are having a great time together',
         'result': 'false',
       },
     ];
@@ -265,21 +195,24 @@ class CameraSpeechController extends GetxController {
     String userId = '${AppStorage.getUserData()?.userId}';
     //https://drive.google.com/file/d/1HXoGjw-ed0eE5-21LAJb5i0-U3wyejMB/view?usp=sharing
     String imageUrl =
-        'https://drive.google.com/uc?id=1HXoGjw-ed0eE5-21LAJb5i0-U3wyejMB';
+        'https://drive.google.com/file/d/1u8R1ckOF4krzN9UvgdVbkDbkayVvzlg2'; //https://drive.google.com/uc?id=1HXoGjw-ed0eE5-21LAJb5i0-U3wyejMB
     int index =
-        0; // This is the index for the document in the 'positive' sub-collection
+        4; // This is the index for the document in the 'positive' sub-collection
 
     List<Map<String, dynamic>> answers = [
       {
-        'text': 'what is today',
+        'text':
+            'There is a toddler crying loudly in a shopping area. It looks like they are upset about something',
         'result': 'false',
       },
       {
-        'text': 'what is happening',
+        'text':
+            'There is a toddler crying loudly in a shopping area. It looks like they are upset about something.',
         'result': 'false',
       },
       {
-        'text': 'what is tomorrow',
+        'text':
+            'There is a young child standing and crying in the mall. It looks like they are having a bad day',
         'result': 'false',
       },
     ];
@@ -346,7 +279,7 @@ class CameraSpeechController extends GetxController {
       update();
     }
 
-    stopProgress();
+    // stopProgress();
     update();
   }
 
