@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:goolu/Services/storage_sevices.dart';
 
+import '../../Components/app_dialog_with_two_buttons.dart';
 import '../../Config/app_config.dart';
 import '../../Controller/CameraController/camera_controller.dart';
+import '../../Controller/CameraController/camera_speech_controller.dart';
+import '../../Controller/dialog_controller.dart';
 import '../../Theme/colors.dart';
 import '../../Utils/dimensions.dart';
 import '../../Utils/font_styles.dart';
@@ -22,9 +26,18 @@ class CameraMain extends StatefulWidget {
 }
 
 class _CameraMainState extends State<CameraMain> {
+  CameraSpeechController cameraSpeechController =
+      Get.find<CameraSpeechController>();
   @override
   void initState() {
     super.initState();
+    initiallyCopyTheRecord();
+  }
+
+  initiallyCopyTheRecord() async {
+    ///need to implement the logic when already data is there then dont need to copy
+    await cameraSpeechController.copyFeature1CDataForUserNegative();
+    await cameraSpeechController.copyFeature1CDataForUserPositive();
   }
 
   @override
@@ -72,21 +85,31 @@ class _CameraMainState extends State<CameraMain> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            Get.to(() => const CameraImageRecognition());
-                          },
+                          onTap: AppStorage.getUserData()?.isPackage == '1'
+                              ? () {
+                                  Get.to(() => const CameraImageRecognition());
+                                }
+                              : null,
                           child: box(
                             txt: 'Image Recognition',
                             boxColor: kDarkGreen5b99a5,
+                            isLock: AppStorage.getUserData()?.isPackage == '0'
+                                ? true
+                                : false,
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {
-                            Get.to(() => const CameraImageToText());
-                          },
+                          onTap: AppStorage.getUserData()?.isPackage == '1'
+                              ? () {
+                                  Get.to(() => const CameraImageToText());
+                                }
+                              : null,
                           child: box(
                             txt: 'Text Recognition',
                             boxColor: kDarkGreen5b99a5,
+                            isLock: AppStorage.getUserData()?.isPackage == '0'
+                                ? true
+                                : false,
                           ),
                         ),
                       ],
@@ -94,7 +117,33 @@ class _CameraMainState extends State<CameraMain> {
                     size30h,
                     GestureDetector(
                       onTap: () {
-                        Get.to(() => const CameraSpeech());
+                        Get.find<DialogController>().showDialog(
+                          AlertDialog(
+                              clipBehavior: Clip.hardEdge,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 0),
+                              content: AppDialogWithTwoButtons(
+                                button1Txt: 'Positive',
+                                button2Txt: 'Negative',
+                                heading: 'Choose the Speech Category',
+                                onTapButton1: () async {
+                                  ///to upload the positive data
+                                  // Get.find<CameraSpeechController>()
+                                  //     .uploadSampleDataPositive();
+                                  Get.to(() => const CameraSpeech(
+                                        isCollectionPositive: true,
+                                      ));
+                                },
+                                onTapButton2: () async {
+                                  ///to upload the negative data
+                                  // Get.find<CameraSpeechController>()
+                                  //     .uploadSampleDataNegative();
+                                  Get.to(() => const CameraSpeech(
+                                        isCollectionPositive: false,
+                                      ));
+                                },
+                              )),
+                        );
                       },
                       child: box(
                         txt: 'Speech',

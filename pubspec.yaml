@@ -74,6 +74,9 @@ dependencies:
   flutter_stripe: ^11.2.0
   speech_to_text:
   csv: ^6.0.0
+  wave:
+  audioplayers:
+  audio_waveforms:
 
 
 dev_dependencies:

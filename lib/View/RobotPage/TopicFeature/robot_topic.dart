@@ -32,6 +32,7 @@ class _RobotTopicState extends State<RobotTopic> {
     robotCtrl.isSend = false;
     robotCtrl.questionAnswer = -1;
     robotCtrl.showAnswers = false;
+    robotCtrl.topicCtrl.clear();
     robotCtrl.initSpeech();
     super.initState();
   }
@@ -77,6 +78,7 @@ class _RobotTopicState extends State<RobotTopic> {
                               robotCtrl.questionAnswer = -1;
                               robotCtrl.showAnswers = false;
                               robotCtrl.generateAnswersModel = null;
+                              robotCtrl.topicCtrl.clear();
                               robotCtrl.update();
                               Get.back();
                             },
@@ -226,61 +228,61 @@ class _RobotTopicState extends State<RobotTopic> {
                                     size10h,
                                     RobotTopicWidget(
                                       answer:
-                                          '${robotCtrl.questionAnswerModel?.answer1}',
+                                          '${robotCtrl.questionAnswerModel?.answer11}',
                                       questions:
                                           '${robotCtrl.questionAnswerModel?.question1}',
                                     ),
                                     RobotTopicWidget(
                                       answer:
-                                          '${robotCtrl.questionAnswerModel?.answer2}',
+                                          '${robotCtrl.questionAnswerModel?.answer21}',
                                       questions:
                                           '${robotCtrl.questionAnswerModel?.question2}',
                                     ),
                                     RobotTopicWidget(
                                       answer:
-                                          '${robotCtrl.questionAnswerModel?.answer3}',
+                                          '${robotCtrl.questionAnswerModel?.answer31}',
                                       questions:
                                           '${robotCtrl.questionAnswerModel?.question3}',
                                     ),
                                     RobotTopicWidget(
                                       answer:
-                                          '${robotCtrl.questionAnswerModel?.answer4}',
+                                          '${robotCtrl.questionAnswerModel?.answer41}',
                                       questions:
                                           '${robotCtrl.questionAnswerModel?.question4}',
                                     ),
                                     RobotTopicWidget(
                                       answer:
-                                          '${robotCtrl.questionAnswerModel?.answer5}',
+                                          '${robotCtrl.questionAnswerModel?.answer51}',
                                       questions:
                                           '${robotCtrl.questionAnswerModel?.question5}',
                                     ),
                                     RobotTopicWidget(
                                       answer:
-                                          '${robotCtrl.questionAnswerModel?.answer6}',
+                                          '${robotCtrl.questionAnswerModel?.answer61}',
                                       questions:
                                           '${robotCtrl.questionAnswerModel?.question6}',
                                     ),
                                     RobotTopicWidget(
                                       answer:
-                                          '${robotCtrl.questionAnswerModel?.answer7}',
+                                          '${robotCtrl.questionAnswerModel?.answer71}',
                                       questions:
                                           '${robotCtrl.questionAnswerModel?.question7}',
                                     ),
                                     RobotTopicWidget(
                                       answer:
-                                          '${robotCtrl.questionAnswerModel?.answer8}',
+                                          '${robotCtrl.questionAnswerModel?.answer81}',
                                       questions:
                                           '${robotCtrl.questionAnswerModel?.question8}',
                                     ),
                                     RobotTopicWidget(
                                       answer:
-                                          '${robotCtrl.questionAnswerModel?.answer9}',
+                                          '${robotCtrl.questionAnswerModel?.answer91}',
                                       questions:
                                           '${robotCtrl.questionAnswerModel?.question9}',
                                     ),
                                     RobotTopicWidget(
                                       answer:
-                                          '${robotCtrl.questionAnswerModel?.answer10}',
+                                          '${robotCtrl.questionAnswerModel?.answer101}',
                                       questions:
                                           '${robotCtrl.questionAnswerModel?.question10}',
                                     ),

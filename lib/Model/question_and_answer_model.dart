@@ -31,6 +31,16 @@ class QuestionAnswerModel {
   String? answer8;
   String? answer9;
   String? answer10;
+  String? answer11;
+  String? answer21;
+  String? answer31;
+  String? answer41;
+  String? answer51;
+  String? answer61;
+  String? answer71;
+  String? answer81;
+  String? answer91;
+  String? answer101;
 
   QuestionAnswerModel({
     this.question1,
@@ -53,6 +63,16 @@ class QuestionAnswerModel {
     this.answer8,
     this.answer9,
     this.answer10,
+    this.answer11,
+    this.answer21,
+    this.answer31,
+    this.answer41,
+    this.answer51,
+    this.answer61,
+    this.answer71,
+    this.answer81,
+    this.answer91,
+    this.answer101,
   });
 
   factory QuestionAnswerModel.fromJson(Map<String, dynamic> json) =>
@@ -77,6 +97,16 @@ class QuestionAnswerModel {
         answer8: json["answer8"],
         answer9: json["answer9"],
         answer10: json["answer10"],
+        answer11: json["answer1_1"],
+        answer21: json["answer2_1"],
+        answer31: json["answer3_1"],
+        answer41: json["answer4_1"],
+        answer51: json["answer5_1"],
+        answer61: json["answer6_1"],
+        answer71: json["answer7_1"],
+        answer81: json["answer8_1"],
+        answer91: json["answer9_1"],
+        answer101: json["answer10_1"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -100,59 +130,15 @@ class QuestionAnswerModel {
         "answer8": answer8,
         "answer9": answer9,
         "answer10": answer10,
+        "answer1_1": answer11,
+        "answer2_1": answer21,
+        "answer3_1": answer31,
+        "answer4_1": answer41,
+        "answer5_1": answer51,
+        "answer6_1": answer61,
+        "answer7_1": answer71,
+        "answer8_1": answer81,
+        "answer9_1": answer91,
+        "answer10_1": answer101,
       };
-
-  String? getQuestion(int index) {
-    switch (index) {
-      case 0:
-        return question1;
-      case 1:
-        return question2;
-      case 2:
-        return question3;
-      case 3:
-        return question4;
-      case 4:
-        return question5;
-      case 5:
-        return question6;
-      case 6:
-        return question7;
-      case 7:
-        return question8;
-      case 8:
-        return question9;
-      case 9:
-        return question10;
-      default:
-        return null;
-    }
-  }
-
-  String? getAnswer(int index) {
-    switch (index) {
-      case 0:
-        return answer1;
-      case 1:
-        return answer2;
-      case 2:
-        return answer3;
-      case 3:
-        return answer4;
-      case 4:
-        return answer5;
-      case 5:
-        return answer6;
-      case 6:
-        return answer7;
-      case 7:
-        return answer8;
-      case 8:
-        return answer9;
-      case 9:
-        return answer10;
-      default:
-        return null;
-    }
-  }
 }

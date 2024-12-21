@@ -15,15 +15,15 @@ import 'Controller/ScreenController/app_controller.dart';
 import 'Locale/language_cubit.dart';
 import 'Locale/translation.dart';
 import 'Theme/theme.dart';
+import 'Utils/consts.dart';
 import 'View/Splash/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = stripePublishableKey;
   await GetStorage.init();
   await Firebase.initializeApp();
   AppController.initializeControllers();
-  Stripe.publishableKey =
-      "pk_test_51Pzz9X04ZKHb327KhWIJup7GC8YHxmi3VONUeptKIQ3USEo1G2HJrsZXwmZA7wuR3qCX81qRJofULGvq2MlxwIL000DgHApJMI";
 
   // await Firebase.initializeApp().whenComplete(() {
   //   logger.i('completed');

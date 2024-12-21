@@ -113,4 +113,36 @@ class AuthController extends GetxController {
     emailCtrl.dispose();
     passwordCtrl.dispose();
   }
+
+  functionToCheckPackageExpiry() async {
+    String isExpired = '0';
+    if (AppStorage.getUserData()?.packageEndExpiry != '') {
+      if (DateTime.now().isAfter(
+          DateTime.parse(AppStorage.getUserData()?.packageEndExpiry ?? ''))) {
+        isExpired = '0';
+      } else {
+        isExpired = '1';
+      }
+    }
+
+    UserModel updatedUser = UserModel(
+      username: AppStorage.getUserData()?.username ?? '',
+      userId: AppStorage.getUserData()?.userId ?? '',
+      dob: AppStorage.getUserData()?.dob ?? '',
+      email: AppStorage.getUserData()?.email ?? '',
+      phoneNumber: AppStorage.getUserData()?.phoneNumber ?? '',
+      iqamaNumber: AppStorage.getUserData()?.iqamaNumber ?? '',
+      profilePicture: '',
+      country: AppStorage.getUserData()?.country ?? '',
+      gender: AppStorage.getUserData()?.gender ?? '',
+      address: AppStorage.getUserData()?.address ?? '',
+      packageStartDate: AppStorage.getUserData()?.packageStartDate ?? '',
+      packageEndExpiry: AppStorage.getUserData()?.packageEndExpiry ?? '',
+      isPackage: isExpired ?? '',
+      packageType: AppStorage.getUserData()?.packageType ?? '',
+    );
+    await AppStorage.setUserData(updatedUser);
+    logger.i(updatedUser.isPackage);
+    logger.i(updatedUser.packageEndExpiry);
+  }
 }

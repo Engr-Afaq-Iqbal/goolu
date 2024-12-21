@@ -34,6 +34,8 @@ class _DashboardState extends State<Dashboard> {
     });
 
     uploadData();
+
+    dashboardController.fetchDailyTasks();
   }
 
   uploadData() async {
@@ -70,9 +72,10 @@ class _DashboardState extends State<Dashboard> {
             Expanded(
               child: Container(
                 width: Get.width,
-                padding: EdgeInsets.symmetric(
-                  vertical: SizesDimensions.height(3),
-                  horizontal: SizesDimensions.width(5),
+                padding: EdgeInsets.only(
+                  top: SizesDimensions.height(1.5),
+                  left: SizesDimensions.width(5),
+                  right: SizesDimensions.width(5),
                 ),
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
@@ -195,7 +198,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 if (dashboardCtrl.showResult == 0)
                                   Container(
-                                    height: 200,
+                                    height: 220,
                                     margin: const EdgeInsets.all(20),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 20),
@@ -448,18 +451,24 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               ),
                               size10h,
-                              tickWithText(title: 'Sentence Building'),
-                              tickWithText(title: 'Situation Practice'),
+                              tickWithText(
+                                title: 'Sentence Building',
+                                isGrey: !dashboardCtrl.isSentenceBuilding,
+                              ),
+                              tickWithText(
+                                title: 'Situation Practice',
+                                isGrey: !dashboardCtrl.isSituationPractice,
+                              ),
                               tickWithText(
                                 title: 'Image Description',
-                                isGrey: true,
+                                isGrey: !dashboardCtrl.isImageDescription,
                               ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    size20h,
+                    // size20h,
                   ],
                 ),
               ),

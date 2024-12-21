@@ -52,7 +52,6 @@ class AppStorage {
   // }
   static UserModel? getUserData() {
     try {
-      logger.i('Data fetching = ${_read<String>(_userDataStorageKey)}');
       // Read the data as a JSON string
       final userDataJson = _read<String>(_userDataStorageKey);
 

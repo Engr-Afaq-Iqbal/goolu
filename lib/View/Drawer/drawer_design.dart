@@ -7,6 +7,7 @@ import 'package:goolu/Controller/SideDrawerController/side_drawer_controller.dar
 import 'package:goolu/Services/storage_sevices.dart';
 import 'package:goolu/View/Auth/sign_in.dart';
 import 'package:goolu/View/Drawer/profile_page.dart';
+import 'package:goolu/View/Drawer/transaction_list_main_screen.dart';
 
 import '../../Config/app_config.dart';
 import '../../Theme/colors.dart';
@@ -61,11 +62,11 @@ class _DrawerDesignState extends State<DrawerDesign> {
                 size20h,
                 customText(
                   text: '${AppStorage.getUserData()?.username}',
-                  textStyle: bold14NavyBlue,
+                  textStyle: bold16NavyBlue,
                 ),
                 customText(
                   text: '${AppStorage.getUserData()?.email}',
-                  textStyle: regular12NavyBlue.copyWith(
+                  textStyle: regular14NavyBlue.copyWith(
                       color: secDarkBlueNavyColor.withOpacity(0.7)),
                 ),
               ],
@@ -144,6 +145,16 @@ class _DrawerDesignState extends State<DrawerDesign> {
                     txt: 'Subscription',
                   ),
                 ),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    Get.to(() => const TransactionMainScreen());
+                  },
+                  child: iconWithText(
+                    icons: transactionsImg,
+                    txt: 'Transactions',
+                  ),
+                ),
               ],
             ),
           ),
@@ -212,13 +223,13 @@ class _DrawerDesignState extends State<DrawerDesign> {
         children: [
           SvgPicture.asset(
             '$imgUrl$icons',
-            height: 20,
-            width: 20,
+            height: 25,
+            width: 25,
           ),
           size30w,
           customText(
             text: '$txt',
-            textStyle: regular16NavyBlue,
+            textStyle: regular18NavyBlue,
           ),
         ],
       ),

@@ -11,6 +11,10 @@ class UserModel {
   final String country;
   final String gender;
   final String address;
+  final String packageStartDate;
+  final String packageEndExpiry;
+  final String packageType;
+  final String isPackage;
 
   UserModel({
     required this.username,
@@ -23,6 +27,10 @@ class UserModel {
     required this.country,
     required this.gender,
     required this.address,
+    required this.packageStartDate,
+    required this.packageEndExpiry,
+    required this.isPackage,
+    required this.packageType,
   });
 
   // Convert UserModel to Map for storing in Firestore
@@ -38,6 +46,10 @@ class UserModel {
       'country': country,
       'gender': gender,
       'address': address,
+      'packageStartDate': packageStartDate,
+      'packageEndDate': packageEndExpiry,
+      'isPackage': isPackage,
+      'packageType': packageType,
     };
   }
 
@@ -54,6 +66,10 @@ class UserModel {
       country: map['country'] ?? 'USA',
       gender: map['gender'] ?? 'Male',
       address: map['address'] ?? '',
+      packageStartDate: map['packageStartDate'] ?? '',
+      packageEndExpiry: map['packageEndDate'] ?? '',
+      isPackage: map['isPackage'] ?? '',
+      packageType: map['packageType'] ?? '',
     );
   }
   // Convert UserModel to JSON String for local storage

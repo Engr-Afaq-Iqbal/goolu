@@ -18,6 +18,10 @@ class AppConfig {
   // API base url
   static String baseUrl = "https://apiuat.blomal.sa";
 
+  static String merchantDisplayName = "Haider Shatti";
+
+  static String currency = "sar";
+
   static const String languageDefault = "en";
   static final Map<String, AppLanguage> languagesSupported = {
     "en": AppLanguage("English", english()),

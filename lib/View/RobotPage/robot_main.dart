@@ -7,6 +7,7 @@ import 'package:goolu/View/RobotPage/SituationFeature/robot_situation.dart';
 import 'package:goolu/View/RobotPage/TopicFeature/robot_topic.dart';
 
 import '../../Config/app_config.dart';
+import '../../Services/storage_sevices.dart';
 import '../../Theme/colors.dart';
 import '../../Utils/dimensions.dart';
 import '../../Utils/font_styles.dart';
@@ -66,36 +67,48 @@ class _RobotMainState extends State<RobotMain> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            Get.to(() => const RobotGeneral());
-                          },
+                          onTap: AppStorage.getUserData()?.isPackage == '1'
+                              ? () {
+                                  Get.to(() => const RobotGeneral());
+                                }
+                              : null,
                           child: box(
                             txt: 'General',
                             boxColor: kLightGreen79ccdc,
-                            isLock: false,
+                            isLock: AppStorage.getUserData()?.isPackage == '0'
+                                ? true
+                                : false,
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {
-                            Get.to(() => const RobotTopic());
-                          },
+                          onTap: AppStorage.getUserData()?.isPackage == '1'
+                              ? () {
+                                  Get.to(() => const RobotTopic());
+                                }
+                              : null,
                           child: box(
                             txt: 'Topic',
                             boxColor: kLightGreen79ccdc,
-                            isLock: false,
+                            isLock: AppStorage.getUserData()?.isPackage == '0'
+                                ? true
+                                : false,
                           ),
                         ),
                       ],
                     ),
                     size30h,
                     GestureDetector(
-                      onTap: () {
-                        Get.to(() => const RobotSituation());
-                      },
+                      onTap: AppStorage.getUserData()?.isPackage == '1'
+                          ? () {
+                              Get.to(() => const RobotSituation());
+                            }
+                          : null,
                       child: box(
                         txt: 'Situation',
                         boxColor: kLightGreen79ccdc,
-                        isLock: false,
+                        isLock: AppStorage.getUserData()?.isPackage == '0'
+                            ? true
+                            : false,
                       ),
                     ),
                   ],

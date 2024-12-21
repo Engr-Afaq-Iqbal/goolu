@@ -321,7 +321,7 @@ class ApiServices {
       String result = await response.stream.bytesToString();
 
       final jd = json.decode(result);
-      logger.d('Decoded Response => $jd');
+      logger.i('Decoded Response => $jd');
       if (returnAnyResponse) return result;
       // if (response.statusCode == 200 || response.statusCode == 201) {
       //   return resBody;

@@ -1,25 +1,108 @@
-import 'package:dotted_border/dotted_border.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 
 import '../../Config/app_config.dart';
-import '../../Controller/CameraController/camera_controller.dart';
+import '../../Controller/CameraController/camera_speech_controller.dart';
 import '../../Theme/colors.dart';
 import '../../Utils/dimensions.dart';
 import '../../Utils/font_styles.dart';
 import '../../Utils/image_urls.dart';
+import '../../Utils/utils.dart';
 
-class CameraSpeech extends StatelessWidget {
-  const CameraSpeech({super.key});
+class CameraSpeech extends StatefulWidget {
+  final bool isCollectionPositive;
+  const CameraSpeech({
+    super.key,
+    this.isCollectionPositive = true,
+  });
+
+  @override
+  State<CameraSpeech> createState() => _CameraSpeechState();
+}
+
+class _CameraSpeechState extends State<CameraSpeech>
+    with SingleTickerProviderStateMixin {
+  final FlutterTts _flutterTts = FlutterTts();
+  bool _isSpeaking = false;
+
+  // Future<void> _speak(String text) async {
+  //   await _flutterTts.speak(text);
+  // }
+
+  CameraSpeechController cameraSpeechController =
+      Get.find<CameraSpeechController>();
+
+  // final RecorderController _recorderController = RecorderController();
+  // String _textToSpeak = "Hello, this is a text-to-speech conversion demo.";
+  late AnimationController _animationController;
+  @override
+  void initState() {
+    // fetchUserData();
+
+    cameraSpeechController.isResult = false;
+    cameraSpeechController.initSpeech();
+    cameraSpeechController.fetchAndDisplayData(
+        isCollectionPositive: widget.isCollectionPositive);
+    _flutterTts.setStartHandler(() {
+      setState(() => _isSpeaking = true);
+    });
+
+    _flutterTts.setCompletionHandler(() {
+      setState(() => _isSpeaking = false);
+    });
+
+    _flutterTts.setErrorHandler((error) {
+      setState(() => _isSpeaking = false);
+    });
+
+    // Initialize the animation controller
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..repeat(reverse: true);
+
+    // Configure TTS handlers
+    _flutterTts.setStartHandler(() {
+      setState(() => _isSpeaking = true);
+      _animationController.repeat(reverse: true);
+    });
+
+    _flutterTts.setCompletionHandler(() {
+      setState(() => _isSpeaking = false);
+      _animationController.stop();
+    });
+
+    _flutterTts.setErrorHandler((error) {
+      setState(() => _isSpeaking = false);
+      _animationController.stop();
+    });
+    super.initState();
+  }
+
+  Future<void> _speakText() async {
+    if (_isSpeaking) {
+      await _flutterTts.stop();
+    } else {
+      await _flutterTts.speak(cameraSpeechController.wordsSpoken.text);
+    }
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       appBar: AppStyles().customAppBar(),
-      body:
-          GetBuilder<CameraController>(builder: (CameraController cameraCtrl) {
+      body: GetBuilder<CameraSpeechController>(
+          builder: (CameraSpeechController cameraCtrl) {
         return Column(
           children: [
             Expanded(
@@ -48,10 +131,13 @@ class CameraSpeech extends StatelessWidget {
                         children: [
                           GestureDetector(
                               onTap: () {
+                                cameraCtrl.firebaseImageAnswer = null;
+                                cameraCtrl.firebaseImageUrl = null;
+                                cameraCtrl.isResult = false;
+                                cameraCtrl.isRecordPressed = false;
                                 Get.back();
                               },
                               child: const Icon(Icons.arrow_back)),
-                          size50w,
                           size50w,
                           size50w,
                           Column(
@@ -74,36 +160,25 @@ class CameraSpeech extends StatelessWidget {
                         ],
                       ),
                     ),
-                    size50h,
-                    if (cameraCtrl.file2 == null)
-                      GestureDetector(
-                        onTap: () {},
-                        child: Center(
-                          child: DottedBorder(
-                            strokeWidth: 0.5,
-                            strokeCap: StrokeCap.butt,
-                            borderType: BorderType.RRect,
-                            radius: const Radius.circular(
-                                Dimensions.radiusDoubleExtraLarge),
-                            padding: const EdgeInsets.all(0),
-                            dashPattern: const [5, 6],
-                            child: Container(
-                              width: SizesDimensions.width(90),
-                              height: SizesDimensions.height(30.0),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(
-                                      Dimensions.radiusDoubleExtraLarge)),
-                              // Set background color to white
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset('$imgUrl$imageFootball'),
-                                ],
-                              ),
-                            ),
-                          ),
+                    // AppCustomButton(
+                    //   title: customText(text: 'Uplaod data'),
+                    //   onTap: () {
+                    //     cameraCtrl.uploadSampleData();
+                    //   },
+                    // ),
+                    size20h,
+                    if (cameraCtrl.firebaseImageUrl != null)
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            Dimensions.radiusDoubleExtraLarge),
+                        child: CachedNetworkImage(
+                          width: SizesDimensions.width(90),
+                          height: SizesDimensions.height(25.0),
+                          imageUrl: '${cameraCtrl.firebaseImageUrl}',
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => progressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              progressIndicator(),
                         ),
                       ),
                     size30h,
@@ -112,50 +187,192 @@ class CameraSpeech extends StatelessWidget {
                           'Describe what you see and try to give\nyour opinion',
                       maxLines: 2,
                       textAlign: TextAlign.center,
-                      textStyle: bold18NavyBlue.copyWith(
-                        fontSize: 16,
+                      textStyle: regular18NavyBlue.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
                       ),
                     ),
-                    size30h,
-                    Expanded(
-                      child: Container(
-                        // height: SizesDimensions.height(35),
-                        width: SizesDimensions.width(100),
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(
-                                  Dimensions.radiusDoubleExtraLarge),
-                              topRight: Radius.circular(
-                                  Dimensions.radiusDoubleExtraLarge)),
-                          color: kDarkYellow,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // _audioFile == null
-                            //     ? const Text('No audio selected')
-                            //     : Text('Audio selected: ${_audioFile!.path}'),
-                            //
-                            size20h,
-                            customText(
-                                text:
-                                    'Listen and practice a model answer ${cameraCtrl.cameraPageFeature2Model?.detectedText ?? ''}',
-                                textStyle: bold18NavyBlue,
-                                maxLines: 10),
-                            size30h,
-                            customText(
-                              text:
-                                  'Athletes playing basketball and trying to throw ball in basket. ${cameraCtrl.imageDetectionModel?.definition ?? ''}',
-                              textStyle: regular18NavyBlue,
-                              textAlign: TextAlign.center,
-                              maxLines: 50,
-                            ),
-                          ],
+                    size40h,
+                    if (cameraCtrl.firebaseImageAnswer == null)
+                      progressIndicator()
+                    else
+                      Expanded(
+                        child: Container(
+                          // height: SizesDimensions.height(35),
+                          width: SizesDimensions.width(100),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(
+                                    Dimensions.radiusDoubleExtraLarge),
+                                topRight: Radius.circular(
+                                    Dimensions.radiusDoubleExtraLarge)),
+                            color: kDarkYellow,
+                          ),
+                          child: SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // _audioFile == null
+                                  //     ? const Text('No audio selected')
+                                  //     : Text('Audio selected: ${_audioFile!.path}'),
+                                  //
+                                  size40h,
+                                  customText(
+                                      text:
+                                          'Listen and practice a model answer',
+                                      textStyle: bold18NavyBlue.copyWith(
+                                        fontSize: 16,
+                                      ),
+                                      maxLines: 10),
+                                  size30h,
+                                  customText(
+                                    text: '${cameraCtrl.firebaseImageAnswer}',
+                                    textStyle: regular18NavyBlue,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 50,
+                                  ),
+                                  size30h,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical:
+                                                  SizesDimensions.height(1),
+                                              horizontal:
+                                                  SizesDimensions.width(5)),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                              color: const Color(0xFFFDE583)),
+                                          child: Row(children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                _speakText();
+                                                // if (cameraCtrl
+                                                //     .wordsSpoken.text.isEmpty) {
+                                                //   showToast('Record First');
+                                                // } else {
+                                                //   // await Get.find<
+                                                //   //         MicrophoneController>()
+                                                //   //     .speak(cameraCtrl
+                                                //   //         .wordsSpoken.text);
+                                                //   _speak(cameraCtrl
+                                                //       .wordsSpoken.text);
+                                                // }
+                                              },
+                                              child: Container(
+                                                  width:
+                                                      SizesDimensions.width(10),
+                                                  height:
+                                                      SizesDimensions.height(5),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: Color(
+                                                              0xFFE8C865)),
+                                                  child: Icon(
+                                                    Icons.play_arrow,
+                                                    size: 30,
+                                                    color: kWhite,
+                                                  )),
+                                            ),
+                                            size40w,
+                                            _isSpeaking
+                                                ? SizedBox(
+                                                    width: 80,
+                                                    height: 25,
+                                                    child: AnimatedBuilder(
+                                                      animation:
+                                                          _animationController,
+                                                      builder:
+                                                          (context, child) {
+                                                        return Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children:
+                                                              List.generate(10,
+                                                                  (index) {
+                                                            // Calculate the height dynamically for each bar
+                                                            double height = 10 +
+                                                                (_animationController
+                                                                        .value *
+                                                                    40) -
+                                                                (index * 3);
+                                                            height = height.clamp(
+                                                                2.0,
+                                                                double
+                                                                    .infinity); // Ensure minimum height of 2.0
+
+                                                            return Container(
+                                                              width:
+                                                                  2, // Fixed width for each bar
+                                                              height: height,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .black, // Bar color
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            2), // Rounded edges for better design
+                                                              ),
+                                                            );
+                                                          }),
+                                                        );
+                                                      },
+                                                    ),
+                                                  )
+                                                : SvgPicture.asset(
+                                                    '$imgUrl$waveformImg'),
+                                            size60w,
+                                            const Icon(Icons.volume_up)
+                                          ])),
+                                    ],
+                                  ),
+                                  size40h,
+                                  customText(
+                                    text: 'Record',
+                                    textStyle: bold18NavyBlue,
+                                    maxLines: 1,
+                                  ),
+                                  size20h,
+                                  GestureDetector(
+                                      onTap: (cameraCtrl.isRecordPressed ==
+                                              false)
+                                          ? () {
+                                              cameraCtrl.isRecordPressed = true;
+                                              cameraCtrl.startListening();
+                                              cameraCtrl.update();
+                                            }
+                                          : () {
+                                              cameraCtrl.stopListening();
+                                              cameraCtrl
+                                                  .matchSpokenAndAnswerText();
+                                            },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(10),
+                                        width: SizesDimensions.width(20),
+                                        height: SizesDimensions.height(8),
+                                        decoration: BoxDecoration(
+                                            color: kRedFF624D,
+                                            shape: BoxShape.circle),
+                                        child: SvgPicture.asset(
+                                            (cameraCtrl.isRecordPressed ==
+                                                    false)
+                                                ? '$imgUrl$whiteMicSpeechImg'
+                                                : '$imgUrl$pauseButtonImg'),
+                                      )),
+                                  size40h,
+                                ],
+                              )),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),

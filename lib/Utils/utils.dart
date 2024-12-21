@@ -39,6 +39,25 @@ stopProgress() {
   if (Get.isDialogOpen!) Get.back();
 }
 
+List<BoxShadow> customBoxShadow({
+  required BuildContext context,
+  Color? color, // = const Color(0xFFC8C8C8), // Default color
+  double opacity = 0.8,
+  double spreadRadius = 2,
+  double blurRadius = 3,
+  Offset offset = const Offset(0, 1),
+}) {
+  return [
+    BoxShadow(
+      color:
+          (color ?? Theme.of(context).colorScheme.shadow).withOpacity(opacity),
+      spreadRadius: spreadRadius,
+      blurRadius: blurRadius,
+      offset: offset,
+    ),
+  ];
+}
+
 showToast(String msg, {BuildContext? context}) async {
   await Fluttertoast.showToast(
     msg: msg,

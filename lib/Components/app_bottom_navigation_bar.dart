@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Controller/AuthController/auth_controller.dart';
+import 'package:goolu/Controller/DashboardController/dashboard_controller.dart';
 
 import '../Config/app_config.dart';
+import '../Services/storage_sevices.dart';
 import '../Theme/colors.dart';
 import '../Utils/dimensions.dart';
 import '../Utils/image_urls.dart';
 import '../View/CameraPage/camera_main.dart';
+import '../View/Dashboard/daily_task_service.dart';
 import '../View/Dashboard/dashboard.dart';
 import '../View/Drawer/drawer_design.dart';
 import '../View/MicrophonePage/microphone_page.dart';
@@ -36,6 +39,21 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       const MicrophonePage(),
       const RobotMain(),
     ];
+    initialFunction();
+    setupDailyTask(AppStorage.getUserData()?.userId ?? '');
+    Get.find<DashboardController>()
+        .checkAndResetDailyTask(AppStorage.getUserData()?.userId ?? '');
+  }
+
+  void setupDailyTask(String userId) async {
+    DailyTaskService taskService = DailyTaskService();
+
+    await taskService.createDailyTask(userId);
+  }
+
+  initialFunction() async {
+    await AuthController.fetchAndStoreUserData();
+    Get.find<AuthController>().functionToCheckPackageExpiry();
   }
 
   @override

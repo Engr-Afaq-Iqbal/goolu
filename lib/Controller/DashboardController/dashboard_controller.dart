@@ -6,6 +6,8 @@ import 'package:goolu/Services/storage_sevices.dart';
 import 'package:intl/intl.dart';
 
 import '../../Utils/utils.dart';
+import '../../View/Dashboard/daily_task_model.dart';
+import '../../View/Dashboard/daily_task_service.dart';
 
 class DashboardController extends GetxController {
   // List of words
@@ -53,6 +55,11 @@ class DashboardController extends GetxController {
       await storeWordResult(result: 'Pass');
       showResult = 1;
       stopProgress();
+      DailyTaskService taskService = DailyTaskService();
+
+      // Update the "image_description" task to true
+      await taskService.updateTaskStatus(
+          AppStorage.getUserData()?.userId ?? '', 'sentence_building', true);
     } else {
       logger.i('False');
       await storeWordResult(result: 'Fail');
@@ -188,6 +195,40 @@ class DashboardController extends GetxController {
       }
     } catch (e) {
       logger.e("Error storing result: $e");
+    }
+  }
+
+  DailyTaskService taskService = DailyTaskService();
+  bool isSentenceBuilding = false;
+  bool isImageDescription = false;
+  bool isSituationPractice = false;
+
+  fetchDailyTasks() async {
+    DailyTask? dailyTask = await taskService
+        .fetchDailyTask(AppStorage.getUserData()?.userId ?? '');
+    logger.i('--------------------------------------------------');
+    logger.i(dailyTask?.sentenceBuilding);
+    logger.i(dailyTask?.imageDescription);
+    logger.i(dailyTask?.situationPractice);
+
+    logger.i('--------------------------------------------------');
+
+    isSentenceBuilding = dailyTask?.sentenceBuilding ?? false;
+    isImageDescription = dailyTask?.imageDescription ?? false;
+    isSituationPractice = dailyTask?.situationPractice ?? false;
+    update();
+  }
+
+  void checkAndResetDailyTask(String userId) async {
+    DailyTaskService taskService = DailyTaskService();
+
+    // Fetch and reset if needed
+    DailyTask? dailyTask = await taskService.fetchAndResetDailyTask(userId);
+
+    if (dailyTask != null) {
+      logger.i("DailyTask fetched or reset successfully.");
+    } else {
+      logger.e("No DailyTask found for this user.");
     }
   }
 }

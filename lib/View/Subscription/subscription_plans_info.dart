@@ -1,21 +1,24 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Config/app_config.dart';
-import 'package:goolu/Utils/utils.dart';
-import 'package:http/http.dart' as http;
 
 import '../../Components/app_custom_button.dart';
 import '../../Controller/SideDrawerController/side_drawer_controller.dart';
+import '../../Services/stripe_service.dart';
 import '../../Theme/colors.dart';
 import '../../Utils/dimensions.dart';
 import '../../Utils/font_styles.dart';
 import '../../Utils/image_urls.dart';
 
 class SubscriptionPlansInfo extends StatefulWidget {
-  const SubscriptionPlansInfo({super.key});
+  final int amount;
+  final int months;
+  final int requests;
+  const SubscriptionPlansInfo(
+      {super.key,
+      required this.amount,
+      required this.months,
+      required this.requests});
 
   @override
   State<SubscriptionPlansInfo> createState() => _SubscriptionPlansInfoState();
@@ -53,12 +56,12 @@ class _SubscriptionPlansInfoState extends State<SubscriptionPlansInfo> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             customText(
-                              text: 'Yearly SAR 540',
+                              text: 'Yearly SAR ${widget.amount}',
                               textStyle: bold20NavyBlue.copyWith(fontSize: 18),
                             ),
                             size10h,
                             customText(
-                              text: 'SAR 45',
+                              text: 'SAR ${widget.amount ~/ widget.months}',
                               textStyle: bold20NavyBlue.copyWith(fontSize: 30),
                             ),
                             customText(
@@ -80,7 +83,8 @@ class _SubscriptionPlansInfoState extends State<SubscriptionPlansInfo> {
                         txt: 'Practice general questions with model answers'),
                     iconWithText(txt: 'Practice specific topic conversations'),
                     iconWithText(txt: 'Practice scenario based dialouges'),
-                    iconWithText(txt: 'Make 500 requests per feature'),
+                    iconWithText(
+                        txt: 'Make ${widget.requests} requests per feature'),
                     iconWithText(
                         txt:
                             'Learn new vocabulary from anywhere with image recognition feature'),
@@ -91,7 +95,8 @@ class _SubscriptionPlansInfoState extends State<SubscriptionPlansInfo> {
                       title:
                           customText(text: 'Subscribe', textStyle: bold16White),
                       onTap: () async {
-                        await makePayment(); // Get.to(() => const SubscriptionPlansInfo());
+                        StripeService.instance
+                            .makePayment(amount: widget.amount ~/ 12);
                       },
                     ),
                   ],
@@ -126,86 +131,5 @@ class _SubscriptionPlansInfoState extends State<SubscriptionPlansInfo> {
         ],
       ),
     );
-  }
-
-  Map<String, dynamic>? paymentIntentData;
-
-  Future<void> makePayment() async {
-    try {
-      paymentIntentData = await createPaymentIntent(20, 'USD');
-      await Stripe.instance.initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-        paymentIntentClientSecret: paymentIntentData!['client_secret'],
-        applePay: const PaymentSheetApplePay(merchantCountryCode: 'US'),
-        googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US'),
-        style: ThemeMode.dark,
-        merchantDisplayName: 'Afaq',
-      ));
-
-      displayPaymentSheet();
-    } catch (e) {
-      logger.e('Exception $e');
-      showToast(e.toString());
-    }
-  }
-
-  // displayPaymentSheet() {
-  //   try {
-  //     Stripe.instance
-  //         .presentPaymentSheet(options: const PaymentSheetPresentOptions());
-  //   } catch (e) {
-  //     logger.e('Exception $e');
-  //     showToast(e.toString());
-  //   }
-  // }
-
-  Future<void> displayPaymentSheet() async {
-    try {
-      // Present the payment sheet to the user
-      await Stripe.instance.presentPaymentSheet();
-
-      // Payment successful; handle success here
-      logger.i('Payment successful!');
-      showToast('Payment successful!');
-
-      // Clear payment intent data after a successful payment
-      paymentIntentData = null;
-    } on StripeException catch (e) {
-      // Handle specific Stripe exceptions
-      logger.e('StripeException: ${e.error.localizedMessage}');
-      showToast('Payment cancelled: ${e.error.localizedMessage}');
-    } catch (e) {
-      // Handle any other exceptions
-      logger.e('Exception: $e');
-      showToast('Payment Cancelled,\nAn error occurred: $e');
-    }
-  }
-
-  createPaymentIntent(int amount, String currency) async {
-    try {
-      Map<String, dynamic> body = {
-        'amount': '${calculateAmount(amount)}',
-        'currency': currency,
-        'payment_method_types[]': 'card',
-      };
-      var response = await http.post(
-        Uri.parse('https://api.stripe.com/v1/payment_intents'),
-        body: body,
-        headers: {
-          'Authorization':
-              'Bearer sk_test_51Pzz9X04ZKHb327KcUt7tLvoMI2l3aVTATGTaUCGfiCcIm8GMdHAswK3gCtvfCdc1dWHbkdWJOhNMCPaVixkRDNg00Uc3GGyYx',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      );
-      return jsonDecode(response.body.toString());
-    } catch (e) {
-      logger.e('Exception $e');
-      showToast(e.toString());
-    }
-  }
-
-  calculateAmount(int amount) {
-    final price = amount * 100;
-    return price;
   }
 }

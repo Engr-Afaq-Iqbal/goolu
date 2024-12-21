@@ -20,4 +20,24 @@ class AppFormatDate {
     if (number == null) return null;
     return double.tryParse(number)?.toStringAsFixed(2);
   }
+
+  static String yyyyMMDD12h(DateTime? dateTime) {
+    if (dateTime == null) return '';
+    return DateFormat('yyyy-MM-dd, hh:mm:ss a').format(dateTime);
+  }
+
+  static DateTime getExpiryDateOneMonth() {
+    final startDate = getStartDate();
+    return DateTime(startDate.year, startDate.month + 1, startDate.day);
+  }
+
+  /// Function to calculate the expiry date after one year
+  static DateTime getExpiryDateOneYear() {
+    final startDate = getStartDate();
+    return DateTime(startDate.year + 1, startDate.month, startDate.day);
+  }
+
+  static DateTime getStartDate() {
+    return DateTime.now();
+  }
 }

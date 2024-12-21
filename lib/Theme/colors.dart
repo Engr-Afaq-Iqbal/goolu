@@ -21,6 +21,7 @@ Color kOrangeF79E1B = const Color(0xffF79E1B);
 Color kYellowffde59 = const Color(0xffffde59);
 Color kLightYellow = const Color(0xffFDE583);
 Color kDarkYellow = const Color(0xffE8C865);
+Color kF3F3F3 = const Color(0xffF3F3F3);
 
 Color kFFFFFF = const Color(0xffFFFFFF);
 Color kD2B352 = const Color(0xffD2B352);

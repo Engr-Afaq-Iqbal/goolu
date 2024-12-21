@@ -77,7 +77,6 @@ class SideDrawerController extends GetxController {
       await AppStorage.setUserData(
           user); // Make sure you have this method in AppStorage
 
-      showToast('Your data updated successfully!');
       Get.back();
       // Get.offAll(
       //   () => const AppBottomNavigationBar(),

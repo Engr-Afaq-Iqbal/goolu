@@ -376,6 +376,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                   gender: sideDrawerCtrl.selectedGenderItem ??
                                       'Male',
                                   address: sideDrawerCtrl.addressCtrl.text,
+                                  packageStartDate: AppStorage.getUserData()
+                                          ?.packageStartDate ??
+                                      '',
+                                  packageEndExpiry: AppStorage.getUserData()
+                                          ?.packageEndExpiry ??
+                                      '',
+                                  isPackage:
+                                      AppStorage.getUserData()?.isPackage ?? '',
+                                  packageType:
+                                      AppStorage.getUserData()?.packageType ??
+                                          '',
                                 );
 
                                 sideDrawerCtrl.updateUserData(updatedUser);

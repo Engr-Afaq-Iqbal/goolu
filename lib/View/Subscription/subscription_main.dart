@@ -77,7 +77,7 @@ class _SubscriptionMainState extends State<SubscriptionMain> {
             child: Center(
               child: customText(
                 text: 'Get this exclusive limited offer!',
-                textStyle: regular16White.copyWith(fontSize: 20),
+                textStyle: regular16White.copyWith(fontSize: 18),
               ),
             ),
           ),
@@ -106,8 +106,8 @@ class _SubscriptionMainState extends State<SubscriptionMain> {
                 },
                 child: _buildPlanCard(
                   context,
-                  title: 'YEARLY',
-                  price: 'SAR 540 / year',
+                  title: 'MONTHLY',
+                  price: 'SAR 45 / month',
                   isPopular: false,
                   id: 1,
                   isSelected: isSelected1, // Pass the selected state
@@ -123,8 +123,8 @@ class _SubscriptionMainState extends State<SubscriptionMain> {
                 },
                 child: _buildPlanCard(
                   context,
-                  title: 'YEARLY',
-                  price: 'SAR 780 / year',
+                  title: '3 MONTHS',
+                  price: 'SAR 199',
                   isPopular: true,
                   id: 2,
                   isSelected: isSelected2, // Pass the selected state
@@ -136,7 +136,11 @@ class _SubscriptionMainState extends State<SubscriptionMain> {
           AppCustomButton(
             title: customText(text: 'GET INFO', textStyle: bold16White),
             onTap: () {
-              Get.to(() => const SubscriptionPlansInfo());
+              Get.to(() => SubscriptionPlansInfo(
+                    amount: isSelected1 == true ? 45 : 199,
+                    months: isSelected1 == true ? 1 : 3,
+                    requests: isSelected1 == true ? 500 : 1000,
+                  ));
             },
           ),
           size40h,
@@ -181,7 +185,7 @@ class _SubscriptionMainState extends State<SubscriptionMain> {
                   size5h,
                   customText(
                     text: price,
-                    textStyle: bold20NavyBlue,
+                    textStyle: bold18NavyBlue,
                   ),
                   size10h,
                   customText(
