@@ -42,6 +42,7 @@ const String menuImg = 'menu.svg';
 const String doubleArrowImg = 'doubleArrow.svg';
 const String speakerImg = 'speaker.svg';
 const String speakerYellowImg = 'speakerYellow.svg';
+const String pauseImg = 'pauseImg.svg';
 const String copyImg = 'copy.svg';
 const String shareImg = 'share.svg';
 const String sendArrowImg = 'sendArrow.svg';

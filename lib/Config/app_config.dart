@@ -14,7 +14,7 @@ String imgUrl = "assets/images/";
 
 class AppConfig {
   /// Application Name
-  static const String appName = "Blomal Capital";
+  static const String appName = "Goolu";
   // API base url
   static String baseUrl = "https://apiuat.blomal.sa";
 

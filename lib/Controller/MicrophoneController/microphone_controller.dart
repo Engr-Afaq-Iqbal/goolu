@@ -17,6 +17,7 @@ import '../ExceptionalController/exceptional_controller.dart';
 class MicrophoneController extends GetxController {
   String selectedLanguage = 'English';
   String selectedLanguage2 = 'Arabic';
+  String selectedLanguageCode = 'ar-SA'; // Default language code
   FlutterSoundRecorder? recorder;
   bool isRecording = false;
   String? filePath;
@@ -57,11 +58,15 @@ class MicrophoneController extends GetxController {
           directory.path, 'audio_${DateTime.now().millisecondsSinceEpoch}.wav');
 
       await recorder!.startRecorder(
-          toFile: filePath,
-          codec: Codec.pcm16WAV,
-          // codec: Codec.aacADTS, // Use AAC codec for smaller file size
-          numChannels: 1, // Record in mono
-          bitRate: 4000);
+        toFile: filePath,
+        // codec: Codec.pcm16WAV,
+        //           // // codec: Codec.aacADTS, // Use AAC codec for smaller file size
+        //           // numChannels: 1, // Record in mono
+        //           // bitRate: 4000,
+        codec: Codec.pcm16WAV, // Compressed format
+        numChannels: 1, // Mono channel
+        bitRate: 1280000,
+      );
 
       isRecording = true;
       update();
@@ -88,9 +93,10 @@ class MicrophoneController extends GetxController {
 
   final FlutterTts flutterTts = FlutterTts();
   Future<void> speak(String txt) async {
-    await flutterTts.setLanguage("en-US");
+    await flutterTts.setLanguage(selectedLanguageCode);
+    logger.i(selectedLanguageCode);
     await flutterTts.setPitch(1.0);
-    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setSpeechRate(0.4);
     await flutterTts.speak(txt);
   }
 

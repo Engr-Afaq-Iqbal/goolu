@@ -146,7 +146,7 @@ class _CameraMainState extends State<CameraMain> {
                         );
                       },
                       child: box(
-                        txt: 'Speech',
+                        txt: 'Practice',
                         boxColor: kLightGreen79ccdc,
                         isLock: false,
                       ),

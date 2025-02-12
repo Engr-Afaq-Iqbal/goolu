@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 // import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Controller/MicrophoneController/microphone_controller.dart';
@@ -12,14 +13,18 @@ import 'package:goolu/Services/storage_sevices.dart';
 import 'package:goolu/View/RobotPage/GeneralFeature/robot_general.dart';
 import 'package:goolu/View/RobotPage/SituationFeature/robot_situation.dart';
 import 'package:goolu/View/RobotPage/TopicFeature/robot_topic.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../Model/NavBarModel/nav_bar_model.dart';
 import '../../Model/check_grammer_model.dart';
+import '../../Model/situation_model.dart';
 import '../../Services/api_services.dart';
 import '../../Services/api_urls.dart';
 import '../../Utils/enums.dart';
 import '../../Utils/utils.dart';
+import '../../View/RobotPage/SituationFeature/widgets/bot_question_widget.dart';
+import '../../View/RobotPage/SituationFeature/widgets/bot_user_answer_widget.dart';
 import '../ExceptionalController/exceptional_controller.dart';
 
 class RobotController extends GetxController {
@@ -33,8 +38,39 @@ class RobotController extends GetxController {
   bool micButton = true;
   bool micSubButton = true;
   bool showResult = false;
+  TextEditingController customQuestionCtrl = TextEditingController();
+
+  bool feature3Speak = false;
   // bool playButton = false;
   bool playSubButton = false;
+  var isSpeaking = false.obs;
+
+  final FlutterTts flutterTts = FlutterTts();
+  Future<void> speak(String txt) async {
+    await flutterTts.setLanguage('en-US');
+    await flutterTts.setPitch(1.0);
+    await flutterTts.setSpeechRate(0.4);
+
+    flutterTts.startHandler = () {
+      isSpeaking.value = true;
+    };
+
+    flutterTts.completionHandler = () {
+      isSpeaking.value = false;
+    };
+
+    flutterTts.errorHandler = (msg) {
+      isSpeaking.value = false;
+    };
+
+    await flutterTts.speak(txt);
+  }
+
+  Future<void> stopSpeaking() async {
+    await flutterTts.stop();
+    isSpeaking.value = false;
+  }
+
   static List<NavBarModel> get viewSingleRobotTabsList => [
         NavBarModel(
           identifier: ViewSingleItemEnums.feature1,
@@ -52,6 +88,238 @@ class RobotController extends GetxController {
           page: const RobotSituation(),
         ),
       ];
+
+  int currentQuestionIndex = 0;
+  bool isCustomer = false;
+  // List<String> displayItems = [];
+  List<Widget> displayItems = [];
+
+  SituationModel? situationModel;
+  Future<bool> fetchSituation({String? situation}) async {
+    Map<String, String> field = {
+      "situation": '$situation',
+    };
+    // showProgress();
+    return await ApiServices.postMethod(
+      feedUrl:
+          "https://feature3-1028825189557.us-central1.run.app/generate-scenario/",
+      fields: field,
+    ).then((res) async {
+      if (res == null) {
+        stopProgress();
+        Get.back();
+        return false;
+      }
+      situationModel = situationModelFromJson(res);
+
+      // displayItems.add(BotQuestionWidget(
+      //   question: situationModel!.data![currentQuestionIndex].question,
+      // ));
+      // displayItems.add(situationModel!.data![currentQuestionIndex].question!);
+      update();
+      return true;
+    }).onError((error, stackTrace) async {
+      debugPrint('Error => $error');
+      logger.e('StackTrace => $stackTrace');
+      await ExceptionController().exceptionAlert(
+        errorMsg: '$error',
+        exceptionFormat: ApiServices.methodExceptionFormat(
+            'POST',
+            "https://feature3-1028825189557.us-central1.run.app/generate-scenario/",
+            error,
+            stackTrace),
+      );
+      throw '$error';
+    });
+  }
+
+  // void handleAnswer() {
+  //   final currentData = situationModel!.data![currentQuestionIndex];
+  //   if (wordsSpoken.toLowerCase() == currentData.answer!.toLowerCase()) {
+  //     displayItems.add("User Answer: $wordsSpoken");
+  //     currentQuestionIndex++;
+  //     if (currentQuestionIndex < situationModel!.data!.length) {
+  //       displayItems.add(situationModel!.data![currentQuestionIndex].question!);
+  //     }
+  //     update();
+  //   } else {
+  //     displayItems.add("Didn't understand what you said. Kindly speak again.");
+  //     update();
+  //   }
+  //   // stopListening();
+  // }
+
+  void handleAnswer() {
+    final currentData = situationModel!.data![currentQuestionIndex];
+    // Clean user response and correct answer
+    String cleanedUserAnswer =
+        wordsSpoken.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+    String cleanedCorrectAnswer =
+        currentData.answer!.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+
+    logger.i('Question -->> $currentData');
+    logger.i('Cleaned user answer: $cleanedUserAnswer');
+    logger.i('Cleaned correct answer: $cleanedCorrectAnswer');
+
+    // Add user response to the display items
+    displayItems.add(BotUserAnswerWidget(answer: wordsSpoken));
+    update();
+
+    if (cleanedUserAnswer == cleanedCorrectAnswer) {
+      // Move to the next question
+      currentQuestionIndex++;
+      if (currentQuestionIndex < situationModel!.data!.length) {
+        displayItems.add(BotQuestionWidget(
+          question: situationModel!.data![currentQuestionIndex].question,
+        ));
+      } else {
+        // All questions completed
+        displayItems.add(const BotQuestionWidget(
+          question: "Great job! You've completed.",
+        ));
+      }
+    } else {
+      // If answer doesn't match
+      displayItems.add(const BotQuestionWidget(
+        question: "Sorry, that's not correct. Please try again.",
+      ));
+    }
+    update();
+  }
+
+  // void handleAnswer() {
+  //   final currentData = situationModel!.data![currentQuestionIndex];
+  //   // Clean both user response and expected answer
+  //
+  //   String cleanedUserAnswer =
+  //       wordsSpoken.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+  //   String cleanedCorrectAnswer =
+  //       currentData.answer!.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+  //   // Add user response to the list
+  //   logger.i('Question -->> $currentData');
+  //   logger.i('Cleaned user answer $cleanedUserAnswer');
+  //   logger.i('Cleaned correct answer $cleanedCorrectAnswer');
+  //   displayItems.add(BotUserAnswerWidget(answer: wordsSpoken));
+  //   update();
+  //
+  //   if (cleanedUserAnswer == cleanedCorrectAnswer) {
+  //     // If answer matches, move to the next question
+  //     currentQuestionIndex++;
+  //     if (currentQuestionIndex < situationModel!.data!.length) {
+  //       displayItems.add(BotQuestionWidget(
+  //         question: situationModel!.data![currentQuestionIndex].question,
+  //       ));
+  //       update();
+  //     } else {
+  //       // All questions completed
+  //
+  //       displayItems.add(const BotQuestionWidget(
+  //         question: "Great job! You've completed.",
+  //       ));
+  //       update();
+  //     }
+  //   } else {
+  //     // If answer doesn't match, display a message
+  //
+  //     displayItems.add(const BotQuestionWidget(
+  //       question: "Sorry, that's not correct. Please try again.",
+  //     ));
+  //     update();
+  //   }
+  //   // stopListening();
+  //   // feature3Speak = false;
+  // }
+
+  void resetData() {
+    displayItems.clear(); // Clear displayed items
+    currentQuestionIndex = 0; // Reset question index
+    wordsSpoken = ''; // Clear the spoken words
+    feature3Speak = false; // Reset the speech feature
+    stopListening(); // Ensure speech is stopped// Update the UI
+  }
+
+  void handleUserQuestion() {
+    // Ensure situationModel and data are valid
+    if (situationModel == null || situationModel!.data == null) {
+      displayItems.add(const BotQuestionWidget(
+        question: "No questions available. Please try again later.",
+      ));
+      update();
+      return;
+    }
+
+    // Clean the user's spoken words
+    String cleanedUserQuestion =
+        wordsSpoken.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+
+    // Variable to track if a match is found
+    bool questionMatched = false;
+
+    for (var data in situationModel!.data!) {
+      // Ensure the question is non-null
+      if (data.question == null || data.answer == null) continue;
+
+      // Clean the predefined question for comparison
+      String cleanedPredefinedQuestion =
+          data.question!.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+
+      if (cleanedUserQuestion == cleanedPredefinedQuestion) {
+        // Match found: Add user's question and bot's answer to display
+        displayItems
+            .add(BotUserAnswerWidget(answer: wordsSpoken)); // User's question
+        displayItems
+            .add(BotQuestionWidget(question: data.answer!)); // Bot's answer
+
+        questionMatched = true;
+        break;
+      }
+    }
+
+    if (!questionMatched) {
+      // No match found: Ask the user to repeat the question
+      displayItems
+          .add(BotUserAnswerWidget(answer: wordsSpoken)); // User's question
+      displayItems.add(const BotQuestionWidget(
+        question: "I didn't understand that. Could you please repeat it?",
+      ));
+    }
+
+    // Update UI after processing
+    update();
+  }
+
+  // void handleUserQuestion() {
+  //   // Clean the user question and compare with predefined questions
+  //   String cleanedUserQuestion =
+  //       wordsSpoken.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+  //   bool questionMatched = false;
+  //
+  //   for (var data in situationModel!.data!) {
+  //     String cleanedPredefinedQuestion =
+  //         data.question!.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+  //
+  //     if (cleanedUserQuestion == cleanedPredefinedQuestion) {
+  //       // Match found: Show the answer
+  //       displayItems
+  //           .add(BotUserAnswerWidget(answer: wordsSpoken)); // User's question
+  //       displayItems
+  //           .add(BotQuestionWidget(question: data.answer)); // Bot's answer
+  //       questionMatched = true;
+  //       update();
+  //       break;
+  //     }
+  //   }
+  //
+  //   if (!questionMatched) {
+  //     // No match found: Ask the user to repeat the question
+  //     displayItems
+  //         .add(BotUserAnswerWidget(answer: wordsSpoken)); // User's question
+  //     displayItems.add(const BotQuestionWidget(
+  //       question: "Didn't understand what you said. Kindly say again.",
+  //     ));
+  //     update();
+  //   }
+  // }
 
   CheckGrammerModel? checkGrammerModel;
   Future<bool> checkGrammarFunction() async {
@@ -168,349 +436,79 @@ class RobotController extends GetxController {
   bool isListening = false;
   String recordedText = '';
 
-  // Future<void> initializeRecorder() async {
-  //   try {
-  //     var status = await Permission.microphone.request();
-  //     if (status.isGranted) {
-  //       await recorder!.openRecorder();
-  //
-  //       isRecorderInitialized = true;
-  //       // isRecorderInitialized = await _speechToText.initialize();
-  //       update();
-  //     } else {
-  //       debugPrint('Microphone permission denied');
-  //
-  //       isRecorderInitialized = false;
-  //       update();
-  //     }
-  //   } catch (e) {
-  //     debugPrint('Error initializing recorder: $e');
-  //
-  //     isRecorderInitialized = false;
-  //     update();
-  //   }
-  // }
-
-  // Future<void> initializeRecorder() async {
-  //   try {
-  //     var status = await Permission.microphone.request();
-  //     if (status.isGranted) {
-  //       await recorder!.openRecorder();
-  //       isRecorderInitialized = true;
-  //       update();
-  //       debugPrint('Recorder initialized successfully');
-  //     } else if (status.isDenied) {
-  //       debugPrint('Microphone permission denied');
-  //       isRecorderInitialized = false;
-  //       update();
-  //     } else if (status.isPermanentlyDenied) {
-  //       debugPrint(
-  //           'Microphone permission is permanently denied. Please enable it from settings.');
-  //       isRecorderInitialized = false;
-  //       update();
-  //       // Optionally, you can open app settings:
-  //       await openAppSettings();
-  //     }
-  //   } catch (e) {
-  //     debugPrint('Error initializing recorder: $e');
-  //     isRecorderInitialized = false;
-  //     update();
-  //   }
-  // }
-
-  // Future<void> initializeRecorder() async {
-  //   try {
-  //     var status = await Permission.microphone.request();
-  //     if (status.isGranted) {
-  //       await recorder?.openRecorder();
-  //       // await _speechToText.initialize();
-  //       isRecorderInitialized = true;
-  //       update();
-  //     } else {
-  //       debugPrint('Microphone permission denied');
-  //
-  //       isRecorderInitialized = false;
-  //       update();
-  //     }
-  //   } catch (e) {
-  //     debugPrint('Error initializing recorder: $e');
-  //
-  //     isRecorderInitialized = false;
-  //     update();
-  //   }
-  // }
-
-  // Future<void> initializeSpeechToText() async {
-  //   try {
-  //     bool available = await _speechToText.initialize(
-  //       onStatus: (status) => logger.i('Speech status: $status'),
-  //       onError: (error) => logger.e('Speech recognition error: $error'),
-  //     );
-  //     if (available) {
-  //       logger.i('SpeechToText initialized successfully.');
-  //     } else {
-  //       logger.e('SpeechToText initialization failed.');
-  //     }
-  //   } catch (e) {
-  //     logger.e('Error during SpeechToText initialization: $e');
-  //   }
-  // }
-
-  // Future<void> initializeRecorder() async {
-  //   try {
-  //     var status = await Permission.microphone.request();
-  //     if (status.isGranted) {
-  //       await recorder!.openRecorder();
-  //       isRecorderInitialized = true;
-  //       update();
-  //       debugPrint('Recorder initialized successfully');
-  //     } else if (status.isDenied) {
-  //       debugPrint('Microphone permission denied');
-  //       isRecorderInitialized = false;
-  //       update();
-  //     } else if (status.isPermanentlyDenied) {
-  //       debugPrint(
-  //           'Microphone permission is permanently denied. Please enable it from settings.');
-  //       isRecorderInitialized = false;
-  //       update();
-  //       await openAppSettings();
-  //     }
-  //   } catch (e) {
-  //     debugPrint('Error initializing recorder: $e');
-  //     isRecorderInitialized = false;
-  //     update();
-  //   }
-  // }
-
-  // Future<void> startRecording() async {
-  //   if (!isRecorderInitialized) {
-  //     debugPrint('Recorder is not initialized');
-  //     return;
-  //   }
-  //   try {
-  //     final directory = await getApplicationDocumentsDirectory();
-  //     filePath = p.join(
-  //         directory.path, 'audio_${DateTime.now().millisecondsSinceEpoch}.wav');
-  //
-  //     await recorder?.startRecorder(
-  //         toFile: filePath,
-  //         codec: Codec.pcm16WAV,
-  //         // codec: Codec.aacADTS, // Use AAC codec for smaller file size
-  //         numChannels: 1, // Record in mono
-  //         bitRate: 4000);
-  //
-  //     isRecording = true;
-  //     update();
-  //   } catch (e) {
-  //     logger.e('Error starting recording: $e');
-  //   }
-  // }
-
-  // Future<void> stopRecording() async {
-  //   if (!isRecorderInitialized) {
-  //     debugPrint('Recorder is not initialized');
-  //     return;
-  //   }
-  //   try {
-  //     // sendSpeech();
-  //     await recorder?.stopRecorder();
-  //
-  //     await transcribeAudioToText();
-  //     isRecording = false;
-  //     update();
-  //   } catch (e) {
-  //     logger.e('Error stopping recording: $e');
-  //   }
-  // }
-
-  // Future<void> startRecording() async {
-  //   if (!isRecorderInitialized) {
-  //     debugPrint('Recorder is not initialized');
-  //     return;
-  //   }
-  //   try {
-  //     final directory = await getApplicationDocumentsDirectory();
-  //     filePath = p.join(
-  //         directory.path, 'audio_${DateTime.now().millisecondsSinceEpoch}.wav');
-  //
-  //     await recorder!.startRecorder(
-  //         toFile: filePath,
-  //         codec: Codec.pcm16WAV,
-  //         numChannels: 1, // Record in mono
-  //         bitRate: 4000);
-  //
-  //     isRecording = true;
-  //     update();
-  //   } catch (e) {
-  //     logger.e('Error starting recording: $e');
-  //   }
-  // }
-
-  // Future<void> stopRecording() async {
-  //   if (!isRecorderInitialized) {
-  //     debugPrint('Recorder is not initialized');
-  //     return;
-  //   }
-  //   try {
-  //     await recorder!.stopRecorder();
-  //     isRecording = false;
-  //     update();
-  //
-  //     // After stopping the recording, convert the audio to text
-  //     await transcribeAudioToText();
-  //   } catch (e) {
-  //     logger.e('Error stopping recording: $e');
-  //   }
-  // }
-
-  // Future<void> transcribeAudioToText() async {
-  //   try {
-  //     await initializeRecorder(); // Ensure microphone permission
-  //     await initializeSpeechToText(); // Initialize speech-to-text
-  //
-  //     if (_speechToText.isAvailable && await _speechToText.hasPermission) {
-  //       isListening = await _speechToText.listen(
-  //             onResult: (result) {
-  //               try {
-  //                 recordedText = result.recognizedWords;
-  //                 _speechToText.stop();
-  //
-  //                 // Compare the recorded text with your target string
-  //                 String targetString = "your target text here";
-  //                 if (recordedText.trim().toLowerCase() ==
-  //                     targetString.trim().toLowerCase()) {
-  //                   logger.i(
-  //                       'Success: The recorded text matches the target string.');
-  //                 } else {
-  //                   logger.e(
-  //                       'Fail: The recorded text does not match the target string.');
-  //                 }
-  //               } catch (e) {
-  //                 logger.e('Error processing transcription result: $e');
-  //               }
-  //             },
-  //             localeId: 'en_US',
-  //             partialResults: true, // If you want partial results.
-  //             pauseFor: Duration(seconds: 5), // Adjust the pause time.
-  //             cancelOnError: true,
-  //             // localeId: 'en_US', // Specify your locale if needed
-  //             // cancelOnError: true,
-  //           ) ??
-  //           false; // Default to false if the listen method returns null.
-  //
-  //       logger.i('Listening status: $isListening');
-  //     } else {
-  //       logger.e('Speech recognition not available or permission not granted.');
-  //     }
-  //   } catch (e) {
-  //     logger.e('Error during transcription: $e');
-  //   }
-  // }
-
-  // Future<void> transcribeAudioToText() async {
-  //   try {
-  //     // Reinitialize SpeechToText if necessary.
-  //     if (!_speechToText.isAvailable) {
-  //       await _speechToText.initialize(
-  //         onStatus: (status) => debugPrint('Speech status: $status'),
-  //         onError: (error) => logger.e('Speech recognition error: $error'),
-  //       );
-  //     }
-  //
-  //     if (await _speechToText.hasPermission && _speechToText.isAvailable) {
-  //       isListening = await _speechToText.listen(
-  //             onResult: (result) {
-  //               try {
-  //                 recordedText = result.recognizedWords;
-  //                 _speechToText.stop();
-  //
-  //                 // Compare the recorded text with your target string
-  //                 String targetString = "your target text here";
-  //                 if (recordedText.trim().toLowerCase() ==
-  //                     targetString.trim().toLowerCase()) {
-  //                   logger.i(
-  //                       'Success: The recorded text matches the target string.');
-  //                 } else {
-  //                   logger.e(
-  //                       'Fail: The recorded text does not match the target string.');
-  //                 }
-  //               } catch (e) {
-  //                 logger.e('Error processing transcription result: $e');
-  //               }
-  //             },
-  //             cancelOnError: true,
-  //           ) ??
-  //           false; // Default to false if the listen method returns null.
-  //
-  //       debugPrint('Listening status: $isListening');
-  //     } else {
-  //       debugPrint(
-  //           'Microphone permission not granted or speech recognition is not available.');
-  //     }
-  //   } catch (e) {
-  //     logger.e('Error during transcription: $e');
-  //   }
-  // }
-
-  // Future<void> transcribeAudioToText() async {
-  //   try {
-  //     if (await _speechToText.hasPermission) {
-  //       isListening = await _speechToText.listen(
-  //             onResult: (result) {
-  //               try {
-  //                 recordedText = result.recognizedWords;
-  //                 _speechToText.stop();
-  //
-  //                 // Compare the recorded text with your target string
-  //                 String targetString = "your target text here";
-  //                 if (recordedText.trim().toLowerCase() ==
-  //                     targetString.trim().toLowerCase()) {
-  //                   logger.i(
-  //                       'Success: The recorded text matches the target string.');
-  //                 } else {
-  //                   logger.e(
-  //                       'Fail: The recorded text does not match the target string.');
-  //                 }
-  //               } catch (e) {
-  //                 logger.e('Error processing transcription result: $e');
-  //               }
-  //             },
-  //             cancelOnError: true,
-  //           ) ??
-  //           false; // Default to false if the listen method returns null.
-  //
-  //       debugPrint('Listening status: $isListening');
-  //     } else {
-  //       debugPrint('Microphone permission not granted.');
-  //     }
-  //   } catch (e) {
-  //     logger.e('Error during transcription: $e');
-  //   }
-  // }
-
   final SpeechToText speechToText = SpeechToText();
 
   bool speechEnabled = false;
   String wordsSpoken = "";
 
+  // void initSpeech() async {
+  //   speechEnabled = await speechToText.initialize();
+  //   update();
+  // }
+
   void initSpeech() async {
-    speechEnabled = await speechToText.initialize();
-    update();
+    try {
+      speechEnabled = await speechToText.initialize(
+        onError: (error) {
+          logger.e("Speech Init Error: ${error.errorMsg}");
+        },
+        onStatus: (status) {
+          logger.i("Speech Status: $status");
+        },
+      );
+      update();
+    } catch (e) {
+      logger.e("Error initializing speech: $e");
+    }
   }
 
   void startListening() async {
-    await speechToText.listen(onResult: onSpeechResult);
+    if (speechEnabled && !speechToText.isListening) {
+      await speechToText.listen(
+        onResult: onSpeechResult,
+        listenMode: ListenMode.dictation,
+        cancelOnError: true,
+      );
+    }
     update();
   }
+
+  // void startListening() async {
+  //   if (speechEnabled && !speechToText.isListening) {
+  //     await speechToText.listen(
+  //       onResult: onSpeechResult,
+  //       listenMode: ListenMode.dictation,
+  //       cancelOnError: true,
+  //     );
+  //   }
+  //   update();
+  // }
 
   void stopListening() async {
-    await speechToText.stop();
+    if (speechToText.isListening) {
+      await speechToText.stop();
+    }
     update();
   }
 
-  void onSpeechResult(result) {
-    wordsSpoken = "${result.recognizedWords}";
-    update();
+  // onSpeechResult(SpeechRecognitionResult result) {
+  //   wordsSpoken = result.recognizedWords;
+  //   logger.i("Recognized Words: $wordsSpoken");
+  //   handleAnswer();
+  //   update();
+  //   return wordsSpoken;
+  // }
+
+  onSpeechResult(SpeechRecognitionResult result) {
+    if (result.finalResult) {
+      // Only process final results
+      wordsSpoken = result.recognizedWords;
+      logger.i("Final Recognized Words: $wordsSpoken");
+      handleAnswer();
+      update();
+    } else {
+      logger.i("Interim Result: ${result.recognizedWords}");
+    }
   }
 
   bool isPassed = false;
@@ -527,7 +525,7 @@ class RobotController extends GetxController {
         await addRobotGeneralFeature(
           AppStorage.getUserData()?.userId ?? '',
           question,
-          '${answer.replaceAll('.', '')}',
+          answer.replaceAll('.', ''),
           wordsSpoken,
           'Pass',
         );
@@ -535,7 +533,7 @@ class RobotController extends GetxController {
         await addRobotTopicFeature(
           AppStorage.getUserData()?.userId ?? '',
           question,
-          '${answer.replaceAll('.', '')}',
+          answer.replaceAll('.', ''),
           wordsSpoken,
           'Fail',
         );
@@ -548,7 +546,7 @@ class RobotController extends GetxController {
         await addRobotGeneralFeature(
           AppStorage.getUserData()?.userId ?? '',
           question,
-          '${answer.replaceAll('.', '')}',
+          answer.replaceAll('.', ''),
           wordsSpoken,
           'Fail',
         );
@@ -556,7 +554,7 @@ class RobotController extends GetxController {
         await addRobotTopicFeature(
           AppStorage.getUserData()?.userId ?? '',
           question,
-          '${answer.replaceAll('.', '')}',
+          answer.replaceAll('.', ''),
           wordsSpoken,
           'Fail',
         );

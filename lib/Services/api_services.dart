@@ -389,7 +389,8 @@ class ApiServices {
       await ExceptionController().exceptionAlert(
         errorMsg: '$error',
         exceptionFormat:
-            'Error: ApiService -> postMultiPartMethod -> API Do = $feedUrl, Error => $error',
+            // 'Error: ApiService -> postMultiPartMethod -> API Do = $feedUrl, Error => Something went wrong, Try again later',
+            'Error => Something went wrong, Try again later',
       );
       //AppConst.errorOccurAlert();
       return null;

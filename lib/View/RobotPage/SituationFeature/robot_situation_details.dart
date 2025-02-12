@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Components/app_custom_button.dart';
-import 'package:goolu/View/RobotPage/SituationFeature/robot_conversation_screen.dart';
+import 'package:goolu/Utils/utils.dart';
+import 'package:goolu/View/RobotPage/SituationFeature/robot_role_selection_page.dart';
 
 import '../../../Config/app_config.dart';
 import '../../../Controller/RobotController/robot_controller.dart';
 import '../../../Theme/colors.dart';
 import '../../../Utils/dimensions.dart';
 import '../../../Utils/font_styles.dart';
+import '../../../Utils/image_urls.dart';
 
 class RobotSituationDetails extends StatefulWidget {
   final String? situationName;
-  const RobotSituationDetails({super.key, this.situationName});
+  final String? title1;
+  final String? title2;
+  const RobotSituationDetails({
+    super.key,
+    this.situationName,
+    this.title1,
+    this.title2,
+  });
 
   @override
   State<RobotSituationDetails> createState() => _RobotSituationDetailsState();
@@ -19,6 +29,26 @@ class RobotSituationDetails extends StatefulWidget {
 
 class _RobotSituationDetailsState extends State<RobotSituationDetails> {
   RobotController robotCtrl = Get.find<RobotController>();
+
+  @override
+  void initState() {
+    fetchTheData();
+    // TODO: implement initState
+    robotCtrl.initSpeech();
+    super.initState();
+  }
+
+  fetchTheData() async {
+    robotCtrl.situationModel = null;
+    await robotCtrl.fetchSituation(situation: '${widget.situationName}');
+  }
+
+  @override
+  void dispose() {
+    robotCtrl.resetData();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -98,42 +128,56 @@ class _RobotSituationDetailsState extends State<RobotSituationDetails> {
                                 size50h,
                                 Center(
                                   child: customText(
-                                    text: '${widget.situationName}',
+                                    text:
+                                        '${widget.situationName?.toUpperCase()}',
                                     textStyle: regular18NavyBlue.copyWith(
                                       fontSize: 14,
-                                      color: primaryBlueGradientDarkColor,
+                                      color: kWhite,
                                     ),
                                   ),
                                 ),
                                 size50h,
-                                questionWithAnswer(
-                                  robotQuestion:
-                                      '[Barista] Hij what can I get started for you today?',
-                                  userAnswer:
-                                      '[User] I\'ll have a large coffee, please.',
-                                ),
-                                questionWithAnswer(
-                                  robotQuestion:
-                                      '[Barista] Would you like whole milk, skim milk,',
-                                  userAnswer:
-                                      '[User] Skim milk is fine, thank you.',
-                                ),
-                                questionWithAnswer(
-                                  robotQuestion:
-                                      '[Barista] Would you like your coffee sweetened with sugar, or a non-dairy milk alternative?,',
-                                  userAnswer: '[User] Just sugar, please.',
-                                ),
-                                questionWithAnswer(
-                                  robotQuestion:
-                                      '[Barista] That\'ll be \$2.50 please.',
-                                  userAnswer:
-                                      '[User] Here you go. Keep the change.',
-                                ),
-                                questionWithAnswer(
-                                  robotQuestion:
-                                      '[Barista] Thank you, have a great day!',
-                                  userAnswer: '[User] You too!',
-                                ),
+                                if (robotCtrl.situationModel != null)
+                                  Row(
+                                    children: [
+                                      customText(
+                                        text: 'Listen the Audio',
+                                        maxLines: 2,
+                                        textStyle: bold18NavyBlue.copyWith(
+                                          fontSize: 16,
+                                          color: Colors.amber,
+                                        ),
+                                      ),
+                                      size30w,
+                                      Obx(() {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            robotCtrl.isSpeaking.value
+                                                ? robotCtrl.stopSpeaking()
+                                                : robotCtrl.speak(
+                                                    '${robotCtrl.situationModel?.dialogue}');
+                                          },
+                                          child: SvgPicture.asset(
+                                            '$imgUrl${robotCtrl.isSpeaking.value ? pauseImg : speakerYellowImg}',
+                                          ),
+                                        );
+                                      }),
+                                    ],
+                                  ),
+                                size20h,
+                                if (robotCtrl.situationModel == null)
+                                  progressIndicator()
+                                else
+                                  customText(
+                                    text:
+                                        '${robotCtrl.situationModel?.dialogue}',
+                                    maxLines: 100,
+                                    textStyle: bold18NavyBlue.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: secDarkBlueNavyColor,
+                                    ),
+                                  ),
                                 size50h,
                               ],
                             ),
@@ -146,7 +190,11 @@ class _RobotSituationDetailsState extends State<RobotSituationDetails> {
                         children: [
                           AppCustomButton(
                             onTap: () {
-                              Get.to(() => const RobotConversationScreen());
+                              // Get.to(() => const RobotConversationScreen());
+                              Get.to(() => RobotRoleSelectionPage(
+                                    title1: widget.title1,
+                                    title2: widget.title2,
+                                  ));
                             },
                             title: customText(
                               text: 'Start',

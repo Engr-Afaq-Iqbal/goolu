@@ -1,4 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import '../../Components/app_document_upload_dialog.dart';
 import '../../Config/app_config.dart';
 import '../../Controller/CameraController/camera_controller.dart';
 import '../../Controller/dialog_controller.dart';
+import '../../Model/language_text_to_translation.dart';
 import '../../Theme/colors.dart';
 import '../../Utils/dimensions.dart';
 import '../../Utils/image_urls.dart';
@@ -31,7 +33,7 @@ class CameraImageToText extends StatelessWidget {
               child: Container(
                 width: Get.width,
                 padding: EdgeInsets.symmetric(
-                  vertical: SizesDimensions.height(3),
+                  vertical: SizesDimensions.height(2),
                   horizontal: SizesDimensions.width(5),
                 ),
                 decoration: BoxDecoration(
@@ -79,7 +81,7 @@ class CameraImageToText extends StatelessWidget {
                       ],
                     ),
 
-                    size30h,
+                    size20h,
                     customText(
                       text: 'Upload your image',
                       textStyle: bold18NavyBlue.copyWith(
@@ -162,7 +164,7 @@ class CameraImageToText extends StatelessWidget {
                               Dimensions.radiusDoubleExtraLarge),
                           child: Container(
                             width: SizesDimensions.width(80.0),
-                            height: SizesDimensions.height(25.0),
+                            height: SizesDimensions.height(20.0),
                             // margin: EdgeInsets.symmetric(
                             //     horizontal: SizesDimensions.width(0.5)),
                             // padding: EdgeInsets.symmetric(
@@ -210,7 +212,7 @@ class CameraImageToText extends StatelessWidget {
                           ),
                         ),
                       ),
-                    size30h,
+                    size20h,
                     // if (cameraCtrl.file2 != null)
                     if (cameraCtrl.cameraPageFeature2Model == null)
                       Row(
@@ -223,7 +225,7 @@ class CameraImageToText extends StatelessWidget {
                                   }
                                 : null,
                             horizontalPadding: 25,
-                            verticalPadding: 20,
+                            verticalPadding: 15,
                             title: Center(
                               child: customText(
                                 text: 'Upload',
@@ -233,79 +235,171 @@ class CameraImageToText extends StatelessWidget {
                           ),
                         ],
                       ),
+
+                    size10h,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 25,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusLarge),
+                        color: primaryColor,
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2(
+                          customButton: customText(
+                            text: cameraCtrl.selectedLanguage,
+                            textStyle: regular18NavyBlue.copyWith(
+                              fontSize: 16,
+                              color: kWhite,
+                            ),
+                          ),
+                          items: [
+                            ...LanguageTextToTranslations.firstItems.map(
+                              (item) =>
+                                  DropdownMenuItem<LanguageTextToTranslation>(
+                                value: item,
+                                child:
+                                    LanguageTextToTranslations.buildItem(item),
+                              ),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            LanguageTextToTranslations.onChanged(
+                                context, value!);
+                            showProgress();
+                            cameraCtrl.fetchTranslation(
+                                text: cameraCtrl
+                                    .cameraPageFeature2Model?.detectedText);
+                          },
+                          dropdownStyleData: DropdownStyleData(
+                            width: SizesDimensions.width(30.0),
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(Dimensions.radiusSmall),
+                              color: kFFFFFF,
+                            ),
+                            offset: const Offset(0, 8),
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            padding: EdgeInsets.only(
+                                left: Dimensions.radiusLarge,
+                                right: Dimensions.radiusLarge),
+                          ),
+                        ),
+                      ),
+                    ),
+                    size5h,
                     if (cameraCtrl.cameraPageFeature2Model == null) size30h,
                     if (cameraCtrl.cameraPageFeature2Model != null)
                       Center(
-                        child: Container(
-                          // height: SizesDimensions.height(30),
-                          width: SizesDimensions.width(90),
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                Dimensions.radiusDoubleExtraLarge),
-                            color: kDarkYellow,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // _audioFile == null
-                              //     ? const Text('No audio selected')
-                              //     : Text('Audio selected: ${_audioFile!.path}'),
-                              //
-                              size10h,
-                              Row(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.radiusDoubleExtraLarge),
+                          child: Container(
+                            height: SizesDimensions.height(38),
+                            width: SizesDimensions.width(90),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  Dimensions.radiusDoubleExtraLarge),
+                              color: kDarkYellow,
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  customText(
-                                    text: 'Text in image:',
-                                    textStyle: bold20White.copyWith(
-                                      fontSize: 20,
-                                    ),
-                                    maxLines: 2,
-                                  ),
-                                  size40w,
-                                  GestureDetector(
-                                    onTap: () async {
-                                      final text = cameraCtrl
-                                              .cameraPageFeature2Model
-                                              ?.detectedText
-                                              .toString() ??
-                                          'noTextAvailable'.tr;
-                                      await Get.find<MicrophoneController>()
-                                          .speak(text);
-                                    },
-                                    child: SvgPicture.asset(
-                                      '$imgUrl$soundImg',
-                                      height: 25,
-                                      width: 25,
-                                      colorFilter: ColorFilter.mode(
-                                        kWhite,
-                                        BlendMode.srcIn,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              size20h,
-                              SizedBox(
-                                height: SizesDimensions.height(25),
-                                // width: SizesDimensions.width(30),
-                                child: SingleChildScrollView(
-                                  child: Column(
+                                  size20h,
+                                  Row(
                                     children: [
                                       customText(
-                                        text:
-                                            '${cameraCtrl.cameraPageFeature2Model?.detectedText}',
-                                        textStyle: regular16NavyBlue.copyWith(
-                                          fontSize: 14,
+                                        text: 'Text in image:',
+                                        textStyle: bold20White.copyWith(
+                                          fontSize: 20,
                                         ),
-                                        maxLines: 30,
+                                        maxLines: 2,
+                                      ),
+                                      size40w,
+                                      GestureDetector(
+                                        onTap: () async {
+                                          final text = cameraCtrl
+                                                  .cameraPageFeature2Model
+                                                  ?.detectedText
+                                                  .toString() ??
+                                              'noTextAvailable'.tr;
+                                          await Get.find<MicrophoneController>()
+                                              .speak(text);
+                                        },
+                                        child: SvgPicture.asset(
+                                          '$imgUrl$soundImg',
+                                          height: 25,
+                                          width: 25,
+                                          colorFilter: ColorFilter.mode(
+                                            kWhite,
+                                            BlendMode.srcIn,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
+                                  size20h,
+                                  customText(
+                                    text:
+                                        '${cameraCtrl.cameraPageFeature2Model?.detectedText}',
+                                    textStyle: regular16NavyBlue.copyWith(
+                                      fontSize: 14,
+                                    ),
+                                    maxLines: 50,
+                                  ),
+                                  Row(
+                                    children: [
+                                      customText(
+                                        text: 'Translated Text',
+                                        textStyle: bold20White.copyWith(
+                                          fontSize: 20,
+                                        ),
+                                        maxLines: 2,
+                                      ),
+                                      size40w,
+                                      GestureDetector(
+                                        onTap: () async {
+                                          final text = cameraCtrl
+                                                  .textToTranslationModel
+                                                  ?.result ??
+                                              'noTextAvailable'.tr;
+                                          await Get.find<MicrophoneController>()
+                                              .speak(text);
+                                        },
+                                        child: SvgPicture.asset(
+                                          '$imgUrl$soundImg',
+                                          height: 25,
+                                          width: 25,
+                                          colorFilter: ColorFilter.mode(
+                                            kWhite,
+                                            BlendMode.srcIn,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  size10h,
+                                  customText(
+                                    text:
+                                        '${cameraCtrl.textToTranslationModel?.result}',
+                                    textStyle: regular16NavyBlue.copyWith(
+                                      fontSize: 14,
+                                    ),
+                                    maxLines: 50,
+                                  ),
+                                  size20h,
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),

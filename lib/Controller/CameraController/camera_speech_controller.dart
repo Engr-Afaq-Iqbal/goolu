@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Controller/DashboardController/dashboard_controller.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../Services/storage_sevices.dart';
@@ -15,6 +15,7 @@ class CameraSpeechController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String? firebaseImageUrl;
   String? firebaseImageAnswer;
+  bool isAnswerMatched = false;
 
   /// Function to fetch only the first "false" document in sequence
 
@@ -50,66 +51,124 @@ class CameraSpeechController extends GetxController {
 
   /// Function to fetch the first document with mainResult as "false"
   /// and the first answer with result as "false"
-  ///in working
+  ///
+  /// logic to shuffle
 
   Future<Map<String, dynamic>?> fetchNextFalseData(
       String collectionName) async {
     try {
       var featureRef = _firestore
-          .collection(collectionName) //'feature1CUsersPositive'
+          .collection(collectionName)
           .doc(AppStorage.getUserData()?.userId);
 
-      int documentIndex = 0; // Track document index
+      int documentIndex = 0;
+      List<Map<String, dynamic>> eligibleData = []; // Store eligible documents
 
       while (true) {
-        // Access the nested collection dynamically based on documentIndex
         var docRef = featureRef.collection(documentIndex.toString());
-
-        // Get documents in the nested collection
         var snapshot = await docRef.get();
 
-        if (snapshot.docs.isEmpty) {
-          // If no document exists for the current index, break the loop
-          break;
-        }
+        if (snapshot.docs.isEmpty) break;
 
         for (var doc in snapshot.docs) {
           Map<String, dynamic> data = doc.data();
 
-          // If mainResult is 'false', check answers
           if (data['mainResult'] == 'false') {
             List<dynamic> answers = data['answers'];
             String imageUrl = data['url'];
 
-            // Iterate over answers to find the first answer with result 'false'
             for (int answerIndex = 0;
                 answerIndex < answers.length;
                 answerIndex++) {
               var answer = answers[answerIndex];
               if (answer['result'] == 'false') {
-                // Return the document data, answer text, and indexes
-                return {
+                eligibleData.add({
                   'url': imageUrl,
                   'answerText': answer['text'],
                   'documentIndex': documentIndex,
                   'documentId': doc.id,
                   'answerIndex': answerIndex,
-                };
+                });
               }
             }
           }
         }
 
-        // Move to the next document index if current document's mainResult is 'true'
         documentIndex++;
+      }
+
+      // Shuffle the eligible data to get a random result
+      if (eligibleData.isNotEmpty) {
+        eligibleData.shuffle();
+        return eligibleData.first;
       }
     } catch (e) {
       logger.e('Error fetching data: $e');
     }
 
     update();
-    return null; // Return null if no "false" document or answer is found
+    return null;
   }
+
+  ///in working
+  // Future<Map<String, dynamic>?> fetchNextFalseData(
+  //     String collectionName) async {
+  //   try {
+  //     var featureRef = _firestore
+  //         .collection(collectionName) //'feature1CUsersPositive'
+  //         .doc(AppStorage.getUserData()?.userId);
+  //
+  //     int documentIndex = 0; // Track document index
+  //
+  //     while (true) {
+  //       // Access the nested collection dynamically based on documentIndex
+  //       var docRef = featureRef.collection(documentIndex.toString());
+  //
+  //       // Get documents in the nested collection
+  //       var snapshot = await docRef.get();
+  //
+  //       if (snapshot.docs.isEmpty) {
+  //         // If no document exists for the current index, break the loop
+  //         break;
+  //       }
+  //
+  //       for (var doc in snapshot.docs) {
+  //         Map<String, dynamic> data = doc.data();
+  //
+  //         // If mainResult is 'false', check answers
+  //         if (data['mainResult'] == 'false') {
+  //           List<dynamic> answers = data['answers'];
+  //           String imageUrl = data['url'];
+  //
+  //           // Iterate over answers to find the first answer with result 'false'
+  //           for (int answerIndex = 0;
+  //               answerIndex < answers.length;
+  //               answerIndex++) {
+  //             var answer = answers[answerIndex];
+  //             if (answer['result'] == 'false') {
+  //               // Return the document data, answer text, and indexes
+  //               return {
+  //                 'url': imageUrl,
+  //                 'answerText': answer['text'],
+  //                 'documentIndex': documentIndex,
+  //                 'documentId': doc.id,
+  //                 'answerIndex': answerIndex,
+  //               };
+  //             }
+  //           }
+  //         }
+  //       }
+  //
+  //       // Move to the next document index if current document's mainResult is 'true'
+  //       documentIndex++;
+  //     }
+  //   } catch (e) {
+  //     logger.e('Error fetching data: $e');
+  //   }
+  //
+  //   update();
+  //   return null; // Return null if no "false" document or answer is found
+  // }
 
   Future<void> uploadImageDataNegative(String userId, String imageUrl,
       List<Map<String, dynamic>> answers, int index) async {
@@ -222,45 +281,72 @@ class CameraSpeechController extends GetxController {
   }
 
   final SpeechToText speechToText = SpeechToText();
-  TextEditingController wordsSpoken = TextEditingController();
+  String wordsSpoken = '';
   bool speechEnabled = false;
+
   void initSpeech() async {
-    speechEnabled = await speechToText.initialize();
-    update();
+    try {
+      speechEnabled = await speechToText.initialize(
+        onError: (error) {
+          logger.e("Speech Init Error: ${error.errorMsg}");
+        },
+        onStatus: (status) {
+          logger.i("Speech Status: $status");
+        },
+      );
+      logger.i("Speech Enabled: $speechEnabled");
+      update();
+    } catch (e) {
+      logger.e("Error initializing speech: $e");
+    }
   }
 
   void startListening() async {
-    await speechToText.listen(onResult: onSpeechResult);
+    if (speechEnabled && !speechToText.isListening) {
+      await speechToText.listen(
+        onResult: onSpeechResult,
+        listenMode: ListenMode.dictation,
+        cancelOnError: true,
+        localeId: 'en-US',
+      );
+      logger.i("Listening started...");
+    }
     update();
   }
 
   void stopListening() async {
-    await speechToText.stop();
+    if (speechToText.isListening) {
+      await speechToText.stop();
+      logger.i("Listening stopped.");
+    }
     update();
   }
 
-  void onSpeechResult(result) {
-    wordsSpoken.text = "${result.recognizedWords}";
-    update();
+  void onSpeechResult(SpeechRecognitionResult result) {
+    if (result.finalResult) {
+      wordsSpoken = result.recognizedWords.trim();
+      logger.i("Final Recognized Words: $wordsSpoken");
+      matchSpokenAndAnswerText(wordsSpoken);
+      update();
+    } else {
+      logger.i("Interim Result: ${result.recognizedWords}");
+    }
   }
 
-  bool isRecordPressed = false;
-  bool isResult = false;
+  void matchSpokenAndAnswerText(String spokenWords) async {
+    logger.i(
+        'Expected Answer: ${firebaseImageAnswer?.replaceAll('.', '').toLowerCase()}');
+    logger.i('Spoken Words: $wordsSpoken');
 
-  matchSpokenAndAnswerText() async {
-    logger.i('Answer = ${firebaseImageAnswer?.replaceAll('.', '')}');
-    logger.i('Spoken words = ${wordsSpoken.text}');
-    String replacedDot =
-        firebaseImageAnswer?.replaceAll('.', '').toLowerCase() ?? '';
-    String replacedComma = replacedDot.replaceAll(',', '').toLowerCase();
-    if (wordsSpoken.text.toLowerCase() == replacedComma) {
-      // await addRobotGeneralFeature(
-      //   AppStorage.getUserData()?.userId ?? '',
-      //   question,
-      //   '${answer.replaceAll('.', '')}',
-      //   wordsSpoken,
-      //   'Pass',
-      // );
+    String normalizedExpectedAnswer =
+        firebaseImageAnswer?.replaceAll(RegExp(r'[.,\s]+'), '').toLowerCase() ??
+            '';
+    String normalizedSpokenWords =
+        spokenWords.replaceAll(RegExp(r'[.,\s]+'), '').toLowerCase();
+    logger.i('normalizedSpokenWords -->> $normalizedSpokenWords');
+    logger.i('normalizedExpectedAnswer -->> $normalizedExpectedAnswer');
+
+    if (normalizedSpokenWords == normalizedExpectedAnswer) {
       updateAnswerResultToTrue();
       logger.i('Answer matched');
       DailyTaskService taskService = DailyTaskService();
@@ -268,20 +354,58 @@ class CameraSpeechController extends GetxController {
       // Update the "image_description" task to true
       await taskService.updateTaskStatus(
           AppStorage.getUserData()?.userId ?? '', 'image_description', true);
+
       isResult = true;
+      isAnswerMatched = true;
       update();
       Get.find<DashboardController>().fetchDailyTasks();
     } else {
-      showToast('Try Again! Recording did not matched');
-
+      showToast('Try Again! Recording did not match');
       isResult = false;
       isRecordPressed = false;
       update();
     }
 
-    // stopProgress();
     update();
   }
+  // matchSpokenAndAnswerText() async {
+  //   logger.i('Answer = ${firebaseImageAnswer?.replaceAll('.', '')}');
+  //   logger.i('Spoken words = $wordsSpoken');
+  //   String replacedDot =
+  //       firebaseImageAnswer?.replaceAll('.', '').toLowerCase() ?? '';
+  //   String replacedComma = replacedDot.replaceAll(',', '').toLowerCase();
+  //   if (wordsSpoken.toLowerCase() == replacedComma) {
+  //     // await addRobotGeneralFeature(
+  //     //   AppStorage.getUserData()?.userId ?? '',
+  //     //   question,
+  //     //   '${answer.replaceAll('.', '')}',
+  //     //   wordsSpoken,
+  //     //   'Pass',
+  //     // );
+  //     updateAnswerResultToTrue();
+  //     logger.i('Answer matched');
+  //     DailyTaskService taskService = DailyTaskService();
+  //
+  //     // Update the "image_description" task to true
+  //     await taskService.updateTaskStatus(
+  //         AppStorage.getUserData()?.userId ?? '', 'image_description', true);
+  //     isResult = true;
+  //     update();
+  //     Get.find<DashboardController>().fetchDailyTasks();
+  //   } else {
+  //     showToast('Try Again! Recording did not matched');
+  //
+  //     isResult = false;
+  //     isRecordPressed = false;
+  //     update();
+  //   }
+  //
+  //   // stopProgress();
+  //   update();
+  // }
+
+  bool isRecordPressed = false;
+  bool isResult = false;
 
   Future<void> updateAnswerResultToTrue() async {
     try {
@@ -347,6 +471,7 @@ class CameraSpeechController extends GetxController {
   ///Logic to store each users positive and negative record with there id separately
 
   ///initially store the data for each user Positive
+
   Future<void> copyFeature1CDataForUserPositive() async {
     final firestore = FirebaseFirestore.instance;
     final currentUser = AppStorage.getUserData()?.userId;
@@ -357,24 +482,25 @@ class CameraSpeechController extends GetxController {
     }
 
     final userId = currentUser;
+    final userFeature1CRef =
+        firestore.collection('feature1CUsersPositive').doc(userId);
 
     try {
+      // Check if data already exists for the user
+      final existingData = await userFeature1CRef.collection('0').get();
+
+      if (existingData.docs.isNotEmpty) {
+        logger.i("Data already exists for feature1CUsersPositive/$userId");
+        return;
+      }
+
       // Reference to the original data collection
       final feature1CDataRef =
           firestore.collection('feature1CDataPositive').doc('positive');
-      // Reference to the user's data in the new collection
-      final userFeature1CRef =
-          firestore.collection('feature1CUsersPositive').doc(userId);
-
-      // Fetch each sub-collection in `feature1CDataPositive/positive`
       final subCollections = await feature1CDataRef.collection('0').get();
 
-      // Loop through each sub-collection and document to copy data
       for (var subDoc in subCollections.docs) {
-        // Fetch data in the sub-collection document
         final docData = subDoc.data();
-
-        // Write data to the user's document in the new collection
         await userFeature1CRef.collection('0').doc(subDoc.id).set(docData);
       }
 
@@ -394,24 +520,25 @@ class CameraSpeechController extends GetxController {
     }
 
     final userId = currentUser;
+    final userFeature1CRef =
+        firestore.collection('feature1CUsersNegative').doc(userId);
 
     try {
+      // Check if data already exists for the user
+      final existingData = await userFeature1CRef.collection('0').get();
+
+      if (existingData.docs.isNotEmpty) {
+        logger.i("Data already exists for feature1CUsersNegative/$userId");
+        return;
+      }
+
       // Reference to the original data collection
       final feature1CDataRef =
           firestore.collection('feature1CDataNegative').doc('negative');
-      // Reference to the user's data in the new collection
-      final userFeature1CRef =
-          firestore.collection('feature1CUsersNegative').doc(userId);
-
-      // Fetch each sub-collection in `feature1CData/positive`
       final subCollections = await feature1CDataRef.collection('0').get();
 
-      // Loop through each sub-collection and document to copy data
       for (var subDoc in subCollections.docs) {
-        // Fetch data in the sub-collection document
         final docData = subDoc.data();
-
-        // Write data to the user's document in the new collection
         await userFeature1CRef.collection('0').doc(subDoc.id).set(docData);
       }
 

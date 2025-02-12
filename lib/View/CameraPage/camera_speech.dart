@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
+import 'package:goolu/Components/app_custom_button.dart';
 
 import '../../Config/app_config.dart';
 import '../../Controller/CameraController/camera_speech_controller.dart';
@@ -28,20 +29,16 @@ class _CameraSpeechState extends State<CameraSpeech>
   final FlutterTts _flutterTts = FlutterTts();
   bool _isSpeaking = false;
 
-  // Future<void> _speak(String text) async {
-  //   await _flutterTts.speak(text);
-  // }
-
   CameraSpeechController cameraSpeechController =
       Get.find<CameraSpeechController>();
 
-  // final RecorderController _recorderController = RecorderController();
-  // String _textToSpeak = "Hello, this is a text-to-speech conversion demo.";
   late AnimationController _animationController;
   @override
   void initState() {
     // fetchUserData();
-    cameraSpeechController.wordsSpoken.clear();
+    cameraSpeechController.wordsSpoken = '';
+    cameraSpeechController.firebaseImageAnswer = '';
+    cameraSpeechController.firebaseImageUrl = '';
     cameraSpeechController.isResult = false;
     cameraSpeechController.initSpeech();
     cameraSpeechController.fetchAndDisplayData(
@@ -84,10 +81,26 @@ class _CameraSpeechState extends State<CameraSpeech>
 
   Future<void> _speakText() async {
     if (_isSpeaking) {
-      await _flutterTts.stop();
+      await _flutterTts.stop(); // Stop the speech
+      _isSpeaking = false; // Update the speaking status
+      _animationController.stop(); // Stop the animation
     } else {
-      await _flutterTts.speak(cameraSpeechController.wordsSpoken.text);
+      // Start speaking
+      await _flutterTts.setPitch(1.0);
+      await _flutterTts.setSpeechRate(0.4);
+
+      // Set a listener to update `_isSpeaking` when the TTS finishes
+      _flutterTts.setCompletionHandler(() {
+        _isSpeaking = false; // Reset speaking status when done
+        _animationController.stop(); // Stop animation
+      });
+
+      _isSpeaking = true; // Mark as speaking
+      _animationController.repeat(); // Start animation
+      await _flutterTts.speak(cameraSpeechController.wordsSpoken);
     }
+    // Rebuild the widget to reflect the state change
+    setState(() {});
   }
 
   @override
@@ -160,12 +173,6 @@ class _CameraSpeechState extends State<CameraSpeech>
                         ],
                       ),
                     ),
-                    // AppCustomButton(
-                    //   title: customText(text: 'Uplaod data'),
-                    //   onTap: () {
-                    //     cameraCtrl.uploadSampleData();
-                    //   },
-                    // ),
                     size20h,
                     if (cameraCtrl.firebaseImageUrl != null)
                       ClipRRect(
@@ -195,6 +202,64 @@ class _CameraSpeechState extends State<CameraSpeech>
                     size40h,
                     if (cameraCtrl.firebaseImageAnswer == null)
                       progressIndicator()
+                    else if (cameraCtrl.isAnswerMatched == true)
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 30,
+                          right: 25,
+                          left: 25,
+                        ),
+                        child: AppCustomButton(
+                          title: customText(
+                            text: 'Practice next',
+                            textStyle: bold16White,
+                          ),
+                          onTap: () {
+                            cameraCtrl.isAnswerMatched = false;
+                            cameraCtrl.wordsSpoken = '';
+                            cameraCtrl.firebaseImageAnswer = '';
+                            cameraCtrl.firebaseImageUrl = '';
+                            cameraCtrl.isResult = false;
+                            cameraCtrl.initSpeech();
+                            cameraCtrl.fetchAndDisplayData(
+                                isCollectionPositive:
+                                    widget.isCollectionPositive);
+                            _flutterTts.setStartHandler(() {
+                              setState(() => _isSpeaking = true);
+                            });
+
+                            _flutterTts.setCompletionHandler(() {
+                              setState(() => _isSpeaking = false);
+                            });
+
+                            _flutterTts.setErrorHandler((error) {
+                              setState(() => _isSpeaking = false);
+                            });
+
+                            // Initialize the animation controller
+                            _animationController = AnimationController(
+                              vsync: this,
+                              duration: const Duration(milliseconds: 500),
+                            )..repeat(reverse: true);
+
+                            // Configure TTS handlers
+                            _flutterTts.setStartHandler(() {
+                              setState(() => _isSpeaking = true);
+                              _animationController.repeat(reverse: true);
+                            });
+
+                            _flutterTts.setCompletionHandler(() {
+                              setState(() => _isSpeaking = false);
+                              _animationController.stop();
+                            });
+
+                            _flutterTts.setErrorHandler((error) {
+                              setState(() => _isSpeaking = false);
+                              _animationController.stop();
+                            });
+                          },
+                        ),
+                      )
                     else
                       Expanded(
                         child: Container(
@@ -215,10 +280,6 @@ class _CameraSpeechState extends State<CameraSpeech>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  // _audioFile == null
-                                  //     ? const Text('No audio selected')
-                                  //     : Text('Audio selected: ${_audioFile!.path}'),
-                                  //
                                   size40h,
                                   customText(
                                       text:
@@ -252,17 +313,6 @@ class _CameraSpeechState extends State<CameraSpeech>
                                             GestureDetector(
                                               onTap: () async {
                                                 _speakText();
-                                                // if (cameraCtrl
-                                                //     .wordsSpoken.text.isEmpty) {
-                                                //   showToast('Record First');
-                                                // } else {
-                                                //   // await Get.find<
-                                                //   //         MicrophoneController>()
-                                                //   //     .speak(cameraCtrl
-                                                //   //         .wordsSpoken.text);
-                                                //   _speak(cameraCtrl
-                                                //       .wordsSpoken.text);
-                                                // }
                                               },
                                               child: Container(
                                                   width:
@@ -343,31 +393,33 @@ class _CameraSpeechState extends State<CameraSpeech>
                                   ),
                                   size20h,
                                   GestureDetector(
-                                      onTap: (cameraCtrl.isRecordPressed ==
-                                              false)
-                                          ? () {
-                                              cameraCtrl.isRecordPressed = true;
-                                              cameraCtrl.startListening();
-                                              cameraCtrl.update();
-                                            }
-                                          : () {
-                                              cameraCtrl.stopListening();
-                                              cameraCtrl
-                                                  .matchSpokenAndAnswerText();
-                                            },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(10),
-                                        width: SizesDimensions.width(20),
-                                        height: SizesDimensions.height(8),
-                                        decoration: BoxDecoration(
-                                            color: kRedFF624D,
-                                            shape: BoxShape.circle),
-                                        child: SvgPicture.asset(
-                                            (cameraCtrl.isRecordPressed ==
-                                                    false)
-                                                ? '$imgUrl$whiteMicSpeechImg'
-                                                : '$imgUrl$pauseButtonImg'),
-                                      )),
+                                    onTap: () {
+                                      if (!cameraCtrl.isRecordPressed) {
+                                        cameraCtrl.isRecordPressed = true;
+                                        cameraCtrl.startListening();
+                                      } else {
+                                        cameraCtrl.isRecordPressed =
+                                            false; // Reset to false on pause
+                                        cameraCtrl.stopListening();
+                                      }
+                                      cameraCtrl
+                                          .update(); // Update state after changing the flag
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      width: SizesDimensions.width(20),
+                                      height: SizesDimensions.height(8),
+                                      decoration: BoxDecoration(
+                                        color: kRedFF624D,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: SvgPicture.asset(
+                                        !cameraCtrl.isRecordPressed
+                                            ? '$imgUrl$whiteMicSpeechImg'
+                                            : '$imgUrl$pauseButtonImg',
+                                      ),
+                                    ),
+                                  ),
                                   size40h,
                                 ],
                               )),

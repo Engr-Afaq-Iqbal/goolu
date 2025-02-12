@@ -103,12 +103,14 @@ class DashboardController extends GetxController {
       String word = rows[i][0];
       String sentence = rows[i][1];
       String jumbledSentence = rows[i][2];
+      String definition = rows[i][3];
 
       // Upload each row to Firestore
       await firestore.collection("dailyWords").doc(day).set({
         "word": word,
         "sentence": sentence,
         "jumbledSentence": jumbledSentence,
+        "definition": definition,
       });
     }
 
@@ -121,6 +123,7 @@ class DashboardController extends GetxController {
   String? word;
   String? sentence;
   String? jumpedSentence;
+  String? definition;
   bool isLoading2 = true;
   List<String> correctSentence = [];
 
@@ -141,6 +144,7 @@ class DashboardController extends GetxController {
         word = doc['word'];
         sentence = doc['sentence'];
         jumpedSentence = doc['jumbledSentence'];
+        definition = doc['definition'];
         logger.i(word);
         logger.i(sentence);
         logger.i(jumpedSentence);
@@ -184,6 +188,7 @@ class DashboardController extends GetxController {
           'selectedSentence': selectedWordList.join(" "),
           'result': result,
           'date': DateTime.now(), // Optional: stores the date of the result
+          'definition': definition
         });
         logger.i("Result stored successfully for day $dayOfYear.");
       } else if (doc.exists) {

@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../Model/NavBarModel/nav_bar_model.dart';
 import '../../Model/camer_page_feature_2_model.dart';
 import '../../Model/image_detection_model.dart';
+import '../../Model/text_to_translation_model.dart';
 import '../../Services/api_services.dart';
 import '../../Services/api_urls.dart';
 import '../../Utils/enums.dart';
@@ -17,6 +18,7 @@ import '../../Utils/utils.dart';
 import '../ExceptionalController/exceptional_controller.dart';
 
 class CameraController extends GetxController {
+  String selectedLanguage = 'English';
   static List<NavBarModel> get viewSingleRobotTabsList => [
         NavBarModel(
           identifier: CameraPageItemEnum.tab1,
@@ -29,6 +31,42 @@ class CameraController extends GetxController {
           page: const CameraImageToText(),
         ),
       ];
+
+  TextToTranslationModel? textToTranslationModel;
+  Future<bool> fetchTranslation({String? text}) async {
+    Map<String, String> field = {
+      "text": '$text',
+      "selected_language": selectedLanguage,
+    };
+    // showProgress();
+    return await ApiServices.postMethod(
+      feedUrl:
+          "https://feature-1b-text-detection-1028825189557.us-central1.run.app/text-translation",
+      fields: field,
+    ).then((res) async {
+      if (res == null) {
+        stopProgress();
+        return false;
+      }
+      textToTranslationModel = textToTranslationModelFromJson(res);
+      stopProgress();
+      update();
+      return true;
+    }).onError((error, stackTrace) async {
+      debugPrint('Error => $error');
+      logger.e('StackTrace => $stackTrace');
+      await ExceptionController().exceptionAlert(
+        errorMsg: '$error',
+        exceptionFormat: ApiServices.methodExceptionFormat(
+            'POST',
+            "https://feature3-1028825189557.us-central1.run.app/generate-scenario/",
+            error,
+            stackTrace),
+      );
+      throw '$error';
+    });
+  }
+
   String? fileName;
   File? file;
   String filePath = 'addFile';
@@ -186,7 +224,8 @@ class CameraController extends GetxController {
         return false;
       }
       cameraPageFeature2Model = cameraPageFeature2ModelFromJson(res);
-      stopProgress();
+      fetchTranslation(text: cameraPageFeature2Model?.detectedText);
+      // stopProgress();
       update();
       return true;
     }).onError((error, stackTrace) async {

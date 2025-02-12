@@ -1,366 +1,281 @@
-Word,Sentence,Jumbled Sentence
-Adventure,We went on an adventure.,went adventure. on an We
-Brave,She was brave to speak.,brave to She speak. was
-Curious,The cat was curious today.,today. cat The curious was
-Dream,He had a big dream.,had big dream. a He
-Explore,Let's explore the park now.,park explore now. Let's the
-Friendly,The dog was very friendly.,The was friendly. very dog
-Grateful,I feel grateful for family.,I family. grateful for feel
-Hope,We hope for sunny weather.,hope sunny weather. We for
-Imagine,Imagine a world with peace.,Imagine peace. with world a
-Joy,She felt joy and happiness.,happiness. joy She and felt
-Kindness,A little kindness goes far.,kindness far. little goes A
-Learn,They learn something new today.,new today. learn They something
-Magic,The story was full magic.,story The full was magic.
-Nature,We love being in nature.,nature. love in being We
-Open,She decided to open up.,She up. to decided open
-Peace,He finds peace by ocean.,finds by He peace ocean.
-Quiet,The library was quiet today.,quiet was The library today.
-Respect,They respect their kind teacher.,respect They teacher. kind their
-Smile,Her smile brightened the room.,brightened room. the Her smile
-Trust,Important to trust your friends.,trust Important friends. to your
-Unique,Each snowflake is unique differently.,Each unique differently. is snowflake
-Victory,They celebrated their team's victory.,team's They victory. their celebrated
-Wonder,He looked at stars in.,He stars in. at looked
-Excited,She was excited for trip.,trip. excited She was for
-Believe,Believe in yourself keep going.,in keep Believe yourself going.
-Change,The leaves change in autumn.,in The leaves autumn. change
-Discover,We discover new things daily.,discover We daily. new things
-Enjoy,He likes to enjoy books.,He likes to books. enjoy
-Forgive,It's good to forgive mistakes.,It's mistakes. to forgive good
-Gentle,The baby was gentle today.,baby was The gentle today.
-Honest,Always be honest with everyone.,Always everyone. honest be with
-Inspire,She wants to inspire reading.,She reading. wants inspire to
-Journey,Life is a beautiful journey.,is Life beautiful journey. a
-Kind,He is kind to everyone.,to everyone. is He kind
-Listen,It's important to listen carefully.,carefully. to important It's listen
-Move,They move to new city.,city. move They to new
-Notice,I notice small details paintings.,notice paintings. small details I
-Open,The door was open all.,was all. open door The
-Patient,She was patient with line.,with She patient line. was
-Quiet,The room went quiet soon.,went soon. quiet The room
-Relax,He likes to relax weekends.,He relax weekends. to likes
-Share,She loves to share toys.,share She loves toys. to
-Teach,He will teach cooking soon.,soon. cooking He will teach
-Understand,I understand what you mean.,mean. I you understand what
-Value,They value their time together.,value together. time They their
-Welcome,We welcome new friends warmly.,warmly. friends welcome We new
-X-ray,The doctor took an X-ray.,an doctor took The X-ray.
-Young,The young bird learned flying.,young flying. learned bird The
-Zest,She added zest to dish.,dish. She to zest added
-Active,He stays active playing soccer.,stays He soccer. active playing
-Brave,It was brave to climb.,was climb. It to brave
-Care,They take care of pets.,care of pets. take They
-Delight,The cake was a delight.,cake a The was delight.
-Energy,She has much energy mornings.,She has energy much mornings.
-Fun,It's fun to play snow.,to It's play snow. fun
-Glow,The fireflies glow in dark.,dark. fireflies The in glow
-Happy,She felt happy her birthday.,her She felt birthday. happy
-Ice,The pond was covered ice.,pond covered was The ice.
-Jump,The kids love to jump.,jump. to The love kids
-Kind,Being kind makes others happy.,happy. Being others kind makes
-Love,They love to dance outside.,to dance They love outside.
-Move,Let's move the table here.,table here. Let's move the
-Nest,The bird built a nest.,built bird a nest. The
-Open,The flower began to open.,began flower open. to The
-Play,They play together every evening.,play evening. every together They
-Quest,He was on a quest.,was a He quest. on
-Rest,She decided to rest now.,decided rest now. She to
-Shine,The sun will shine brightly.,brightly. will The sun shine
-Talk,They like to talk often.,often. to They talk like
-Umbrella,She took an umbrella outside.,took She umbrella an outside.
-Visit,We plan to visit soon.,plan soon. We visit to
-Warm,The blanket kept her warm.,kept blanket her The warm.
-Yawn,He let out big yawn.,out big yawn. He let
-Zone,They entered quiet zone carefully.,carefully. zone quiet They entered
-Abundant,The garden is abundant flowers.,The flowers. garden abundant is
-Bright,The bright light hurt eyes.,eyes. bright light The hurt
-Calm,The sea was calm today.,was today. calm The sea
-Daring,She was daring to try.,She daring was try. to
-Effort,He put effort into work.,into He effort work. put
-Focus,It's hard to focus now.,now. It's hard focus to
-Gentle,The breeze was gentle today.,today. breeze was The gentle
-Hope,We always hope for best.,for hope We always best.
-Invent,He likes to invent games.,games. He to invent likes
-Joy,The joy on her face.,on face. joy her The
-Kind,It was kind of her.,It her. kind was of
-Laugh,They laugh at funny jokes.,They funny jokes. laugh at
-Motivate,Her words motivate him much.,Her motivate words much. him
-Notice,Did you notice new sign?,you new sign? Did notice
-Optimistic,She is optimistic about future.,about optimistic is future. She
-Proud,He was proud of achievements.,proud of He achievements. was
-Quick,She gave quick response now.,response quick now. gave She
-Respect,They respect each other's opinions.,respect opinions. each They other's
-Safe,We feel safe at home.,We safe feel home. at
-Thankful,She is thankful for sun.,for She is thankful sun.
-Understand,He tried to understand instructions.,to instructions. tried understand He
-Vibrant,The painting was vibrant colors.,The was painting colors. vibrant
-Wise,It's wise to save money.,to It's wise save money.
-Xylophone,The child played xylophone today.,The xylophone child played today.
-Youthful,She has youthful happy spirit.,She youthful happy has spirit.
-Zeal,He worked with zeal project.,He zeal project. worked with
-Kindness,A little kindness goes far.,goes A kindness little far.
-Learn,They learn something new today.,today. learn something They new
-Magic,The story was full magic.,magic. story full was The
-Nature,We love being in nature.,being love We nature. in
-Open,She decided to open up.,open She decided up. to
-Peace,He finds peace by ocean.,ocean. He by finds peace
-Quiet,The library was quiet today.,today. was quiet library The
-Respect,They respect their kind teacher.,kind teacher. respect their They
-Smile,Her smile brightened the room.,Her smile room. the brightened
-Trust,Important to trust your friends.,to friends. Important trust your
-Unique,Each snowflake is unique differently.,is snowflake Each unique differently.
-Victory,They celebrated their team's victory.,They victory. celebrated their team's
-Wonder,He looked at stars in.,He looked at stars in.
-Excited,She was excited for trip.,was for trip. She excited
-Believe,Believe in yourself keep going.,yourself keep in going. Believe
-Change,The leaves change in autumn.,change autumn. leaves in The
-Discover,We discover new things daily.,daily. new discover We things
-Enjoy,He likes to enjoy books.,enjoy books. He likes to
-Forgive,It's good to forgive mistakes.,forgive good mistakes. It's to
-Gentle,The baby was gentle today.,The was baby gentle today.
-Honest,Always be honest with everyone.,honest Always with everyone. be
-Inspire,She wants to inspire reading.,to reading. inspire wants She
-Journey,Life is a beautiful journey.,beautiful a journey. is Life
-Kind,He is kind to everyone.,He kind everyone. is to
-Listen,It's important to listen carefully.,listen It's carefully. important to
-Move,They move to new city.,to city. new move They
-Notice,I notice small details paintings.,paintings. small notice details I
-Open,The door was open all.,all. door open was The
-Patient,She was patient with line.,She was line. patient with
-Quiet,The room went quiet soon.,quiet soon. room went The
-Relax,He likes to relax weekends.,weekends. relax to likes He
-Share,She loves to share toys.,to loves share She toys.
-Teach,He will teach cooking soon.,teach He will soon. cooking
-Understand,I understand what you mean.,what you I mean. understand
-Value,They value their time together.,their together. They time value
-Welcome,We welcome new friends warmly.,new warmly. friends welcome We
-X-ray,The doctor took an X-ray.,X-ray. an doctor took The
-Young,The young bird learned flying.,flying. learned The bird young
-Zest,She added zest to dish.,added zest dish. She to
-Active,He stays active playing soccer.,active soccer. He stays playing
-Brave,It was brave to climb.,brave to It was climb.
-Care,They take care of pets.,pets. of care They take
-Delight,The cake was a delight.,was a cake The delight.
-Energy,She has much energy mornings.,much energy mornings. She has
-Fun,It's fun to play snow.,fun snow. It's play to
-Glow,The fireflies glow in dark.,in dark. fireflies glow The
-Happy,She felt happy her birthday.,her She felt birthday. happy
-Ice,The pond was covered ice.,pond ice. The was covered
-Jump,The kids love to jump.,jump. love to kids The
-Kind,Being kind makes others happy.,kind happy. Being others makes
-Love,They love to dance outside.,They love dance to outside.
-Move,Let's move the table here.,the table here. move Let's
-Nest,The bird built a nest.,a bird built nest. The
-Open,The flower began to open.,to began flower open. The
-Play,They play together every evening.,They evening. every play together
-Quest,He was on a quest.,He on was quest. a
-Rest,She decided to rest now.,to decided She rest now.
-Shine,The sun will shine brightly.,shine will brightly. sun The
-Talk,They like to talk often.,to talk like They often.
-Umbrella,She took an umbrella outside.,umbrella took She an outside.
-Visit,We plan to visit soon.,soon. to visit We plan
-Warm,The blanket kept her warm.,blanket kept The her warm.
-Yawn,He let out big yawn.,yawn. big He out let
-Zone,They entered quiet zone carefully.,quiet entered They carefully. zone
-Abundant,The garden is abundant flowers.,abundant garden flowers. is The
-Bright,The bright light hurt eyes.,bright light The eyes. hurt
-Calm,The sea was calm today.,today. calm was The sea
-Daring,She was daring to try.,try. She daring to was
-Effort,He put effort into work.,into He effort work. put
-Focus,It's hard to focus now.,focus to It's now. hard
-Gentle,The breeze was gentle today.,gentle today. was breeze The
-Hope,We always hope for best.,We for always hope best.
-Invent,He likes to invent games.,likes invent He to games.
-Joy,The joy on her face.,face. joy her The on
-Kind,It was kind of her.,her. kind It was of
-Laugh,They laugh at funny jokes.,at funny laugh jokes. They
-Motivate,Her words motivate him much.,much. him motivate words Her
-Notice,Did you notice new sign?,Did notice you new sign?
-Optimistic,She is optimistic about future.,optimistic is She about future.
-Proud,He was proud of achievements.,proud was achievements. He of
-Quick,She gave quick response now.,gave quick response She now.
-Respect,They respect each other's opinions.,each opinions. They other's respect
-Safe,We feel safe at home.,We safe feel at home.
-Thankful,She is thankful for sun.,sun. thankful She for is
-Understand,He tried to understand instructions.,tried understand to instructions. He
-Vibrant,The painting was vibrant colors.,was The colors. vibrant painting
-Wise,It's wise to save money.,money. It's save to wise
-Xylophone,The child played xylophone today.,played The xylophone today. child
-Youthful,She has youthful happy spirit.,youthful happy She has spirit.
-Zeal,He worked with zeal project.,worked zeal He project. with
-Kindness,A little kindness goes far.,A kindness goes far. little
-Learn,They learn something new today.,They learn today. new something
-Magic,The story was full magic.,was The story magic. full
-Nature,We love being in nature.,love being We in nature.
-Open,She decided to open up.,up. open decided She to
-Peace,He finds peace by ocean.,ocean. He peace finds by
-Quiet,The library was quiet today.,library quiet today. The was
-Respect,They respect their kind teacher.,They teacher. kind respect their
-Smile,Her smile brightened the room.,Her smile brightened the room.
-Trust,Important to trust your friends.,trust your Important to friends.
-Unique,Each snowflake is unique differently.,differently. is snowflake unique Each
-Victory,They celebrated their team's victory.,celebrated victory. They their team's
-Wonder,He looked at stars in.,He at in. looked stars
-Excited,She was excited for trip.,excited trip. was She for
-Believe,Believe in yourself keep going.,Believe going. keep yourself in
-Change,The leaves change in autumn.,change The autumn. leaves in
-Discover,We discover new things daily.,We daily. things new discover
-Enjoy,He likes to enjoy books.,He books. likes enjoy to
-Forgive,It's good to forgive mistakes.,to good mistakes. forgive It's
-Gentle,The baby was gentle today.,baby was The today. gentle
-Honest,Always be honest with everyone.,be honest everyone. Always with
-Inspire,She wants to inspire reading.,inspire reading. wants She to
-Journey,Life is a beautiful journey.,Life a is beautiful journey.
-Kind,He is kind to everyone.,everyone. kind He to is
-Listen,It's important to listen carefully.,to carefully. It's important listen
-Move,They move to new city.,new to city. move They
-Notice,I notice small details paintings.,small notice paintings. details I
-Open,The door was open all.,all. open door was The
-Patient,She was patient with line.,She patient was with line.
-Quiet,The room went quiet soon.,soon. went room The quiet
-Relax,He likes to relax weekends.,weekends. relax likes to He
-Share,She loves to share toys.,loves She share to toys.
-Teach,He will teach cooking soon.,He teach soon. cooking will
-Understand,I understand what you mean.,understand what you I mean.
-Value,They value their time together.,value together. They time their
-Welcome,We welcome new friends warmly.,friends We warmly. new welcome
-X-ray,The doctor took an X-ray.,an X-ray. doctor took The
-Young,The young bird learned flying.,The learned bird flying. young
-Zest,She added zest to dish.,added zest dish. She to
-Active,He stays active playing soccer.,playing active He soccer. stays
-Brave,It was brave to climb.,climb. to It brave was
-Care,They take care of pets.,care They pets. take of
-Delight,The cake was a delight.,a cake The delight. was
-Energy,She has much energy mornings.,energy much mornings. She has
-Fun,It's fun to play snow.,fun to It's snow. play
-Glow,The fireflies glow in dark.,glow dark. The in fireflies
-Happy,She felt happy her birthday.,happy birthday. her felt She
-Ice,The pond was covered ice.,covered ice. pond was The
-Jump,The kids love to jump.,to kids The love jump.
-Kind,Being kind makes others happy.,kind happy. makes Being others
-Love,They love to dance outside.,outside. dance love to They
-Move,Let's move the table here.,table the Let's move here.
-Nest,The bird built a nest.,The bird a nest. built
-Open,The flower began to open.,open. The to flower began
-Play,They play together every evening.,every evening. play together They
-Quest,He was on a quest.,a on He quest. was
-Rest,She decided to rest now.,rest now. She decided to
-Shine,The sun will shine brightly.,The sun brightly. shine will
-Talk,They like to talk often.,often. They like talk to
-Umbrella,She took an umbrella outside.,an outside. took umbrella She
-Visit,We plan to visit soon.,soon. plan We visit to
-Warm,The blanket kept her warm.,The kept her warm. blanket
-Yawn,He let out big yawn.,big yawn. He out let
-Zone,They entered quiet zone carefully.,quiet zone carefully. entered They
-Abundant,The garden is abundant flowers.,flowers. is garden abundant The
-Bright,The bright light hurt eyes.,The eyes. light hurt bright
-Calm,The sea was calm today.,was sea The calm today.
-Daring,She was daring to try.,try. She daring to was
-Effort,He put effort into work.,put effort work. into He
-Focus,It's hard to focus now.,focus It's now. hard to
-Gentle,The breeze was gentle today.,was gentle today. The breeze
-Hope,We always hope for best.,We hope always for best.
-Invent,He likes to invent games.,games. invent likes to He
-Joy,The joy on her face.,face. The her joy on
-Kind,It was kind of her.,her. It was of kind
-Laugh,They laugh at funny jokes.,jokes. at laugh They funny
-Motivate,Her words motivate him much.,much. words Her him motivate
-Notice,Did you notice new sign?,new Did notice sign? you
-Optimistic,She is optimistic about future.,about is She optimistic future.
-Proud,He was proud of achievements.,was proud He of achievements.
-Quick,She gave quick response now.,response quick gave now. She
-Respect,They respect each other's opinions.,each respect They other's opinions.
-Safe,We feel safe at home.,safe We at feel home.
-Thankful,She is thankful for sun.,for She is thankful sun.
-Understand,He tried to understand instructions.,tried instructions. to He understand
-Vibrant,The painting was vibrant colors.,painting colors. vibrant The was
-Wise,It's wise to save money.,money. wise to save It's
-Xylophone,The child played xylophone today.,played today. xylophone child The
-Youthful,She has youthful happy spirit.,happy youthful has spirit. She
-Zeal,He worked with zeal project.,with He zeal worked project.
-Adventure,We went on an adventure.,went adventure. on an We
-Brave,She was brave to speak.,brave to She speak. was
-Curious,The cat was curious today.,today. cat The curious was
-Dream,He had a big dream.,had big dream. a He
-Explore,Let's explore the park now.,park explore now. Let's the
-Friendly,The dog was very friendly.,The was friendly. very dog
-Grateful,I feel grateful for family.,I family. grateful for feel
-Hope,We hope for sunny weather.,hope sunny weather. We for
-Imagine,Imagine a world with peace.,Imagine peace. with world a
-Joy,She felt joy and happiness.,happiness. joy She and felt
-Kindness,A little kindness goes far.,kindness far. little goes A
-Learn,They learn something new today.,new today. learn They something
-Magic,The story was full magic.,story The full was magic.
-Nature,We love being in nature.,nature. love in being We
-Open,She decided to open up.,She up. to decided open
-Peace,He finds peace by ocean.,finds by He peace ocean.
-Quiet,The library was quiet today.,quiet was The library today.
-Respect,They respect their kind teacher.,respect They teacher. kind their
-Smile,Her smile brightened the room.,brightened room. the Her smile
-Trust,Important to trust your friends.,trust Important friends. to your
-Unique,Each snowflake is unique differently.,Each unique differently. is snowflake
-Victory,They celebrated their team's victory.,team's They victory. their celebrated
-Wonder,He looked at stars in.,He stars in. at looked
-Excited,She was excited for trip.,trip. excited She was for
-Believe,Believe in yourself keep going.,in keep Believe yourself going.
-Change,The leaves change in autumn.,in The leaves autumn. change
-Discover,We discover new things daily.,discover We daily. new things
-Enjoy,He likes to enjoy books.,He likes to books. enjoy
-Forgive,It's good to forgive mistakes.,It's mistakes. to forgive good
-Gentle,The baby was gentle today.,baby was The gentle today.
-Honest,Always be honest with everyone.,Always everyone. honest be with
-Inspire,She wants to inspire reading.,She reading. wants inspire to
-Journey,Life is a beautiful journey.,is Life beautiful journey. a
-Kind,He is kind to everyone.,to everyone. is He kind
-Listen,It's important to listen carefully.,carefully. to important It's listen
-Move,They move to new city.,city. move They to new
-Notice,I notice small details paintings.,notice paintings. small details I
-Open,The door was open all.,was all. open door The
-Patient,She was patient with line.,with She patient line. was
-Quiet,The room went quiet soon.,went soon. quiet The room
-Relax,He likes to relax weekends.,He relax weekends. to likes
-Share,She loves to share toys.,share She loves toys. to
-Teach,He will teach cooking soon.,soon. cooking He will teach
-Understand,I understand what you mean.,mean. I you understand what
-Value,They value their time together.,value together. time They their
-Welcome,We welcome new friends warmly.,warmly. friends welcome We new
-X-ray,The doctor took an X-ray.,an doctor took The X-ray.
-Young,The young bird learned flying.,young flying. learned bird The
-Zest,She added zest to dish.,dish. She to zest added
-Active,He stays active playing soccer.,stays He soccer. active playing
-Brave,It was brave to climb.,was climb. It to brave
-Care,They take care of pets.,care of pets. take They
-Delight,The cake was a delight.,cake a The was delight.
-Energy,She has much energy mornings.,She has energy much mornings.
-Fun,It's fun to play snow.,to It's play snow. fun
-Glow,The fireflies glow in dark.,dark. fireflies The in glow
-Happy,She felt happy her birthday.,her She felt birthday. happy
-Ice,The pond was covered ice.,pond covered was The ice.
-Jump,The kids love to jump.,jump. to The love kids
-Kind,Being kind makes others happy.,happy. Being others kind makes
-Love,They love to dance outside.,to dance They love outside.
-Move,Let's move the table here.,table here. Let's move the
-Nest,The bird built a nest.,built bird a nest. The
-Open,The flower began to open.,began flower open. to The
-Play,They play together every evening.,play evening. every together They
-Quest,He was on a quest.,was a He quest. on
-Rest,She decided to rest now.,decided rest now. She to
-Shine,The sun will shine brightly.,brightly. will The sun shine
-Talk,They like to talk often.,often. to They talk like
-Umbrella,She took an umbrella outside.,took She umbrella an outside.
-Visit,We plan to visit soon.,plan soon. We visit to
-Warm,The blanket kept her warm.,kept blanket her The warm.
-Yawn,He let out big yawn.,out big yawn. He let
-Zone,They entered quiet zone carefully.,carefully. zone quiet They entered
-Abundant,The garden is abundant flowers.,The flowers. garden abundant is
-Bright,The bright light hurt eyes.,eyes. bright light The hurt
-Calm,The sea was calm today.,was today. calm The sea
-Daring,She was daring to try.,She daring was try. to
-Effort,He put effort into work.,into He effort work. put
-Focus,It's hard to focus now.,now. It's hard focus to
-Gentle,The breeze was gentle today.,today. breeze was The gentle
-Hope,We always hope for best.,for hope We always best.
-Invent,He likes to invent games.,games. He to invent likes
-Joy,The joy on her face.,on face. joy her The
-Kind,It was kind of her.,It her. kind was of
+Word,Sentence,Jumbled Sentence,Definition
+Adventure,We went on an adventure.,went adventure. on an We,A fun and exciting journey or experience.
+Brave,She was brave to speak.,brave to She speak. was,Showing courage and not being afraid.
+Curious,The cat was curious today.,today. cat The curious was,Wanting to know or learn new things.
+Dream,He had a big dream.,had big dream. a He,"Thoughts or pictures in your mind while sleeping, or a goal you wish for."
+Explore,Let's explore the park now.,park explore now. Let's the,To travel or look around to learn new things.
+Friendly,The dog was very friendly.,The was friendly. very dog,Kind and nice to others.
+Grateful,I feel grateful for family.,I family. grateful for feel,Feeling thankful for something.
+Hope,We hope for sunny weather.,hope sunny weather. We for,Wanting something good to happen.
+Imagine,Imagine a world with peace.,Imagine peace. with world a,To create pictures or ideas in your mind.
+Joy,She felt joy and happiness.,happiness. joy She and felt,A feeling of great happiness.
+Kindness,A little kindness goes far.,kindness far. little goes A,Being nice and helpful to others.
+Learn,They learn something new today.,new today. learn They something,To get new knowledge or skills.
+Magic,The story was full magic.,story The full was magic.,Something special and amazing that seems impossible.
+Nature,We love being in nature.,nature. love in being We,"Everything outside, like trees, animals, and the sky."
+Open,She decided to open up.,She up. to decided open,Not closed; ready to accept new things.
+Peace,He finds peace by ocean.,finds by He peace ocean.,A time without fighting; calm and quiet.
+Quiet,The library was quiet today.,quiet was The library today.,Making little or no noise.
+Respect,They respect their kind teacher.,respect They teacher. kind their,Treating others with kindness and care.
+Smile,Her smile brightened the room.,brightened room. the Her smile,A happy expression on your face.
+Trust,Important to trust your friends.,trust Important friends. to your,Believing that someone is honest or reliable.
+Unique,Each snowflake is unique differently.,Each unique differently. is snowflake,One of a kind; different from others.
+Victory,They celebrated their team's victory.,team's They victory. their celebrated,Winning or achieving success.
+Wonder,He looked at stars in.,He stars in. at looked,Feeling curious or amazed about something.
+Excited,She was excited for trip.,trip. excited She was for,Feeling very happy and eager.
+Believe,Believe in yourself keep going.,in keep Believe yourself going.,To think something is true.
+Change,The leaves change in autumn.,in The leaves autumn. change,To make something different.
+Discover,We discover new things daily.,discover We daily. new things,To find or learn something new.
+Enjoy,He likes to enjoy books.,He likes to books. enjoy,To have fun or feel happy about something.
+Forgive,It's good to forgive mistakes.,It's mistakes. to forgive good,To stop being angry at someone for a mistake.
+Gentle,The baby was gentle today.,baby was The gentle today.,Soft and kind in actions or words.
+Honest,Always be honest with everyone.,Always everyone. honest be with,Telling the truth and being fair.
+Inspire,She wants to inspire reading.,She reading. wants inspire to,To encourage or give someone new ideas.
+Journey,Life is a beautiful journey.,is Life beautiful journey. a,A trip from one place to another.
+Kind,He is kind to everyone.,to everyone. is He kind,Being nice and caring toward others.
+Listen,It's important to listen carefully.,carefully. to important It's listen,To hear and pay attention to sounds or words.
+Move,They move to new city.,city. move They to new,To go from one place to another.
+Notice,I notice small details paintings.,notice paintings. small details I,To see or become aware of something.
+Open,The door was open all.,was all. open door The,Ready to accept new ideas or experiences.
+Patient,She was patient with line.,with She patient line. was,Staying calm and waiting without getting upset.
+Quiet,The room went quiet soon.,went soon. quiet The room,Making little or no noise.
+Relax,He likes to relax weekends.,He relax weekends. to likes,To rest and feel calm.
+Share,She loves to share toys.,share She loves toys. to,To give part of something to others.
+Teach,He will teach cooking soon.,soon. cooking He will teach,To help someone learn something.
+Understand,I understand what you mean.,mean. I you understand what,To know the meaning of something.
+Value,They value their time together.,value together. time They their,To think something is important or special.
+Welcome,We welcome new friends warmly.,warmly. friends welcome We new,To greet someone in a friendly way.
+X-ray,The doctor took an X-ray.,an doctor took The X-ray.,A special picture of bones inside the body.
+Young,The young bird learned flying.,young flying. learned bird The,Not old; having lived for a short time.
+Zest,She added zest to dish.,dish. She to zest added,Excitement and enthusiasm for life.
+Active,He stays active playing soccer.,stays He soccer. active playing,Moving and doing things a lot.
+Brave,It was brave to climb.,was climb. It to brave,Showing courage and not being afraid.
+Care,They take care of pets.,care of pets. take They,To look after or help someone or something.
+Delight,The cake was a delight.,cake a The was delight.,A feeling of great happiness or pleasure.
+Energy,She has much energy mornings.,She has energy much mornings.,Strength and power to do things.
+Fun,It's fun to play snow.,to It's play snow. fun,Something that brings happiness and enjoyment.
+Glow,The fireflies glow in dark.,dark. fireflies The in glow,"A soft, warm light."
+Happy,She felt happy her birthday.,her She felt birthday. happy,Feeling good and full of joy.
+Ice,The pond was covered ice.,pond covered was The ice.,Frozen water.
+Jump,The kids love to jump.,jump. to The love kids,To push yourself off the ground into the air.
+Kind,Being kind makes others happy.,happy. Being others kind makes,Being nice and caring toward others.
+Love,They love to dance outside.,to dance They love outside.,A deep feeling of affection and care.
+Move,Let's move the table here.,table here. Let's move the,To change position or go from one place to another.
+Nest,The bird built a nest.,built bird a nest. The,"A home made by birds, or a cozy place."
+Open,The flower began to open.,began flower open. to The,Not closed; ready to accept new things.
+Play,They play together every evening.,play evening. every together They,To do something for enjoyment.
+Quest,He was on a quest.,was a He quest. on,A search or journey to find something.
+Rest,She decided to rest now.,decided rest now. She to,A time of relaxing or sleeping.
+Shine,The sun will shine brightly.,brightly. will The sun shine,To give off light or brightness.
+Talk,They like to talk often.,often. to They talk like,To use words to communicate.
+Umbrella,She took an umbrella outside.,took She umbrella an outside.,An object used to protect from rain or sun.
+Visit,We plan to visit soon.,plan soon. We visit to,To go see a person or place.
+Warm,The blanket kept her warm.,kept blanket her The warm.,Having a high temperature or feeling cozy.
+Yawn,He let out big yawn.,out big yawn. He let,Opening your mouth wide when tired or bored.
+Zone,They entered quiet zone carefully.,carefully. zone quiet They entered,A specific area or space.
+Abundant,The garden is abundant flowers.,The flowers. garden abundant is,Having a large amount of something.
+Bright,The bright light hurt eyes.,eyes. bright light The hurt,Giving off a lot of light.
+Calm,The sea was calm today.,was today. calm The sea,Peaceful and not noisy.
+Daring,She was daring to try.,She daring was try. to,Willing to take risks or try new things.
+Effort,He put effort into work.,into He effort work. put,Hard work put into something.
+Focus,It's hard to focus now.,now. It's hard focus to,Paying close attention to something.
+Gentle,The breeze was gentle today.,today. breeze was The gentle,Soft and kind in actions or words.
+Hope,We always hope for best.,for hope We always best.,Wanting something good to happen.
+Invent,He likes to invent games.,games. He to invent likes,To create something new.
+Joy,The joy on her face.,on face. joy her The,A feeling of great happiness.
+Kind,It was kind of her.,It her. kind was of,Being nice and caring toward others.
+Laugh,They laugh at funny jokes.,They funny jokes. laugh at,To make sounds showing happiness.
+Motivate,Her words motivate him much.,Her motivate words much. him,To encourage or inspire someone.
+Notice,Did you notice new sign?,you new sign? Did notice,To see or become aware of something.
+Optimistic,She is optimistic about future.,about optimistic is future. She,Thinking positively about the future.
+Proud,He was proud of achievements.,proud of He achievements. was,Feeling good about yourself or someone else.
+Quick,She gave quick response now.,response quick now. gave She,Happening fast or in a short time.
+Respect,They respect each other's opinions.,respect opinions. each They other's,Treating others with kindness and care.
+Safe,We feel safe at home.,We safe feel home. at,Free from danger or harm.
+Thankful,She is thankful for sun.,for She is thankful sun.,Feeling grateful for something.
+Understand,He tried to understand instructions.,to instructions. tried understand He,To know the meaning of something.
+Vibrant,The painting was vibrant colors.,The was painting colors. vibrant,Full of energy and life.
+Wise,It's wise to save money.,to It's wise save money.,Showing wisdom and good judgment.
+Xylophone,The child played xylophone today.,The xylophone child played today.,A musical instrument with wooden bars.
+Youthful,She has youthful happy spirit.,She youthful happy has spirit.,Looking or feeling young and fresh.
+Zeal,He worked with zeal project.,He zeal project. worked with,Great energy and enthusiasm.
+Kindness,A little kindness goes far.,goes A kindness little far.,Being nice and caring toward others.
+Learn,They learn something new today.,today. learn something They new,To gain knowledge or a new skill.
+Magic,The story was full magic.,magic. story full was The,Something mysterious or impossible to explain.
+Nature,We love being in nature.,being love We nature. in,Everything in the world not made by humans.
+Open,She decided to open up.,open She decided up. to,Not closed; ready to accept new things.
+Peace,He finds peace by ocean.,ocean. He by finds peace,A state of calm and no conflict.
+Quiet,The library was quiet today.,today. was quiet library The,Not making noise; calm and still.
+Respect,They respect their kind teacher.,kind teacher. respect their They,Treating others with kindness and care.
+Smile,Her smile brightened the room.,Her smile room. the brightened,A happy expression on your face.
+Trust,Important to trust your friends.,to friends. Important trust your,Believing in and depending on someone.
+Unique,Each snowflake is unique differently.,is snowflake Each unique differently.,Different from everyone else.
+Victory,They celebrated their team's victory.,They victory. celebrated their team's,Winning or achieving success.
+Wonder,He looked at stars in.,He looked at stars in.,Feeling amazement or curiosity.
+Excited,She was excited for trip.,was for trip. She excited,Feeling very happy and full of energy.
+Believe,Believe in yourself keep going.,yourself keep in going. Believe,To accept something as true.
+Change,The leaves change in autumn.,change autumn. leaves in The,To make or become different.
+Discover,We discover new things daily.,daily. new discover We things,To find something new.
+Enjoy,He likes to enjoy books.,enjoy books. He likes to,To take pleasure in something.
+Forgive,It's good to forgive mistakes.,forgive good mistakes. It's to,To stop feeling angry at someone.
+Gentle,The baby was gentle today.,The was baby gentle today.,Soft and kind in actions or words.
+Honest,Always be honest with everyone.,honest Always with everyone. be,Telling the truth and being trustworthy.
+Inspire,She wants to inspire reading.,to reading. inspire wants She,To encourage or inspire someone.
+Journey,Life is a beautiful journey.,beautiful a journey. is Life,A trip or experience of traveling.
+Kind,He is kind to everyone.,He kind everyone. is to,Being nice and caring toward others.
+Listen,It's important to listen carefully.,listen It's carefully. important to,To pay attention and hear carefully.
+Move,They move to new city.,to city. new move They,To change position or go from one place to another.
+Notice,I notice small details paintings.,paintings. small notice details I,To see or become aware of something.
+Open,The door was open all.,all. door open was The,Not closed; ready to accept new things.
+Patient,She was patient with line.,She was line. patient with,Able to wait without getting upset.
+Quiet,The room went quiet soon.,quiet soon. room went The,Not making noise; calm and still.
+Relax,He likes to relax weekends.,weekends. relax to likes He,To rest and feel calm.
+Share,She loves to share toys.,to loves share She toys.,To give or use something with others.
+Teach,He will teach cooking soon.,teach He will soon. cooking,To help someone learn something.
+Understand,I understand what you mean.,what you I mean. understand,To know the meaning of something.
+Value,They value their time together.,their together. They time value,Something important and worthwhile.
+Welcome,We welcome new friends warmly.,new warmly. friends welcome We,A friendly greeting or invitation.
+X-ray,The doctor took an X-ray.,X-ray. an doctor took The,A picture of the inside of the body using rays.
+Young,The young bird learned flying.,flying. learned The bird young,At an early stage of life or new.
+Zest,She added zest to dish.,added zest dish. She to,Great energy and enthusiasm.
+Active,He stays active playing soccer.,active soccer. He stays playing,Full of energy and movement.
+Brave,It was brave to climb.,brave to It was climb.,Showing courage and not being afraid.
+Care,They take care of pets.,pets. of care They take,To look after or help someone or something.
+Delight,The cake was a delight.,was a cake The delight.,A feeling of great happiness or pleasure.
+Energy,She has much energy mornings.,much energy mornings. She has,Strength and power to do things.
+Fun,It's fun to play snow.,fun snow. It's play to,Something that brings happiness and enjoyment.
+Glow,The fireflies glow in dark.,in dark. fireflies glow The,"A soft, warm light."
+Happy,She felt happy her birthday.,her She felt birthday. happy,Feeling good and full of joy.
+Ice,The pond was covered ice.,pond ice. The was covered,Frozen water.
+Jump,The kids love to jump.,jump. love to kids The,To push yourself off the ground into the air.
+Kind,Being kind makes others happy.,kind happy. Being others makes,Being nice and caring toward others.
+Love,They love to dance outside.,They love dance to outside.,A deep feeling of care and affection.
+Move,Let's move the table here.,the table here. move Let's,To change position or go from one place to another.
+Nest,The bird built a nest.,a bird built nest. The,A home built by birds or a cozy place to live.
+Open,The flower began to open.,to began flower open. The,Not closed; ready to accept new things.
+Play,They play together every evening.,They evening. every play together,To do something fun and enjoyable.
+Quest,He was on a quest.,He on was quest. a,A search or adventure to find something.
+Rest,She decided to rest now.,to decided She rest now.,A time to relax or sleep.
+Shine,The sun will shine brightly.,shine will brightly. sun The,To give off light or be bright.
+Talk,They like to talk often.,to talk like They often.,To say words or have a conversation.
+Umbrella,She took an umbrella outside.,umbrella took She an outside.,A cover used to protect from rain or sun.
+Visit,We plan to visit soon.,soon. to visit We plan,To go see a person or place.
+Warm,The blanket kept her warm.,blanket kept The her warm.,"Having a nice, comfortable heat."
+Yawn,He let out big yawn.,yawn. big He out let,To open your mouth wide when tired.
+Zone,They entered quiet zone carefully.,quiet entered They carefully. zone,An area or space for a specific purpose.
+Abundant,The garden is abundant flowers.,abundant garden flowers. is The,Having more than enough of something.
+Bright,The bright light hurt eyes.,bright light The eyes. hurt,Giving off a lot of light or intelligence.
+Calm,The sea was calm today.,today. calm was The sea,Peaceful and without stress.
+Daring,She was daring to try.,try. She daring to was,Brave and willing to take risks.
+Effort,He put effort into work.,into He effort work. put,Hard work or trying your best.
+Focus,It's hard to focus now.,focus to It's now. hard,Paying close attention to something.
+Gentle,The breeze was gentle today.,gentle today. was breeze The,Soft and kind in actions or words.
+Hope,We always hope for best.,We for always hope best.,A feeling of wanting good things to happen.
+Invent,He likes to invent games.,likes invent He to games.,To create something new.
+Joy,The joy on her face.,face. joy her The on,A feeling of happiness and delight.
+Kind,It was kind of her.,her. kind It was of,Being nice and caring toward others.
+Laugh,They laugh at funny jokes.,at funny laugh jokes. They,A happy sound made when something is funny.
+Motivate,Her words motivate him much.,much. him motivate words Her,To encourage or inspire someone.
+Notice,Did you notice new sign?,Did notice you new sign?,To see or become aware of something.
+Optimistic,She is optimistic about future.,optimistic is She about future.,Having a positive view of the future.
+Proud,He was proud of achievements.,proud was achievements. He of,Feeling happy and confident about something.
+Quick,She gave quick response now.,gave quick response She now.,Happening fast or in a short time.
+Respect,They respect each other's opinions.,each opinions. They other's respect,Treating others with kindness and care.
+Safe,We feel safe at home.,We safe feel at home.,Free from danger or harm.
+Thankful,She is thankful for sun.,sun. thankful She for is,Feeling grateful and appreciating things.
+Understand,He tried to understand instructions.,tried understand to instructions. He,To know the meaning of something.
+Vibrant,The painting was vibrant colors.,was The colors. vibrant painting,Full of energy and life.
+Wise,It's wise to save money.,money. It's save to wise,Showing wisdom and good judgment.
+Xylophone,The child played xylophone today.,played The xylophone today. child,A musical instrument with wooden bars.
+Youthful,She has youthful happy spirit.,youthful happy She has spirit.,Having the qualities of youth; fresh and lively.
+Zeal,He worked with zeal project.,worked zeal He project. with,Great enthusiasm and energy for something.
+Kindness,A little kindness goes far.,A kindness goes far. little,Being nice and caring toward others.
+Learn,They learn something new today.,They learn today. new something,To gain knowledge or a new skill.
+Magic,The story was full magic.,was The story magic. full,Something mysterious or impossible to explain.
+Nature,We love being in nature.,love being We in nature.,Everything in the world not made by humans.
+Open,She decided to open up.,up. open decided She to,Not closed; ready to accept new things.
+Peace,He finds peace by ocean.,ocean. He peace finds by,A state of calm and no conflict.
+Quiet,The library was quiet today.,library quiet today. The was,Not making noise; calm and still.
+Respect,They respect their kind teacher.,They teacher. kind respect their,Treating others with kindness and care.
+Smile,Her smile brightened the room.,Her smile brightened the room.,A happy expression on your face.
+Trust,Important to trust your friends.,trust your Important to friends.,Believing in and depending on someone.
+Unique,Each snowflake is unique differently.,differently. is snowflake unique Each,Different from everyone else.
+Victory,They celebrated their team's victory.,celebrated victory. They their team's,Winning or achieving success.
+Wonder,He looked at stars in.,He at in. looked stars,Feeling amazement or curiosity.
+Excited,She was excited for trip.,excited trip. was She for,Feeling very happy and full of energy.
+Believe,Believe in yourself keep going.,Believe going. keep yourself in,To accept something as true.
+Change,The leaves change in autumn.,change The autumn. leaves in,To make or become different.
+Discover,We discover new things daily.,We daily. things new discover,To find something new.
+Enjoy,He likes to enjoy books.,He books. likes enjoy to,To take pleasure in something.
+Forgive,It's good to forgive mistakes.,to good mistakes. forgive It's,To stop feeling angry at someone.
+Gentle,The baby was gentle today.,baby was The today. gentle,Soft and kind in actions or words.
+Honest,Always be honest with everyone.,be honest everyone. Always with,Telling the truth and being trustworthy.
+Inspire,She wants to inspire reading.,inspire reading. wants She to,To encourage or inspire someone.
+Journey,Life is a beautiful journey.,Life a is beautiful journey.,A trip or experience of traveling.
+Kind,He is kind to everyone.,everyone. kind He to is,Being nice and caring toward others.
+Listen,It's important to listen carefully.,to carefully. It's important listen,To pay attention and hear carefully.
+Move,They move to new city.,new to city. move They,To change position or go from one place to another.
+Notice,I notice small details paintings.,small notice paintings. details I,To see or become aware of something.
+Open,The door was open all.,all. open door was The,Not closed; ready to accept new things.
+Patient,She was patient with line.,She patient was with line.,Able to wait without getting upset.
+Quiet,The room went quiet soon.,soon. went room The quiet,Not making noise; calm and still.
+Relax,He likes to relax weekends.,weekends. relax likes to He,To become calm and free from stress.
+Share,She loves to share toys.,loves She share to toys.,To give something to others.
+Teach,He will teach cooking soon.,He teach soon. cooking will,To help someone learn something.
+Understand,I understand what you mean.,understand what you I mean.,To know the meaning of something.
+Value,They value their time together.,value together. They time their,The importance or worth of something.
+Welcome,We welcome new friends warmly.,friends We warmly. new welcome,To greet someone kindly.
+X-ray,The doctor took an X-ray.,an X-ray. doctor took The,A medical image of bones.
+Young,The young bird learned flying.,The learned bird flying. young,Having little age; new or fresh.
+Zest,She added zest to dish.,added zest dish. She to,Great enthusiasm and energy.
+Active,He stays active playing soccer.,playing active He soccer. stays,Full of movement and energy.
+Brave,It was brave to climb.,climb. to It brave was,Showing courage and no fear.
+Care,They take care of pets.,care They pets. take of,To show kindness and concern.
+Delight,The cake was a delight.,a cake The delight. was,A feeling of great happiness.
+Energy,She has much energy mornings.,energy much mornings. She has,The strength to do something.
+Fun,It's fun to play snow.,fun to It's snow. play,Something enjoyable or amusing.
+Glow,The fireflies glow in dark.,glow dark. The in fireflies,"A soft, warm light."
+Happy,She felt happy her birthday.,happy birthday. her felt She,Feeling joyful and pleased.
+Ice,The pond was covered ice.,covered ice. pond was The,Frozen water.
+Jump,The kids love to jump.,to kids The love jump.,To push yourself off the ground.
+Kind,Being kind makes others happy.,kind happy. makes Being others,Being nice and caring toward others.
+Love,They love to dance outside.,outside. dance love to They,A deep feeling of care and affection.
+Move,Let's move the table here.,table the Let's move here.,To change position or go from one place to another.
+Nest,The bird built a nest.,The bird a nest. built,A home built by birds or a cozy place to live.
+Open,The flower began to open.,open. The to flower began,Not closed; ready to accept new things.
+Play,They play together every evening.,every evening. play together They,To do something fun and enjoyable.
+Quest,He was on a quest.,a on He quest. was,A search or adventure to find something.
+Rest,She decided to rest now.,rest now. She decided to,A time to relax or sleep.
+Shine,The sun will shine brightly.,The sun brightly. shine will,To give off light or be bright.
+Talk,They like to talk often.,often. They like talk to,To say words or have a conversation.
+Umbrella,She took an umbrella outside.,an outside. took umbrella She,A cover used to protect from rain or sun.
+Visit,We plan to visit soon.,soon. plan We visit to,To go see a person or place.
+Warm,The blanket kept her warm.,The kept her warm. blanket,"Having a nice, comfortable heat."
+Yawn,He let out big yawn.,big yawn. He out let,To open your mouth wide when tired.
+Zone,They entered quiet zone carefully.,quiet zone carefully. entered They,An area or space for a specific purpose.
+Abundant,The garden is abundant flowers.,flowers. is garden abundant The,Having more than enough of something.
+Bright,The bright light hurt eyes.,The eyes. light hurt bright,Giving off a lot of light or intelligence.
+Calm,The sea was calm today.,was sea The calm today.,Peaceful and without stress.
+Daring,She was daring to try.,try. She daring to was,Brave and willing to take risks.
+Effort,He put effort into work.,put effort work. into He,Hard work or trying your best.
+Focus,It's hard to focus now.,focus It's now. hard to,Paying close attention to something.
+Gentle,The breeze was gentle today.,was gentle today. The breeze,Soft and kind in actions or words.
+Hope,We always hope for best.,We hope always for best.,A feeling of wanting good things to happen.
+Invent,He likes to invent games.,games. invent likes to He,To create something new.
+Joy,The joy on her face.,face. The her joy on,A feeling of happiness and delight.
+Kind,It was kind of her.,her. It was of kind,Being nice and caring toward others.
+Laugh,They laugh at funny jokes.,jokes. at laugh They funny,A happy sound made when something is funny.
+Motivate,Her words motivate him much.,much. words Her him motivate,To encourage or inspire someone.
+Notice,Did you notice new sign?,new Did notice sign? you,To see or become aware of something.
+Optimistic,She is optimistic about future.,about is She optimistic future.,Having a positive view of the future.
+Proud,He was proud of achievements.,was proud He of achievements.,Feeling happy and confident about something.
+Quick,She gave quick response now.,response quick gave now. She,Happening fast or in a short time.
+Respect,They respect each other's opinions.,each respect They other's opinions.,Treating others with kindness and care.
+Safe,We feel safe at home.,safe We at feel home.,Free from danger or harm.
+Thankful,She is thankful for sun.,for She is thankful sun.,Feeling grateful and appreciating things.
+Understand,He tried to understand instructions.,tried instructions. to He understand,To know the meaning of something.
+Vibrant,The painting was vibrant colors.,painting colors. vibrant The was,Full of energy and life.
+Wise,It's wise to save money.,money. wise to save It's,Showing wisdom and good judgment.
+Xylophone,The child played xylophone today.,played today. xylophone child The,A musical instrument with wooden bars.
+Youthful,She has youthful happy spirit.,happy youthful has spirit. She,Having the qualities of youth; fresh and lively.
+Zeal,He worked with zeal project.,with He zeal worked project.,Great enthusiasm and energy for something.

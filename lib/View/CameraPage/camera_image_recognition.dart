@@ -273,7 +273,7 @@ class CameraImageRecognition extends StatelessWidget {
                                               .imageDetectionModel?.word ??
                                           'noTextAvailable'.tr;
                                       await Get.find<MicrophoneController>()
-                                          .speak(text);
+                                          .speak(text.replaceAll('-', ''));
                                     },
                                     child: SvgPicture.asset(
                                       '$imgUrl$soundImg',

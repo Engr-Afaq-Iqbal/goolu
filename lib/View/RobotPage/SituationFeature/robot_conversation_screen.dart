@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Utils/font_styles.dart';
 
@@ -24,12 +25,13 @@ class _RobotConversationScreenState extends State<RobotConversationScreen> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        backgroundColor: kLightBlue32A3B8,
         drawerEnableOpenDragGesture: false,
         appBar: AppStyles().customAppBar(),
         resizeToAvoidBottomInset: false,
         body: GetBuilder<RobotController>(builder: (RobotController robotCtrl) {
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Container(
@@ -38,54 +40,128 @@ class _RobotConversationScreenState extends State<RobotConversationScreen> {
                     // vertical: SizesDimensions.height(3),
                     horizontal: SizesDimensions.width(5),
                   ),
+                  margin: const EdgeInsets.only(top: 30),
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
                         topLeft:
                             Radius.circular(Dimensions.radiusDoubleExtraLarge),
                         topRight:
                             Radius.circular(Dimensions.radiusDoubleExtraLarge)),
-                    color: kLightYellow.withOpacity(0.3),
+                    color: kWhite,
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      size20h,
+                      customText(
+                        text: 'Situation',
+                        textStyle: regular18NavyBlue.copyWith(
+                          fontSize: 14,
+                        ),
+                      ),
+                      size10h,
+                      AppStyles.dividerLine(
+                        color: kLightBlue32A3B8,
+                        width: SizesDimensions.width(25),
+                        height: 2,
+                      ),
+                      size30h,
                       ClipRRect(
                         borderRadius: BorderRadius.circular(
                             Dimensions.radiusSingleExtraLarge),
                         child: Container(
-                          height: SizesDimensions.height(72),
+                          height: SizesDimensions.height(55),
                           decoration: BoxDecoration(
                             color: primaryColor,
                             borderRadius: BorderRadius.circular(
-                                Dimensions.radiusSingleExtraLarge),
+                              Dimensions.radiusSingleExtraLarge,
+                            ),
                           ),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: SizesDimensions.height(30),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      Dimensions.radiusSingleExtraLarge),
-                                ),
-                                child: Image.asset(
-                                  '$imgUrl$orderCoffeeImg',
-                                  width: Get.width,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              // if (robotCtrl.showAnswers == true)
-                              Column(
-                                // crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  botQuestion(),
-                                  size15h,
-                                  userAnswer(),
-                                  // size20h,
-                                ],
-                              )
-                            ],
+                          child: ListView.builder(
+                            itemCount: robotCtrl.displayItems.length,
+                            itemBuilder: (context, index) {
+                              return robotCtrl.displayItems[index];
+                            },
                           ),
                         ),
-                      )
+                      ),
+                      size40h,
+                      GestureDetector(
+                        onTap: () async {
+                          if (robotCtrl.feature3Speak) {
+                            robotCtrl.feature3Speak = false;
+                            robotCtrl.stopListening();
+                          } else {
+                            robotCtrl.feature3Speak = true;
+                            robotCtrl.startListening();
+                          }
+                          robotCtrl.update();
+                        },
+                        // onTap: () async {
+                        //   // if (robotCtrl.speechEnabled) {
+                        //   //   robotCtrl.feature3Speak = true;
+                        //   //   robotCtrl.startListening();
+                        //   //   robotCtrl.handleAnswer();
+                        //   //   robotCtrl.update();
+                        //   // }
+                        //
+                        //   // Prevent rapid toggling
+                        //   if (robotCtrl.feature3Speak) {
+                        //     robotCtrl.feature3Speak = false;
+                        //     robotCtrl.stopListening();
+                        //     robotCtrl.update();
+                        //     if (robotCtrl.isCustomer == true) {
+                        //       robotCtrl.handleAnswer();
+                        //     } else {
+                        //       robotCtrl.handleUserQuestion();
+                        //     }
+                        //
+                        //     // showToast(robotCtrl.wordsSpoken);
+                        //   } else {
+                        //     robotCtrl.feature3Speak = true;
+                        //     robotCtrl.startListening();
+                        //     robotCtrl.update();
+                        //   }
+                        //
+                        //   robotCtrl.update();
+                        // },
+                        child: Container(
+                          width: 75,
+                          height: 75,
+                          padding: const EdgeInsets.all(0),
+                          decoration: BoxDecoration(
+                            color: robotCtrl.feature3Speak == true
+                                ? kRedFFB7B8
+                                : k003366,
+                            boxShadow: robotCtrl.feature3Speak == true
+                                ? [
+                                    BoxShadow(
+                                      color: kRedFE5657.withOpacity(0.8),
+                                      spreadRadius: 3,
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 0),
+                                    ),
+                                  ]
+                                : [],
+                            border: Border.all(
+                              color: robotCtrl.feature3Speak == true
+                                  ? kRedFF9090
+                                  : Colors.transparent,
+                              width: 7,
+                            ),
+                            shape:
+                                BoxShape.circle, // Makes the container circular
+                          ),
+                          child: Center(
+                            child: SvgPicture.asset(
+                              '$imgUrl$whiteMicImg',
+                              color: robotCtrl.feature3Speak == true
+                                  ? kRedFE5657
+                                  : kWhite,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -93,69 +169,6 @@ class _RobotConversationScreenState extends State<RobotConversationScreen> {
             ],
           );
         }),
-      ),
-    );
-  }
-
-  Padding botQuestion() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          customText(
-            text: 'Bot',
-            textStyle: bold14NavyBlue.copyWith(
-              fontSize: 14,
-            ),
-          ),
-          size5h,
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            width: Get.width,
-            margin: const EdgeInsets.only(right: 30),
-            decoration: BoxDecoration(
-                color: kWhite,
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(Dimensions.radiusExtraLarge),
-                    bottomRight: Radius.circular(Dimensions.radiusExtraLarge),
-                    topRight: Radius.circular(Dimensions.radiusExtraLarge))),
-            child: SizedBox(
-              width: SizesDimensions.width(50),
-              child: customText(
-                  text: 'Hi, what can I get started for you today?',
-                  maxLines: 5,
-                  textStyle: regular14NavyBlue.copyWith(fontSize: 14)),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Padding userAnswer() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        width: Get.width,
-        margin: const EdgeInsets.only(right: 30),
-        decoration: BoxDecoration(
-            color: kDarkYellow,
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(Dimensions.radiusExtraLarge),
-                bottomLeft: Radius.circular(Dimensions.radiusExtraLarge),
-                topRight: Radius.circular(Dimensions.radiusExtraLarge))),
-        child: SizedBox(
-          width: SizesDimensions.width(50),
-          child: customText(
-              text: 'Hi, what can I get started for you today?',
-              maxLines: 5,
-              textStyle: regular14NavyBlue.copyWith(
-                fontSize: 14,
-                color: kWhite,
-              )),
-        ),
       ),
     );
   }
