@@ -348,7 +348,7 @@ class _RobotGeneralState extends State<RobotGeneral> {
           ),
           GestureDetector(
             onTap: () {
-              microphoneCtrl.speak(answer);
+              microphoneCtrl.speakEnglishAccent(answer);
             },
             child: SvgPicture.asset(
               '$imgUrl$speakerYellowImg',

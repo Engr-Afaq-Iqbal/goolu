@@ -332,8 +332,7 @@ class CameraImageToText extends StatelessWidget {
                                                   ?.detectedText
                                                   .toString() ??
                                               'noTextAvailable'.tr;
-                                          await Get.find<MicrophoneController>()
-                                              .speak(text);
+                                          await cameraCtrl.speak(text);
                                         },
                                         child: SvgPicture.asset(
                                           '$imgUrl$soundImg',
@@ -372,8 +371,7 @@ class CameraImageToText extends StatelessWidget {
                                                   .textToTranslationModel
                                                   ?.result ??
                                               'noTextAvailable'.tr;
-                                          await Get.find<MicrophoneController>()
-                                              .speak(text);
+                                          await cameraCtrl.speak(text);
                                         },
                                         child: SvgPicture.asset(
                                           '$imgUrl$soundImg',

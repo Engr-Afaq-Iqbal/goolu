@@ -100,6 +100,14 @@ class MicrophoneController extends GetxController {
     await flutterTts.speak(txt);
   }
 
+  Future<void> speakEnglishAccent(String txt) async {
+    await flutterTts.setLanguage('en-US');
+    logger.i(selectedLanguageCode);
+    await flutterTts.setPitch(1.0);
+    await flutterTts.setSpeechRate(0.4);
+    await flutterTts.speak(txt);
+  }
+
   Future<void> stopSpeaking() async {
     await flutterTts.stop();
   }

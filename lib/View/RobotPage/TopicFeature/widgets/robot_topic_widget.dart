@@ -73,7 +73,7 @@ class _RobotTopicWidgetState extends State<RobotTopicWidget> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    microphoneCtrl.speak(widget.questions);
+                    microphoneCtrl.speakEnglishAccent(widget.questions);
                   },
                   child: SvgPicture.asset(
                     '$imgUrl$speakerYellowImg',

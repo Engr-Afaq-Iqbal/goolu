@@ -66,6 +66,127 @@ class RobotController extends GetxController {
     await flutterTts.speak(txt);
   }
 
+  // Future<void> speakDialogue() async {
+  //   if (situationModel?.data == null || situationModel!.data!.isEmpty) {
+  //     return;
+  //   }
+  //
+  //   for (var datum in situationModel!.data!) {
+  //     if (datum.question != null) {
+  //       await speakWithVoice(datum.question!, isMale: true); // Barista (Male)
+  //     }
+  //     if (datum.answer != null) {
+  //       await speakWithVoice(datum.answer!, isMale: false); // Customer (Female)
+  //     }
+  //   }
+  // }
+
+  bool isStopped = false;
+  Future<void> speakDialogue() async {
+    if (situationModel?.data == null || situationModel!.data!.isEmpty) {
+      return;
+    }
+
+    isStopped = false; // Reset stop flag before speaking
+    isSpeaking.value = true; // Ensure UI updates correctly
+
+    for (int i = 0; i < situationModel!.data!.length; i++) {
+      var datum = situationModel!.data![i];
+      if (isStopped) break;
+
+      if (datum.question != null) {
+        await speakWithVoice(datum.question!, isMale: true);
+        if (isStopped) break;
+      }
+
+      if (datum.answer != null) {
+        await speakWithVoice(datum.answer!, isMale: false);
+        if (isStopped) break;
+      }
+    }
+  }
+
+  // Future<void> speakDialogue() async {
+  //   if (situationModel?.data == null || situationModel!.data!.isEmpty) {
+  //     return;
+  //   }
+  //
+  //   isStopped = false; // Reset stop flag before speaking
+  //
+  //   for (var datum in situationModel!.data!) {
+  //     if (isStopped) break; // Stop immediately if requested
+  //
+  //     if (datum.question != null) {
+  //       await speakWithVoice(datum.question!, isMale: true);
+  //       if (isStopped) break; // Stop after each segment if requested
+  //     }
+  //
+  //     if (datum.answer != null) {
+  //       await speakWithVoice(datum.answer!, isMale: false);
+  //       if (isStopped) break;
+  //     }
+  //   }
+  //
+  //   isSpeaking.value = false; // Ensure speaking state is reset
+  // }
+
+  // Future<void> speakWithVoice(String text, {required bool isMale}) async {
+  //   if (isStopped) return; // Stop immediately if requested
+  //
+  //   await flutterTts.setLanguage('en-US');
+  //   await flutterTts.setPitch(isMale ? 1.0 : 1.2);
+  //   await flutterTts.setSpeechRate(0.4);
+  //
+  //   await flutterTts.setVoice(
+  //       {'name': isMale ? 'en-us-twm' : 'en-us-wfm', 'locale': 'en-US'});
+  //
+  //   isSpeaking.value = true;
+  //
+  //   await flutterTts.speak(text);
+  //   int estimatedDuration = text.split(' ').length ~/ 2;
+  //
+  //   for (int i = 0; i < estimatedDuration; i++) {
+  //     await Future.delayed(const Duration(seconds: 1));
+  //     if (isStopped) {
+  //       await flutterTts.stop();
+  //       return;
+  //     }
+  //   }
+  //
+  //   isSpeaking.value = false;
+  // }
+  Future<void> speakWithVoice(String text, {required bool isMale}) async {
+    if (isStopped) return; // Stop immediately if requested
+
+    await flutterTts.setLanguage('en-US');
+    await flutterTts.setPitch(isMale ? 1.0 : 1.2);
+    await flutterTts.setSpeechRate(0.4);
+    await flutterTts.setVoice(
+        {'name': isMale ? 'en-us-twm' : 'en-us-wfm', 'locale': 'en-US'});
+
+    await flutterTts.speak(text);
+
+    int estimatedDuration =
+        (text.split(' ').length ~/ 2).clamp(1, 10); // Max 10 sec
+    for (int i = 0; i < estimatedDuration; i++) {
+      await Future.delayed(Duration(seconds: 1));
+      if (isStopped) {
+        await flutterTts.stop();
+        isSpeaking.value = false;
+        return;
+      }
+    }
+
+    if (!isStopped)
+      isSpeaking.value = false; // Set only after the last dialogue
+  }
+
+  void stopSpeakingSituation() async {
+    isStopped = true; // Set stop flag
+    await flutterTts.stop(); // Stop TTS immediately
+    isSpeaking.value = false;
+  }
+
   Future<void> stopSpeaking() async {
     await flutterTts.stop();
     isSpeaking.value = false;

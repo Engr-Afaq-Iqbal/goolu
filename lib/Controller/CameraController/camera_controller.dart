@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:goolu/View/CameraPage/camera_image_recognition.dart';
 import 'package:goolu/View/CameraPage/camera_image_to_text.dart';
@@ -18,7 +19,8 @@ import '../../Utils/utils.dart';
 import '../ExceptionalController/exceptional_controller.dart';
 
 class CameraController extends GetxController {
-  String selectedLanguage = 'English';
+  String selectedLanguage = 'Arabic';
+  String selectedLanguageCode = 'ar-SA';
   static List<NavBarModel> get viewSingleRobotTabsList => [
         NavBarModel(
           identifier: CameraPageItemEnum.tab1,
@@ -31,6 +33,15 @@ class CameraController extends GetxController {
           page: const CameraImageToText(),
         ),
       ];
+
+  final FlutterTts flutterTts = FlutterTts();
+  Future<void> speak(String txt) async {
+    await flutterTts.setLanguage(selectedLanguageCode);
+    logger.i(selectedLanguageCode);
+    await flutterTts.setPitch(1.0);
+    await flutterTts.setSpeechRate(0.4);
+    await flutterTts.speak(txt);
+  }
 
   TextToTranslationModel? textToTranslationModel;
   Future<bool> fetchTranslation({String? text}) async {

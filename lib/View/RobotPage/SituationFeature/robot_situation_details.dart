@@ -149,19 +149,55 @@ class _RobotSituationDetailsState extends State<RobotSituationDetails> {
                                         ),
                                       ),
                                       size30w,
-                                      Obx(() {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            robotCtrl.isSpeaking.value
-                                                ? robotCtrl.stopSpeaking()
-                                                : robotCtrl.speak(
-                                                    '${robotCtrl.situationModel?.dialogue}');
-                                          },
-                                          child: SvgPicture.asset(
-                                            '$imgUrl${robotCtrl.isSpeaking.value ? pauseImg : speakerYellowImg}',
+                                      // Obx(() {
+                                      //   return GestureDetector(
+                                      //     onTap: () {
+                                      //       robotCtrl.isSpeaking.value
+                                      //           ? robotCtrl.stopSpeaking()
+                                      //           : robotCtrl.speak(
+                                      //               '${robotCtrl.situationModel?.dialogue}');
+                                      //     },
+                                      //     child: SvgPicture.asset(
+                                      //       '$imgUrl${robotCtrl.isSpeaking.value ? pauseImg : speakerYellowImg}',
+                                      //     ),
+                                      //   );
+                                      // }),
+
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              robotCtrl
+                                                  .speakDialogue(); // Only starts speaking, no stop logic here
+                                            },
+                                            child: SvgPicture.asset(
+                                                '$imgUrl$speakerYellowImg'), // Play icon
                                           ),
-                                        );
-                                      }),
+                                          const SizedBox(
+                                              width:
+                                                  20), // Spacing between buttons
+                                          GestureDetector(
+                                            onTap: () {
+                                              robotCtrl
+                                                  .stopSpeakingSituation(); // Separate stop function
+                                            },
+                                            child: SvgPicture.asset(
+                                                '$imgUrl$pauseImg'), // Stop icon
+                                          ),
+                                        ],
+                                      ),
+                                      // Obx(() {
+                                      //   return GestureDetector(
+                                      //     onTap: () {
+                                      //       robotCtrl.isSpeaking.value
+                                      //           ? robotCtrl.stopSpeaking()
+                                      //           : robotCtrl.speakDialogue();
+                                      //     },
+                                      //     child: SvgPicture.asset(
+                                      //       '$imgUrl${robotCtrl.isSpeaking.value ? pauseImg : speakerYellowImg}',
+                                      //     ),
+                                      //   );
+                                      // }),
                                     ],
                                   ),
                                 size20h,

@@ -164,6 +164,30 @@ class _DashboardState extends State<Dashboard> {
                                                 width: 180,
                                                 child: customText(
                                                     text:
+                                                        'Syllable: ${dashboardCtrl.syllable}',
+                                                    maxLines: 5,
+                                                    textStyle:
+                                                        regular14White.copyWith(
+                                                      fontSize: 10,
+                                                    )),
+                                              ),
+                                              size10h,
+                                              SizedBox(
+                                                width: 180,
+                                                child: customText(
+                                                    text:
+                                                        'Form: ${dashboardCtrl.form}',
+                                                    maxLines: 5,
+                                                    textStyle:
+                                                        regular14White.copyWith(
+                                                      fontSize: 10,
+                                                    )),
+                                              ),
+                                              size10h,
+                                              SizedBox(
+                                                width: 180,
+                                                child: customText(
+                                                    text:
                                                         '${dashboardCtrl.definition}',
                                                     maxLines: 5,
                                                     textStyle:
