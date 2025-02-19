@@ -169,7 +169,7 @@ class RobotController extends GetxController {
     int estimatedDuration =
         (text.split(' ').length ~/ 2).clamp(1, 10); // Max 10 sec
     for (int i = 0; i < estimatedDuration; i++) {
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       if (isStopped) {
         await flutterTts.stop();
         isSpeaking.value = false;
@@ -177,8 +177,9 @@ class RobotController extends GetxController {
       }
     }
 
-    if (!isStopped)
+    if (!isStopped) {
       isSpeaking.value = false; // Set only after the last dialogue
+    }
   }
 
   void stopSpeakingSituation() async {

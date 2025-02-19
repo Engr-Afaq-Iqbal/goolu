@@ -6,7 +6,13 @@ Future appDialogBox(BuildContext context,
   return await showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text(dialogTitle ?? ''),
+      title: Text(
+        dialogTitle ?? '',
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       content: SizedBox(
         width: !isPortrait ? MediaQuery.of(context).size.width * 0.32 : null,
         child: contentPage,

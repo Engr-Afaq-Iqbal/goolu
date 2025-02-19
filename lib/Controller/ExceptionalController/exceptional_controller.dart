@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:goolu/Utils/font_styles.dart';
 
 import '../../Components/app_custom_button.dart';
 import '../../Components/app_dialog_box.dart';
@@ -43,14 +44,17 @@ class ExceptionController extends GetxController {
     debugPrint(Get.currentRoute);
     await appDialogBox(
       Get.context!,
-      dialogTitle: 'sorry_for_inconvenience'.tr,
+      dialogTitle: 'Sorry for inconvenience'.tr,
       contentPage: Stack(
         children: [
           SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(alertDesc),
+                customText(
+                  text: alertDesc,
+                  textStyle: regular12NavyBlue,
+                ),
                 const SizedBox(height: 50),
               ],
             ),
@@ -60,18 +64,14 @@ class ExceptionController extends GetxController {
             right: 15,
             child: AppCustomButton(
               onTap: () {
-                // if (Get.currentRoute != '/LoginPage')
-                //   submitException(
-                //     errMsg: alertDesc,
-                //     compError: exceptionFormat ?? resBody,
-                //   );
-                // Get.back();
+                Get.back();
               },
               btnTxtAxisSize: MainAxisSize.min,
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-              btnTxt: (Get.currentRoute == '/LoginPage')
-                  ? 'ok'.tr
-                  : 'submit_report'.tr,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 10,
+              ),
+              btnTxt: 'ok'.tr,
               // isOutLinedButton: true,
               // enableToolTip: false,
             ),

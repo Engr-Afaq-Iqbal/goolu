@@ -82,9 +82,10 @@ class ApiServices {
     }).onError((error, stackTrace) async {
       logger.e('StackTrace $stackTrace');
       await ExceptionController().exceptionAlert(
-        errorMsg: '$error',
+        errorMsg: 'Something went wrong\n Please try again later', //$error
         exceptionFormat:
-            methodExceptionFormat('GET', feedUrl, error, stackTrace),
+            // 'Error: ApiService -> postMultiPartMethod -> API Do = $feedUrl, Error => Something went wrong, Try again later',
+            'Error => Something went wrong, Try again later',
       );
       return null;
     });
@@ -187,9 +188,10 @@ class ApiServices {
     }).onError((error, stackTrace) async {
       logger.e('StackTrace $stackTrace');
       await ExceptionController().exceptionAlert(
-        errorMsg: '$error',
+        errorMsg: 'Something went wrong\n Please try again later', //$error
         exceptionFormat:
-            methodExceptionFormat('POST', feedUrl, error, stackTrace),
+            // 'Error: ApiService -> postMultiPartMethod -> API Do = $feedUrl, Error => Something went wrong, Try again later',
+            'Error => Something went wrong, Try again later',
       );
       return null;
     });
@@ -277,9 +279,10 @@ class ApiServices {
     } catch (error, stackTrace) {
       logger.e('StackTrace $stackTrace');
       await ExceptionController().exceptionAlert(
-        errorMsg: '$error',
+        errorMsg: 'Something went wrong\n Please try again later', //$error
         exceptionFormat:
-            methodExceptionFormat('POST', feedUrl, error, stackTrace),
+            // 'Error: ApiService -> postMultiPartMethod -> API Do = $feedUrl, Error => Something went wrong, Try again later',
+            'Error => Something went wrong, Try again later',
       );
       return null;
     }
@@ -387,7 +390,7 @@ class ApiServices {
       logger.e(
           'Error: ApiService -> postMultiPartMethod -> API Do = $feedUrl, Error => $error');
       await ExceptionController().exceptionAlert(
-        errorMsg: '$error',
+        errorMsg: 'Something went wrong\n Please try again later', //$error
         exceptionFormat:
             // 'Error: ApiService -> postMultiPartMethod -> API Do = $feedUrl, Error => Something went wrong, Try again later',
             'Error => Something went wrong, Try again later',
@@ -431,8 +434,12 @@ class ApiServices {
       logger.i('File saved at $filePath');
       showToast('fileDownloadedSuccessfully'.tr);
     } catch (e) {
-      showToast('Issue in downloading file');
-      logger.e('Error: $e');
+      await ExceptionController().exceptionAlert(
+        errorMsg: 'Something went wrong\n Please try again later', //$error
+        exceptionFormat:
+            // 'Error: ApiService -> postMultiPartMethod -> API Do = $feedUrl, Error => Something went wrong, Try again later',
+            'Error => Something went wrong, Try again later',
+      );
     }
   }
 
@@ -493,9 +500,10 @@ class ApiServices {
     } catch (error, stackTrace) {
       logger.e('StackTrace $stackTrace');
       await ExceptionController().exceptionAlert(
-        errorMsg: '$error',
+        errorMsg: 'Something went wrong\n Please try again later', //$error
         exceptionFormat:
-            methodExceptionFormat('GET', feedUrl, error, stackTrace),
+            // 'Error: ApiService -> postMultiPartMethod -> API Do = $feedUrl, Error => Something went wrong, Try again later',
+            'Error => Something went wrong, Try again later',
       );
       return null;
     }
@@ -599,9 +607,10 @@ class ApiServices {
     }).onError((error, stackTrace) async {
       logger.e('StackTrace $stackTrace');
       await ExceptionController().exceptionAlert(
-        errorMsg: '$error',
+        errorMsg: 'Something went wrong\n Please try again later', //$error
         exceptionFormat:
-            methodExceptionFormat('DELETE', feedUrl, error, stackTrace),
+            // 'Error: ApiService -> postMultiPartMethod -> API Do = $feedUrl, Error => Something went wrong, Try again later',
+            'Error => Something went wrong, Try again later',
       );
       return null;
     });
@@ -697,9 +706,10 @@ class ApiServices {
     }).onError((error, stackTrace) async {
       logger.e('StackTrace $stackTrace');
       await ExceptionController().exceptionAlert(
-        errorMsg: '$error',
+        errorMsg: 'Something went wrong\n Please try again later', //$error
         exceptionFormat:
-            methodExceptionFormat('PATCH', feedUrl, error, stackTrace),
+            // 'Error: ApiService -> postMultiPartMethod -> API Do = $feedUrl, Error => Something went wrong, Try again later',
+            'Error => Something went wrong, Try again later',
       );
       return null;
     });
