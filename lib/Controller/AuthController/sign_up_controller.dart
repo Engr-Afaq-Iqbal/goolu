@@ -44,6 +44,8 @@ class SignupController extends GetxController {
     iqamaNumberCtrl.clear();
     dateOfBirthCtrl.clear();
     phoneNumberCtrl.clear();
+    selectedItem = null;
+    selectedGenderItem = null;
   }
 
   int get selectedType => _selectedType;
