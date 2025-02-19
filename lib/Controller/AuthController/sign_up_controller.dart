@@ -163,6 +163,7 @@ class SignupController extends GetxController {
       return true;
     } on FirebaseAuthException catch (e) {
       // Handle errors
+      showToast('$e');
       logger.e('An unknown error occurred.-->> $e');
     }
     return false;

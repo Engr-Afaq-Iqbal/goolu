@@ -9,7 +9,6 @@ import '../../../Components/app_form_field.dart';
 import '../../../Config/app_config.dart';
 import '../../../Utils/dimensions.dart';
 import '../../../Utils/font_styles.dart';
-import '../../Components/app_form_field_phone.dart';
 import '../../Controller/AuthController/sign_up_controller.dart';
 import '../../Theme/colors.dart';
 import '../../Utils/image_urls.dart';
@@ -82,20 +81,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     AppFormField(
                         fieldBgColor: kF8F9FF,
                         borderColor: kDarkGreen5b99a5,
-                        controller: signUpCtrl.iqamaNumberCtrl,
-                        labelText: 'Iqama Number',
-                        hintText: '1234567890',
-                        keyboardType: TextInputType.number,
-                        validator: (String? v) {
-                          if (v!.isEmpty) {
-                            return 'Iqama number required';
-                          }
-                          return null;
-                        }),
-                    size15h,
-                    AppFormField(
-                        fieldBgColor: kF8F9FF,
-                        borderColor: kDarkGreen5b99a5,
                         controller: signUpCtrl.emailCtrl,
                         labelText: 'Email',
                         hintText: 'accountname@domain.com',
@@ -107,8 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           return null;
                         }),
                     size15h,
-                    AppFormFieldPhone(
-                      maxLength: 9,
+                    AppFormField(
                       controller: signUpCtrl.phoneNumberCtrl,
                       labelText: 'phoneNumber'.tr,
                       hintText: 'phoneNumber'.tr,
@@ -119,7 +103,23 @@ class _SignUpPageState extends State<SignUpPage> {
                         }
                         return null;
                       },
+                      onChanged: (v) {
+                        signUpCtrl.update();
+                      },
                     ),
+                    // AppFormFieldPhone(
+                    //   maxLength: 9,
+                    //   controller: signUpCtrl.phoneNumberCtrl,
+                    //   labelText: 'phoneNumber'.tr,
+                    //   hintText: 'phoneNumber'.tr,
+                    //   keyboardType: TextInputType.number,
+                    //   validator: (String? v) {
+                    //     if (v!.isEmpty) {
+                    //       return 'Phone number required'.tr;
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
                     size15h,
                     AppFormField(
                       controller: signUpCtrl.dateOfBirthCtrl,
