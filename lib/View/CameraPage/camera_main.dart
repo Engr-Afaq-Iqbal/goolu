@@ -129,15 +129,13 @@ class _CameraMainState extends State<CameraMain> {
                                 onTapButton1: () async {
                                   ///to upload the positive data
                                   // Get.find<CameraSpeechController>()
-                                  //     .uploadSampleDataPositive();
+                                  //     .uploadAllSampleDataNegative();
                                   Get.to(() => const CameraSpeech(
                                         isCollectionPositive: true,
                                       ));
                                 },
                                 onTapButton2: () async {
                                   ///to upload the negative data
-                                  // Get.find<CameraSpeechController>()
-                                  //     .uploadSampleDataNegative();
                                   Get.to(() => const CameraSpeech(
                                         isCollectionPositive: false,
                                       ));

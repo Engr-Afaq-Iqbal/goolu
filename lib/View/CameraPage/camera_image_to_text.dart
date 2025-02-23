@@ -332,7 +332,7 @@ class CameraImageToText extends StatelessWidget {
                                                   ?.detectedText
                                                   .toString() ??
                                               'noTextAvailable'.tr;
-                                          await cameraCtrl.speak(text);
+                                          await cameraCtrl.speakEnglish(text);
                                         },
                                         child: SvgPicture.asset(
                                           '$imgUrl$soundImg',

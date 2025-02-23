@@ -43,6 +43,14 @@ class CameraController extends GetxController {
     await flutterTts.speak(txt);
   }
 
+  Future<void> speakEnglish(String txt) async {
+    await flutterTts.setLanguage('en-US');
+    logger.i(selectedLanguageCode);
+    await flutterTts.setPitch(1.0);
+    await flutterTts.setSpeechRate(0.4);
+    await flutterTts.speak(txt);
+  }
+
   TextToTranslationModel? textToTranslationModel;
   Future<bool> fetchTranslation({String? text}) async {
     Map<String, String> field = {

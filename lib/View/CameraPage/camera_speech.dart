@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
-import 'package:goolu/Components/app_custom_button.dart';
 
+import '../../Components/app_custom_button.dart';
 import '../../Config/app_config.dart';
 import '../../Controller/CameraController/camera_speech_controller.dart';
 import '../../Theme/colors.dart';
@@ -203,61 +203,126 @@ class _CameraSpeechState extends State<CameraSpeech>
                     if (cameraCtrl.firebaseImageAnswer == null)
                       progressIndicator()
                     else if (cameraCtrl.isAnswerMatched == true)
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 30,
-                          right: 25,
-                          left: 25,
+                      Container(
+                        height: 200,
+                        width: SizesDimensions.width(100),
+                        margin: const EdgeInsets.all(20),
+                        // padding: const EdgeInsets.symmetric(
+                        //     horizontal: 20, vertical: 20),
+                        decoration: BoxDecoration(
+                          color: kD6ECF0,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 0,
+                              blurRadius: 1,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.radiusDoubleExtraLarge),
                         ),
-                        child: AppCustomButton(
-                          title: customText(
-                            text: 'Practice next',
-                            textStyle: bold16White,
-                          ),
-                          onTap: () {
-                            cameraCtrl.isAnswerMatched = false;
-                            cameraCtrl.wordsSpoken = '';
-                            cameraCtrl.firebaseImageAnswer = '';
-                            cameraCtrl.firebaseImageUrl = '';
-                            cameraCtrl.isResult = false;
-                            cameraCtrl.initSpeech();
-                            cameraCtrl.fetchAndDisplayData(
-                                isCollectionPositive:
-                                    widget.isCollectionPositive);
-                            _flutterTts.setStartHandler(() {
-                              setState(() => _isSpeaking = true);
-                            });
+                        child: Stack(
+                          // mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Positioned(
+                              left: 10,
+                              bottom: 0,
+                              right: 10,
+                              top: 0,
+                              child: SvgPicture.asset('$imgUrl$celebrationImg'),
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 30,
+                              child: SvgPicture.asset(
+                                  '$imgUrl$personCelebrationImg'),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  customText(
+                                    text: 'Well done',
+                                    textStyle: bold16NavyBlue.copyWith(
+                                      fontSize: 16,
+                                      color: kLightBlue32A3B8,
+                                    ),
+                                  ),
+                                  customText(
+                                    text: 'You have passed this modal answer',
+                                    textStyle: regular16NavyBlue.copyWith(
+                                      fontSize: 14,
+                                      color: kLightBlue32A3B8,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 30,
+                                      right: 130,
+                                      left: 0,
+                                    ),
+                                    child: AppCustomButton(
+                                      title: customText(
+                                        text: 'Practice next',
+                                        textStyle: bold16White,
+                                      ),
+                                      onTap: () {
+                                        cameraCtrl.isAnswerMatched = false;
+                                        cameraCtrl.wordsSpoken = '';
+                                        cameraCtrl.firebaseImageAnswer = '';
+                                        cameraCtrl.firebaseImageUrl = '';
+                                        cameraCtrl.isResult = false;
+                                        cameraCtrl.initSpeech();
+                                        cameraCtrl.fetchAndDisplayData(
+                                            isCollectionPositive:
+                                                widget.isCollectionPositive);
+                                        _flutterTts.setStartHandler(() {
+                                          setState(() => _isSpeaking = true);
+                                        });
 
-                            _flutterTts.setCompletionHandler(() {
-                              setState(() => _isSpeaking = false);
-                            });
+                                        _flutterTts.setCompletionHandler(() {
+                                          setState(() => _isSpeaking = false);
+                                        });
 
-                            _flutterTts.setErrorHandler((error) {
-                              setState(() => _isSpeaking = false);
-                            });
+                                        _flutterTts.setErrorHandler((error) {
+                                          setState(() => _isSpeaking = false);
+                                        });
 
-                            // Initialize the animation controller
-                            _animationController = AnimationController(
-                              vsync: this,
-                              duration: const Duration(milliseconds: 500),
-                            )..repeat(reverse: true);
+                                        // Initialize the animation controller
+                                        _animationController =
+                                            AnimationController(
+                                          vsync: this,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                        )..repeat(reverse: true);
 
-                            // Configure TTS handlers
-                            _flutterTts.setStartHandler(() {
-                              setState(() => _isSpeaking = true);
-                              _animationController.repeat(reverse: true);
-                            });
+                                        // Configure TTS handlers
+                                        _flutterTts.setStartHandler(() {
+                                          setState(() => _isSpeaking = true);
+                                          _animationController.repeat(
+                                              reverse: true);
+                                        });
 
-                            _flutterTts.setCompletionHandler(() {
-                              setState(() => _isSpeaking = false);
-                              _animationController.stop();
-                            });
+                                        _flutterTts.setCompletionHandler(() {
+                                          setState(() => _isSpeaking = false);
+                                          _animationController.stop();
+                                        });
 
-                            _flutterTts.setErrorHandler((error) {
-                              setState(() => _isSpeaking = false);
-                              _animationController.stop();
-                            });
-                          },
+                                        _flutterTts.setErrorHandler((error) {
+                                          setState(() => _isSpeaking = false);
+                                          _animationController.stop();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       )
                     else
