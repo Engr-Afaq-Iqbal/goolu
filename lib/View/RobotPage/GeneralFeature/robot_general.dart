@@ -83,6 +83,7 @@ class _RobotGeneralState extends State<RobotGeneral> {
                                 robotCtrl.questionAnswer = -1;
                                 robotCtrl.showAnswers = false;
                                 robotCtrl.generateAnswersModel = null;
+                                Get.find<MicrophoneController>().stopSpeaking();
                                 robotCtrl.update();
                                 Get.back();
                               },

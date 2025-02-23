@@ -8,6 +8,7 @@ import 'package:goolu/View/RobotPage/TopicFeature/widgets/robot_topic_widget.dar
 
 import '../../../Components/app_form_field.dart';
 import '../../../Config/app_config.dart';
+import '../../../Controller/MicrophoneController/microphone_controller.dart';
 import '../../../Theme/colors.dart';
 import '../../../Utils/image_urls.dart';
 import '../../../Utils/utils.dart';
@@ -79,6 +80,7 @@ class _RobotTopicState extends State<RobotTopic> {
                               robotCtrl.showAnswers = false;
                               robotCtrl.generateAnswersModel = null;
                               robotCtrl.topicCtrl.clear();
+                              Get.find<MicrophoneController>().stopSpeaking();
                               robotCtrl.update();
                               Get.back();
                             },
