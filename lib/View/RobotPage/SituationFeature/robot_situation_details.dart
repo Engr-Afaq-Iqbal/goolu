@@ -145,7 +145,7 @@ class _RobotSituationDetailsState extends State<RobotSituationDetails> {
                                         maxLines: 2,
                                         textStyle: bold18NavyBlue.copyWith(
                                           fontSize: 16,
-                                          color: Colors.amber,
+                                          color: kDarkYellow,
                                         ),
                                       ),
                                       size30w,
@@ -171,7 +171,9 @@ class _RobotSituationDetailsState extends State<RobotSituationDetails> {
                                                   .speakDialogue(); // Only starts speaking, no stop logic here
                                             },
                                             child: SvgPicture.asset(
-                                                '$imgUrl$speakerYellowImg'), // Play icon
+                                              '$imgUrl$speakerYellowImg',
+                                              color: kDarkYellow,
+                                            ), // Play icon
                                           ),
                                           const SizedBox(
                                               width:
@@ -182,7 +184,9 @@ class _RobotSituationDetailsState extends State<RobotSituationDetails> {
                                                   .stopSpeakingSituation(); // Separate stop function
                                             },
                                             child: SvgPicture.asset(
-                                                '$imgUrl$pauseImg'), // Stop icon
+                                              '$imgUrl$pauseImg',
+                                              color: kDarkYellow,
+                                            ), // Stop icon
                                           ),
                                         ],
                                       ),

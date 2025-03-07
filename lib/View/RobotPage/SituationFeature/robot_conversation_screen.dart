@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:goolu/Components/app_custom_button.dart';
 import 'package:goolu/Utils/font_styles.dart';
 
 import '../../../Config/app_config.dart';
@@ -10,7 +11,8 @@ import '../../../Utils/dimensions.dart';
 import '../../../Utils/image_urls.dart';
 
 class RobotConversationScreen extends StatefulWidget {
-  const RobotConversationScreen({super.key});
+  bool isQuestion;
+  RobotConversationScreen({super.key, this.isQuestion = false});
 
   @override
   State<RobotConversationScreen> createState() =>
@@ -18,6 +20,13 @@ class RobotConversationScreen extends StatefulWidget {
 }
 
 class _RobotConversationScreenState extends State<RobotConversationScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    Get.find<RobotController>().isQuestion = widget.isQuestion;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -86,82 +95,96 @@ class _RobotConversationScreenState extends State<RobotConversationScreen> {
                         ),
                       ),
                       size40h,
-                      GestureDetector(
-                        onTap: () async {
-                          if (robotCtrl.feature3Speak) {
-                            robotCtrl.feature3Speak = false;
-                            robotCtrl.stopListening();
-                          } else {
-                            robotCtrl.feature3Speak = true;
-                            robotCtrl.startListening();
-                          }
-                          robotCtrl.update();
-                        },
-                        // onTap: () async {
-                        //   // if (robotCtrl.speechEnabled) {
-                        //   //   robotCtrl.feature3Speak = true;
-                        //   //   robotCtrl.startListening();
-                        //   //   robotCtrl.handleAnswer();
-                        //   //   robotCtrl.update();
-                        //   // }
-                        //
-                        //   // Prevent rapid toggling
-                        //   if (robotCtrl.feature3Speak) {
-                        //     robotCtrl.feature3Speak = false;
-                        //     robotCtrl.stopListening();
-                        //     robotCtrl.update();
-                        //     if (robotCtrl.isCustomer == true) {
-                        //       robotCtrl.handleAnswer();
-                        //     } else {
-                        //       robotCtrl.handleUserQuestion();
-                        //     }
-                        //
-                        //     // showToast(robotCtrl.wordsSpoken);
-                        //   } else {
-                        //     robotCtrl.feature3Speak = true;
-                        //     robotCtrl.startListening();
-                        //     robotCtrl.update();
-                        //   }
-                        //
-                        //   robotCtrl.update();
-                        // },
-                        child: Container(
-                          width: 75,
-                          height: 75,
-                          padding: const EdgeInsets.all(0),
-                          decoration: BoxDecoration(
-                            color: robotCtrl.feature3Speak == true
-                                ? kRedFFB7B8
-                                : k003366,
-                            boxShadow: robotCtrl.feature3Speak == true
-                                ? [
-                                    BoxShadow(
-                                      color: kRedFE5657.withOpacity(0.8),
-                                      spreadRadius: 3,
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 0),
-                                    ),
-                                  ]
-                                : [],
-                            border: Border.all(
+                      if (robotCtrl.completedSituation == false)
+                        GestureDetector(
+                          onTap: () async {
+                            if (robotCtrl.feature3Speak) {
+                              robotCtrl.feature3Speak = false;
+                              robotCtrl.stopListening();
+                            } else {
+                              robotCtrl.feature3Speak = true;
+                              robotCtrl.startListening();
+                            }
+                            robotCtrl.update();
+                          },
+                          // onTap: () async {
+                          //   // if (robotCtrl.speechEnabled) {
+                          //   //   robotCtrl.feature3Speak = true;
+                          //   //   robotCtrl.startListening();
+                          //   //   robotCtrl.handleAnswer();
+                          //   //   robotCtrl.update();
+                          //   // }
+                          //
+                          //   // Prevent rapid toggling
+                          //   if (robotCtrl.feature3Speak) {
+                          //     robotCtrl.feature3Speak = false;
+                          //     robotCtrl.stopListening();
+                          //     robotCtrl.update();
+                          //     if (robotCtrl.isCustomer == true) {
+                          //       robotCtrl.handleAnswer();
+                          //     } else {
+                          //       robotCtrl.handleUserQuestion();
+                          //     }
+                          //
+                          //     // showToast(robotCtrl.wordsSpoken);
+                          //   } else {
+                          //     robotCtrl.feature3Speak = true;
+                          //     robotCtrl.startListening();
+                          //     robotCtrl.update();
+                          //   }
+                          //
+                          //   robotCtrl.update();
+                          // },
+                          child: Container(
+                            width: 75,
+                            height: 75,
+                            padding: const EdgeInsets.all(0),
+                            decoration: BoxDecoration(
                               color: robotCtrl.feature3Speak == true
-                                  ? kRedFF9090
-                                  : Colors.transparent,
-                              width: 7,
+                                  ? kRedFFB7B8
+                                  : k003366,
+                              boxShadow: robotCtrl.feature3Speak == true
+                                  ? [
+                                      BoxShadow(
+                                        color: kRedFE5657.withOpacity(0.8),
+                                        spreadRadius: 3,
+                                        blurRadius: 4,
+                                        offset: const Offset(0, 0),
+                                      ),
+                                    ]
+                                  : [],
+                              border: Border.all(
+                                color: robotCtrl.feature3Speak == true
+                                    ? kRedFF9090
+                                    : Colors.transparent,
+                                width: 7,
+                              ),
+                              shape: BoxShape
+                                  .circle, // Makes the container circular
                             ),
-                            shape:
-                                BoxShape.circle, // Makes the container circular
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              '$imgUrl$whiteMicImg',
-                              color: robotCtrl.feature3Speak == true
-                                  ? kRedFE5657
-                                  : kWhite,
+                            child: Center(
+                              child: SvgPicture.asset(
+                                '$imgUrl$whiteMicImg',
+                                color: robotCtrl.feature3Speak == true
+                                    ? kRedFE5657
+                                    : kWhite,
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                        )
+                      else
+                        AppCustomButton(
+                          title: customText(
+                            text: 'Practice Next',
+                            textStyle: regular14White,
+                          ),
+                          onTap: () {
+                            robotCtrl.resetData();
+                            robotCtrl.completedSituation = false;
+                            robotCtrl.update();
+                            Get.close(4);
+                          },
+                        )
                     ],
                   ),
                 ),

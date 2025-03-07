@@ -271,6 +271,7 @@ class RobotController extends GetxController {
   //   // stopListening();
   // }
 
+  bool completedSituation = false;
   void handleAnswer() {
     final currentData = situationModel!.data![currentQuestionIndex];
     // Clean user response and correct answer
@@ -299,6 +300,7 @@ class RobotController extends GetxController {
         displayItems.add(const BotQuestionWidget(
           question: "Great job! You've completed.",
         ));
+        completedSituation = true;
       }
     } else {
       // If answer doesn't match
@@ -584,10 +586,12 @@ class RobotController extends GetxController {
     }
   }
 
+  bool isQuestion = false;
   void startListening() async {
     if (speechEnabled && !speechToText.isListening) {
       await speechToText.listen(
         onResult: onSpeechResult,
+        localeId: "en-US",
         listenMode: ListenMode.dictation,
         cancelOnError: true,
       );
@@ -613,6 +617,22 @@ class RobotController extends GetxController {
     update();
   }
 
+  String convertToAmericanSpelling(String text) {
+    Map<String, String> britishToAmerican = {
+      "centre": "center",
+      "colour": "color",
+      "favourite": "favorite",
+      "realise": "realize",
+      // Add more if needed
+    };
+
+    britishToAmerican.forEach((british, american) {
+      text = text.replaceAll(british, american);
+    });
+
+    return text;
+  }
+
   // onSpeechResult(SpeechRecognitionResult result) {
   //   wordsSpoken = result.recognizedWords;
   //   logger.i("Recognized Words: $wordsSpoken");
@@ -624,9 +644,15 @@ class RobotController extends GetxController {
   onSpeechResult(SpeechRecognitionResult result) {
     if (result.finalResult) {
       // Only process final results
-      wordsSpoken = result.recognizedWords;
+      wordsSpoken = convertToAmericanSpelling(result.recognizedWords);
+      result.recognizedWords;
       logger.i("Final Recognized Words: $wordsSpoken");
-      handleAnswer();
+      if (isQuestion == false) {
+        handleAnswer();
+      } else {
+        handleUserQuestion();
+      }
+
       update();
     } else {
       logger.i("Interim Result: ${result.recognizedWords}");

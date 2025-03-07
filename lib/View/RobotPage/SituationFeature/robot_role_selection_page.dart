@@ -10,7 +10,7 @@ import '../../../Theme/colors.dart';
 import '../../../Utils/dimensions.dart';
 import '../../../Utils/font_styles.dart';
 
-class RobotRoleSelectionPage extends StatelessWidget {
+class RobotRoleSelectionPage extends StatefulWidget {
   final String? title1;
   final String? title2;
   const RobotRoleSelectionPage({
@@ -18,6 +18,18 @@ class RobotRoleSelectionPage extends StatelessWidget {
     this.title1,
     this.title2,
   });
+
+  @override
+  State<RobotRoleSelectionPage> createState() => _RobotRoleSelectionPageState();
+}
+
+class _RobotRoleSelectionPageState extends State<RobotRoleSelectionPage> {
+  @override
+  void initState() {
+    Get.find<RobotController>().resetData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -91,7 +103,9 @@ class RobotRoleSelectionPage extends StatelessWidget {
                           AppCustomButton(
                             onTap: () {
                               robotCtrl.displayItems.clear();
-                              Get.to(() => const RobotConversationScreen());
+                              Get.to(() => RobotConversationScreen(
+                                    isQuestion: true,
+                                  ));
                             },
                             title: customText(
                               text:
@@ -111,7 +125,9 @@ class RobotRoleSelectionPage extends StatelessWidget {
                                     .question,
                               ));
                               robotCtrl.update();
-                              Get.to(() => const RobotConversationScreen());
+                              Get.to(() => RobotConversationScreen(
+                                    isQuestion: false,
+                                  ));
                             },
                             title: customText(
                               text:
