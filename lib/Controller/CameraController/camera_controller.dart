@@ -44,7 +44,7 @@ class CameraController extends GetxController {
   }
 
   Future<void> speakEnglish(String txt) async {
-    await flutterTts.setLanguage('en-US');
+    // await flutterTts.setLanguage('en-US');
     logger.i(selectedLanguageCode);
     await flutterTts.setPitch(1.0);
     await flutterTts.setSpeechRate(0.4);

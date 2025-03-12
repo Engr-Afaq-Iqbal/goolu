@@ -165,7 +165,7 @@ abstract class LanguageMenuItemsForApi2 {
   );
   static const farsi = LanguageMenuItemForApi2(
     text: 'Farsi',
-    languageCode: 'fa-IR',
+    languageCode: 'ar-SA',
   );
   static const english = LanguageMenuItemForApi2(
     text: 'English',

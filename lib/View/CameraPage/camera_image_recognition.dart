@@ -237,76 +237,78 @@ class CameraImageRecognition extends StatelessWidget {
                       ),
                     size30h,
                     if (cameraCtrl.imageDetectionModel != null)
-                      Center(
-                        child: Container(
-                          // height: SizesDimensions.height(30),
-                          width: SizesDimensions.width(90),
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                Dimensions.radiusDoubleExtraLarge),
-                            color: kDarkYellow,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // _audioFile == null
-                              //     ? const Text('No audio selected')
-                              //     : Text('Audio selected: ${_audioFile!.path}'),
-                              //
-                              size20h,
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: SizesDimensions.width(50),
-                                    child: customText(
-                                        text:
-                                            '${cameraCtrl.imageDetectionModel?.word}',
-                                        textStyle: bold20White,
-                                        maxLines: 10),
-                                  ),
-                                  // size20w,
-                                  GestureDetector(
-                                    onTap: () async {
-                                      final text = cameraCtrl
-                                              .imageDetectionModel?.word ??
-                                          'noTextAvailable'.tr;
-                                      await Get.find<MicrophoneController>()
-                                          .speak(text.replaceAll('-', ''));
-                                    },
-                                    child: SvgPicture.asset(
-                                      '$imgUrl$soundImg',
-                                      height: 25,
-                                      width: 25,
-                                      colorFilter: ColorFilter.mode(
-                                        kWhite,
-                                        BlendMode.srcIn,
+                      Expanded(
+                        child: Center(
+                          child: Container(
+                            // height: SizesDimensions.height(50),
+                            width: SizesDimensions.width(90),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  Dimensions.radiusDoubleExtraLarge),
+                              color: kDarkYellow,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // _audioFile == null
+                                //     ? const Text('No audio selected')
+                                //     : Text('Audio selected: ${_audioFile!.path}'),
+                                //
+                                size20h,
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: SizesDimensions.width(50),
+                                      child: customText(
+                                          text:
+                                              '${cameraCtrl.imageDetectionModel?.word}',
+                                          textStyle: bold20White,
+                                          maxLines: 10),
+                                    ),
+                                    // size20w,
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final text = cameraCtrl
+                                                .imageDetectionModel?.word ??
+                                            'noTextAvailable'.tr;
+                                        await Get.find<MicrophoneController>()
+                                            .speak(text.replaceAll('-', ''));
+                                      },
+                                      child: SvgPicture.asset(
+                                        '$imgUrl$soundImg',
+                                        height: 25,
+                                        width: 25,
+                                        colorFilter: ColorFilter.mode(
+                                          kWhite,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              size30h,
-                              SizedBox(
-                                height: SizesDimensions.height(20),
-                                // width: SizesDimensions.width(30),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      customText(
-                                        text:
-                                            '${cameraCtrl.imageDetectionModel?.definition}',
-                                        textStyle: regular16NavyBlue.copyWith(
-                                          fontSize: 14,
+                                  ],
+                                ),
+                                size30h,
+                                SizedBox(
+                                  height: SizesDimensions.height(20),
+                                  // width: SizesDimensions.width(30),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        customText(
+                                          text:
+                                              '${cameraCtrl.imageDetectionModel?.definition}',
+                                          textStyle: regular16NavyBlue.copyWith(
+                                            fontSize: 14,
+                                          ),
+                                          maxLines: 30,
                                         ),
-                                        maxLines: 30,
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),

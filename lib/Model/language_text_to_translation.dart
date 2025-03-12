@@ -62,7 +62,7 @@ abstract class LanguageTextToTranslations {
   );
   static const farsi = LanguageTextToTranslation(
     text: 'Farsi',
-    languageCode: 'fa-IR',
+    languageCode: 'ar-SA',
   );
   static const english = LanguageTextToTranslation(
     text: 'English',
