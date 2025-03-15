@@ -77,6 +77,7 @@ dependencies:
   wave:
   audioplayers:
   audio_waveforms:
+  string_similarity:
 
 
 dev_dependencies:

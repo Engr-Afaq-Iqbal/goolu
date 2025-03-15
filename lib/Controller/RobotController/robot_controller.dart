@@ -28,6 +28,8 @@ import '../../View/RobotPage/SituationFeature/widgets/bot_user_answer_widget.dar
 import '../ExceptionalController/exceptional_controller.dart';
 
 class RobotController extends GetxController {
+  bool completedSituation = false;
+  bool isQuestion = false;
   TextEditingController questionCtrl = TextEditingController();
   TextEditingController answerCtrl = TextEditingController();
   List<String> questionsList = [];
