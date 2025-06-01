@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:goolu/Utils/image_urls.dart';
 
+import '../../../../Config/app_config.dart';
+import '../../../../Controller/MicrophoneController/microphone_controller.dart';
 import '../../../../Theme/colors.dart';
 import '../../../../Utils/dimensions.dart';
 import '../../../../Utils/font_styles.dart';
@@ -26,19 +30,45 @@ class BotQuestionWidget extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             width: Get.width,
-            margin: const EdgeInsets.only(right: 30),
+            margin: const EdgeInsets.only(right: 27),
             decoration: BoxDecoration(
                 color: kWhite,
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(Dimensions.radiusExtraLarge),
                     bottomRight: Radius.circular(Dimensions.radiusExtraLarge),
                     topRight: Radius.circular(Dimensions.radiusExtraLarge))),
-            child: SizedBox(
-              width: SizesDimensions.width(50),
-              child: customText(
-                  text: '$question',
-                  maxLines: 5,
-                  textStyle: regular14NavyBlue.copyWith(fontSize: 14)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: SizesDimensions.width(60),
+                  child: customText(
+                      text: '$question',
+                      maxLines: 5,
+                      textStyle: regular14NavyBlue.copyWith(fontSize: 14)),
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () async {
+                    final microphoneCtrl = Get.find<MicrophoneController>();
+
+                    if (microphoneCtrl.isSpeaking) {
+                      // Stop speaking if currently speaking
+                      await microphoneCtrl.stopSpeaking();
+                      microphoneCtrl.isSpeaking = false;
+                    } else {
+                      // Start speaking if not speaking
+                      await microphoneCtrl.speakEnglishAccent(question ?? '');
+                      microphoneCtrl.isSpeaking = true;
+                    }
+
+                    microphoneCtrl.update(); // Notify UI
+                  },
+                  child: SvgPicture.asset(
+                    '$imgUrl$speakerYellowImg',
+                  ),
+                )
+              ],
             ),
           )
         ],

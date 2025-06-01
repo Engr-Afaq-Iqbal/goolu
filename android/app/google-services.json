@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "803516913532",
-    "project_id": "goolu-c8613",
-    "storage_bucket": "goolu-c8613.appspot.com"
+    "project_number": "1053697144593",
+    "project_id": "goolu-4c03c",
+    "storage_bucket": "goolu-4c03c.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:803516913532:android:5aa3c2ff57c41f7fb4b6f9",
+        "mobilesdk_app_id": "1:1053697144593:android:f5762823fcd937e301feb0",
         "android_client_info": {
           "package_name": "com.goolu.sa"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDkKKM8Lm6kikbMb2u5k-5I_lr2Vma7nCs"
+          "current_key": "AIzaSyDIFk4vEXekIf71bFbzDuAanc6I1p4b1T4"
         }
       ],
       "services": {

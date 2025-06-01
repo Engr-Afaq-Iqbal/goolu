@@ -144,7 +144,8 @@ class _DashboardState extends State<Dashboard> {
                                                 children: [
                                                   customText(
                                                       text:
-                                                          '${dashboardCtrl.word}',
+                                                          dashboardCtrl.word ??
+                                                              '',
                                                       textStyle: regular14White
                                                           .copyWith(
                                                         fontSize: 18,
@@ -164,7 +165,7 @@ class _DashboardState extends State<Dashboard> {
                                                 width: 180,
                                                 child: customText(
                                                     text:
-                                                        'Syllable: ${dashboardCtrl.syllable}',
+                                                        'Syllable: ${dashboardCtrl.syllable ?? ''}',
                                                     maxLines: 5,
                                                     textStyle:
                                                         regular14White.copyWith(
@@ -176,7 +177,7 @@ class _DashboardState extends State<Dashboard> {
                                                 width: 180,
                                                 child: customText(
                                                     text:
-                                                        'Form: ${dashboardCtrl.form}',
+                                                        'Form: ${dashboardCtrl.form ?? ''}',
                                                     maxLines: 5,
                                                     textStyle:
                                                         regular14White.copyWith(
@@ -187,8 +188,9 @@ class _DashboardState extends State<Dashboard> {
                                               SizedBox(
                                                 width: 180,
                                                 child: customText(
-                                                    text:
-                                                        '${dashboardCtrl.definition}',
+                                                    text: dashboardCtrl
+                                                            .definition ??
+                                                        '',
                                                     maxLines: 5,
                                                     textStyle:
                                                         regular14White.copyWith(
@@ -233,7 +235,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 if (dashboardCtrl.showResult == 0)
                                   Container(
-                                    height: 220,
+                                    height: 260,
                                     margin: const EdgeInsets.all(20),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 20),

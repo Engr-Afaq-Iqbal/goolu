@@ -27,6 +27,9 @@ class _MicrophonePageState extends State<MicrophonePage> {
   @override
   void initState() {
     super.initState();
+    microphoneController.selectedLanguage = 'English';
+    microphoneController.selectedLanguage2 = 'Arabic';
+    microphoneController.selectedLanguageCode = 'ar-SA';
     microphoneController.recorder = FlutterSoundRecorder();
     microphoneController.initializeRecorder();
     microphoneController.flutterTts.setCompletionHandler(() {

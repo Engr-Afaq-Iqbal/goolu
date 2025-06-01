@@ -101,6 +101,8 @@ class _CameraMainState extends State<CameraMain> {
                         GestureDetector(
                           onTap: AppStorage.getUserData()?.isPackage == '1'
                               ? () {
+                                  cameraCtrl.selectedLanguage = 'Arabic';
+                                  cameraCtrl.update();
                                   Get.to(() => const CameraImageToText());
                                 }
                               : null,
@@ -130,6 +132,8 @@ class _CameraMainState extends State<CameraMain> {
                                   ///to upload the positive data
                                   // Get.find<CameraSpeechController>()
                                   //     .uploadAllSampleDataNegative();
+                                  // Get.find<CameraSpeechController>()
+                                  //     .uploadSampleDataPositive();
                                   Get.to(() => const CameraSpeech(
                                         isCollectionPositive: true,
                                       ));

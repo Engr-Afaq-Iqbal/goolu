@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
+import 'package:goolu/Controller/CameraController/camera_controller.dart';
 
 import '../../Components/app_custom_button.dart';
 import '../../Config/app_config.dart';
@@ -36,11 +36,14 @@ class _CameraSpeechState extends State<CameraSpeech>
   @override
   void initState() {
     // fetchUserData();
+    // cameraSpeechController.
+    Get.find<CameraController>().isSpeaking = false;
     cameraSpeechController.wordsSpoken = '';
     cameraSpeechController.firebaseImageAnswer = '';
     cameraSpeechController.firebaseImageUrl = '';
     cameraSpeechController.isResult = false;
     cameraSpeechController.initSpeech();
+    cameraSpeechController.comparingAudioModel = null;
     cameraSpeechController.fetchAndDisplayData(
         isCollectionPositive: widget.isCollectionPositive);
     _flutterTts.setStartHandler(() {
@@ -81,6 +84,7 @@ class _CameraSpeechState extends State<CameraSpeech>
 
   Future<void> _speakText() async {
     if (_isSpeaking) {
+      await _flutterTts.setLanguage('en-US');
       await _flutterTts.stop(); // Stop the speech
       _isSpeaking = false; // Update the speaking status
       _animationController.stop(); // Stop the animation
@@ -175,19 +179,49 @@ class _CameraSpeechState extends State<CameraSpeech>
                     ),
                     size20h,
                     if (cameraCtrl.firebaseImageUrl != null)
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                            Dimensions.radiusDoubleExtraLarge),
-                        child: CachedNetworkImage(
-                          width: SizesDimensions.width(90),
-                          height: SizesDimensions.height(25.0),
-                          imageUrl: '${cameraCtrl.firebaseImageUrl}',
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => progressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              progressIndicator(),
-                        ),
-                      ),
+                      // ClipRRect(
+                      //   borderRadius: BorderRadius.circular(
+                      //       Dimensions.radiusDoubleExtraLarge),
+                      //   child: CachedNetworkImage(
+                      //     width: SizesDimensions.width(90),
+                      //     height: SizesDimensions.height(25.0),
+                      //     imageUrl: '${cameraCtrl.firebaseImageUrl}',
+                      //     fit: BoxFit.cover,
+                      //     placeholder: (context, url) => progressIndicator(),
+                      //     errorWidget: (context, url, error) =>
+                      //         progressIndicator(),
+                      //   ),
+                      // ),
+                      Obx(() {
+                        if (cameraSpeechController.isLoading.value) {
+                          return Center(child: progressIndicator());
+                        }
+
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.radiusDoubleExtraLarge),
+                          child: Image.asset(
+                            '$imgUrl${cameraSpeechController.name}.png',
+                            width: SizesDimensions.width(90),
+                            height: SizesDimensions.height(25.0),
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      }),
+                    // ClipRRect(
+                    //   borderRadius: BorderRadius.circular(
+                    //       Dimensions.radiusDoubleExtraLarge),
+                    //   child: Image.asset(
+                    //     '$imgUrl${cameraSpeechController.name}.png',
+                    //     width: SizesDimensions.width(90),
+                    //     height: SizesDimensions.height(25.0),
+                    //     // imageUrl: '$imgUrl${cameraSpeechController.name}',
+                    //     fit: BoxFit.cover,
+                    //     // placeholder: (context, url) => progressIndicator(),
+                    //     // errorWidget: (context, url, error) =>
+                    //     //     progressIndicator(),
+                    //   ),
+                    // ),
                     size30h,
                     customText(
                       text:
@@ -353,7 +387,62 @@ class _CameraSpeechState extends State<CameraSpeech>
                                         fontSize: 16,
                                       ),
                                       maxLines: 10),
-                                  size30h,
+                                  size10h,
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final cameraController =
+                                          Get.find<CameraController>();
+
+                                      cameraController.selectedLanguageCode =
+                                          'en-US';
+                                      if (cameraController.isSpeaking) {
+                                        // Stop speaking if it's currently speaking
+                                        _animationController.stop();
+                                        await cameraController.stopSpeaking();
+                                        cameraController.isSpeaking =
+                                            false; // Ensure state is updated after stopping
+                                      } else {
+                                        // Start speaking if it's not speaking
+                                        final text =
+                                            cameraCtrl.firebaseImageAnswer ??
+                                                'noTextAvailable'.tr;
+                                        await cameraController.speak(text);
+                                        cameraController.isSpeaking =
+                                            true; // Update state after starting
+                                      }
+
+                                      cameraController
+                                          .update(); // Notify UI// Notify UI if needed
+                                    },
+                                    child: SvgPicture.asset(
+                                      '$imgUrl$soundImg',
+                                      height: 25,
+                                      width: 25,
+                                      colorFilter: ColorFilter.mode(
+                                        kWhite,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                  ),
+                                  // GestureDetector(
+                                  //   onTap: () async {
+                                  //     final text =
+                                  //         cameraCtrl.firebaseImageAnswer ??
+                                  //             'noTextAvailable'.tr;
+                                  //     await Get.find<CameraController>()
+                                  //         .speak(text);
+                                  //   },
+                                  //   child: SvgPicture.asset(
+                                  //     '$imgUrl$soundImg',
+                                  //     height: 25,
+                                  //     width: 25,
+                                  //     colorFilter: ColorFilter.mode(
+                                  //       kWhite,
+                                  //       BlendMode.srcIn,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  size10h,
                                   customText(
                                     text: '${cameraCtrl.firebaseImageAnswer}',
                                     textStyle: regular18NavyBlue,
@@ -377,6 +466,9 @@ class _CameraSpeechState extends State<CameraSpeech>
                                           child: Row(children: [
                                             GestureDetector(
                                               onTap: () async {
+                                                Get.find<CameraController>()
+                                                        .selectedLanguageCode =
+                                                    'en-US';
                                                 _speakText();
                                               },
                                               child: Container(
@@ -446,7 +538,7 @@ class _CameraSpeechState extends State<CameraSpeech>
                                                 : SvgPicture.asset(
                                                     '$imgUrl$waveformImg'),
                                             size60w,
-                                            const Icon(Icons.volume_up)
+                                            // const Icon(Icons.volume_up)
                                           ])),
                                     ],
                                   ),
@@ -461,11 +553,13 @@ class _CameraSpeechState extends State<CameraSpeech>
                                     onTap: () {
                                       if (!cameraCtrl.isRecordPressed) {
                                         cameraCtrl.isRecordPressed = true;
-                                        cameraCtrl.startListening();
+                                        // cameraCtrl.startListening();
+                                        cameraCtrl.startRecording();
                                       } else {
                                         cameraCtrl.isRecordPressed =
                                             false; // Reset to false on pause
-                                        cameraCtrl.stopListening();
+                                        // cameraCtrl.stopListening();
+                                        cameraCtrl.stopRecording();
                                       }
                                       cameraCtrl
                                           .update(); // Update state after changing the flag

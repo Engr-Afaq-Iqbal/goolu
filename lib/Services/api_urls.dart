@@ -35,4 +35,7 @@ class ApiUrls {
       "https://feature3-1028825189557.us-central1.run.app/generate-questions-answers/";
 
   static String paymentApi = "https://api.stripe.com/v1/payment_intents";
+
+  static String compareAudioWithTextApi =
+      "https://feature3-1028825189557.us-central1.run.app/compare-audio-text/";
 }

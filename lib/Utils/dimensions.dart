@@ -95,6 +95,9 @@ SizedBox size60h = SizedBox(
 SizedBox size70h = SizedBox(
   height: SizesDimensions.height(7.0),
 );
+SizedBox size80h = SizedBox(
+  height: SizesDimensions.height(8.0),
+);
 
 SizedBox size100h = SizedBox(
   height: SizesDimensions.height(10.0),

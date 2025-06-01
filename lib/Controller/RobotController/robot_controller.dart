@@ -1,5 +1,7 @@
 // import 'dart:io';
 
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -12,12 +14,16 @@ import 'package:goolu/Services/storage_sevices.dart';
 import 'package:goolu/View/RobotPage/GeneralFeature/robot_general.dart';
 import 'package:goolu/View/RobotPage/SituationFeature/robot_situation.dart';
 import 'package:goolu/View/RobotPage/TopicFeature/robot_topic.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:record/record.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:string_similarity/string_similarity.dart';
 
 import '../../Model/NavBarModel/nav_bar_model.dart';
 import '../../Model/check_grammer_model.dart';
+import '../../Model/compairing_audio_model.dart';
 import '../../Model/situation_model.dart';
 import '../../Services/api_services.dart';
 import '../../Services/api_urls.dart';
@@ -186,42 +192,47 @@ class RobotController extends GetxController {
     });
   }
 
-  void handleAnswer() {
-    final currentData = situationModel!.data![currentQuestionIndex];
-    // Clean user response and correct answer
-    String cleanedUserAnswer =
-        wordsSpoken.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
-    String cleanedCorrectAnswer =
-        currentData.answer!.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+  ///Manually checking the data
+  // void handleAnswer() {
+  //   final currentData = situationModel!.data![currentQuestionIndex];
+  //   // Clean user response and correct answer
+  //   String cleanedUserAnswer =
+  //       wordsSpoken.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+  //   String cleanedCorrectAnswer =
+  //       currentData.answer!.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+  //
+  //   logger.i('Question -->> $currentData');
+  //   logger.i('Cleaned user answer: $cleanedUserAnswer');
+  //   logger.i('Cleaned correct answer: $cleanedCorrectAnswer');
+  //
+  //   // Add user response to the display items
+  //   displayItems.add(BotUserAnswerWidget(answer: wordsSpoken));
+  //   update();
+  //
+  //   if (cleanedUserAnswer == cleanedCorrectAnswer) {
+  //     // Move to the next question
+  //     currentQuestionIndex++;
+  //     if (currentQuestionIndex < situationModel!.data!.length) {
+  //       displayItems.add(BotQuestionWidget(
+  //         question: situationModel!.data![currentQuestionIndex].question,
+  //       ));
+  //     } else {
+  //       // All questions completed
+  //       displayItems.add(const BotQuestionWidget(
+  //         question: "Great job! You've completed.",
+  //       ));
+  //     }
+  //   } else {
+  //     // If answer doesn't match
+  //     displayItems.add(const BotQuestionWidget(
+  //       question: "Sorry, that's not correct. Please try again.",
+  //     ));
+  //   }
+  //   update();
+  // }
 
-    logger.i('Question -->> $currentData');
-    logger.i('Cleaned user answer: $cleanedUserAnswer');
-    logger.i('Cleaned correct answer: $cleanedCorrectAnswer');
-
-    // Add user response to the display items
-    displayItems.add(BotUserAnswerWidget(answer: wordsSpoken));
-    update();
-
-    if (cleanedUserAnswer == cleanedCorrectAnswer) {
-      // Move to the next question
-      currentQuestionIndex++;
-      if (currentQuestionIndex < situationModel!.data!.length) {
-        displayItems.add(BotQuestionWidget(
-          question: situationModel!.data![currentQuestionIndex].question,
-        ));
-      } else {
-        // All questions completed
-        displayItems.add(const BotQuestionWidget(
-          question: "Great job! You've completed.",
-        ));
-      }
-    } else {
-      // If answer doesn't match
-      displayItems.add(const BotQuestionWidget(
-        question: "Sorry, that's not correct. Please try again.",
-      ));
-    }
-    update();
+  Future<void> handleAnswer() async {
+    await sendVoiceFileForAnswer(recordedFilePath!);
   }
 
   void resetData() {
@@ -232,49 +243,52 @@ class RobotController extends GetxController {
     stopListening(); // Ensure speech is stopped
   }
 
-  void handleUserQuestion() {
-    // Ensure situationModel and data are valid
-    if (situationModel == null || situationModel!.data == null) {
-      displayItems.add(const BotQuestionWidget(
-        question: "No questions available. Please try again later.",
-      ));
-      update();
-      return;
-    }
-
-    // Clean the user's spoken words
-    String cleanedUserQuestion =
-        wordsSpoken.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
-
-    // Variable to track if a match is found
-    bool questionMatched = false;
-
-    for (var data in situationModel!.data!) {
-      // Ensure the question is non-null
-      if (data.question == null || data.answer == null) continue;
-
-      // Clean the predefined question for comparison
-      String cleanedPredefinedQuestion =
-          data.question!.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
-
-      if (cleanedUserQuestion == cleanedPredefinedQuestion) {
-        // Match found: Add user's question and bot's answer to display
-        displayItems.add(BotUserAnswerWidget(answer: wordsSpoken));
-        displayItems.add(BotQuestionWidget(question: data.answer!));
-        questionMatched = true;
-        break;
-      }
-    }
-
-    if (!questionMatched) {
-      // No match found: Ask the user to repeat the question
-      displayItems.add(BotUserAnswerWidget(answer: wordsSpoken));
-      displayItems.add(const BotQuestionWidget(
-        question: "I didn't understand that. Could you please repeat it?",
-      ));
-    }
-    update();
+  Future<void> handleUserQuestion() async {
+    await sendVoiceFileForQuestion(recordedFilePath!);
   }
+  // void handleUserQuestion() {
+  //   // Ensure situationModel and data are valid
+  //   if (situationModel == null || situationModel!.data == null) {
+  //     displayItems.add(const BotQuestionWidget(
+  //       question: "No questions available. Please try again later.",
+  //     ));
+  //     update();
+  //     return;
+  //   }
+  //
+  //   // Clean the user's spoken words
+  //   String cleanedUserQuestion =
+  //       wordsSpoken.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+  //
+  //   // Variable to track if a match is found
+  //   bool questionMatched = false;
+  //
+  //   for (var data in situationModel!.data!) {
+  //     // Ensure the question is non-null
+  //     if (data.question == null || data.answer == null) continue;
+  //
+  //     // Clean the predefined question for comparison
+  //     String cleanedPredefinedQuestion =
+  //         data.question!.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+  //
+  //     if (cleanedUserQuestion == cleanedPredefinedQuestion) {
+  //       // Match found: Add user's question and bot's answer to display
+  //       displayItems.add(BotUserAnswerWidget(answer: wordsSpoken));
+  //       displayItems.add(BotQuestionWidget(question: data.answer!));
+  //       questionMatched = true;
+  //       break;
+  //     }
+  //   }
+  //
+  //   if (!questionMatched) {
+  //     // No match found: Ask the user to repeat the question
+  //     displayItems.add(BotUserAnswerWidget(answer: wordsSpoken));
+  //     displayItems.add(const BotQuestionWidget(
+  //       question: "I didn't understand that. Could you please repeat it?",
+  //     ));
+  //   }
+  //   update();
+  // }
 
   CheckGrammerModel? checkGrammerModel;
   Future<bool> checkGrammarFunction() async {
@@ -408,11 +422,9 @@ class RobotController extends GetxController {
 
   void startListening() async {
     if (speechEnabled && !speechToText.isListening) {
+      wordsSpoken = ""; // Reset previous sentence
       await speechToText.listen(
-        onResult: (result) {
-          wordsSpoken = result.recognizedWords.toLowerCase();
-          update();
-        },
+        onResult: onSpeechResult, // Use only final speech result
         listenMode: ListenMode.dictation,
         cancelOnError: true,
       );
@@ -424,89 +436,429 @@ class RobotController extends GetxController {
     if (speechToText.isListening) {
       await speechToText.stop();
     }
-    update();
   }
 
-  onSpeechResult(SpeechRecognitionResult result) {
-    if (result.finalResult) {
-      wordsSpoken = result.recognizedWords;
-      logger.i("Final Recognized Words: $wordsSpoken");
-      handleAnswer();
-      update();
+  void onSpeechResult(SpeechRecognitionResult result) {
+    if (result.finalResult && result.recognizedWords.isNotEmpty) {
+      wordsSpoken = result.recognizedWords
+          .toLowerCase()
+          .trim(); // Store complete sentence
+      logger.i("Final Recognized Sentence: $wordsSpoken");
+
+      if (wordsSpoken.isNotEmpty) {
+        // handleAnswer(); // Only process if not empty
+        if (isCustomer == true) {
+          handleAnswer();
+        } else {
+          handleUserQuestion();
+        }
+        update();
+      }
     } else {
-      logger.i("Interim Result: ${result.recognizedWords}");
+      logger.i("Interim Words: ${result.recognizedWords}");
     }
   }
+
+  final record = Record();
+  String? recordedFilePath;
+
+  Future<void> startRecording() async {
+    if (await record.hasPermission()) {
+      final dir = await getTemporaryDirectory();
+      final path = '${dir.path}/recorded_audio.m4a'; // or .mp4 if supported
+      await record.start(path: path);
+      recordedFilePath = path;
+      logger.i("Recording started...");
+    }
+  }
+
+  Future<void> stopRecording() async {
+    await record.stop();
+    logger.i("Recording stopped. File saved at: $recordedFilePath");
+
+    if (recordedFilePath != null) {
+      if (isCustomer == true) {
+        handleAnswer();
+      } else {
+        handleUserQuestion();
+      }
+    }
+  }
+
+  ComparingAudioModel? comparingAudioModel;
+
+  Future<void> sendVoiceFileForAnswer(String filePath) async {
+    showProgress();
+    final uri = Uri.parse(ApiUrls.compareAudioWithTextApi);
+    final request = http.MultipartRequest('POST', uri);
+
+    request.fields['comparison_text'] =
+        situationModel!.data![currentQuestionIndex].answer ?? '';
+
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'audio_file',
+        filePath,
+        contentType: MediaType('audio', 'mp4'), // or audio/mp4 or audio/m4a
+      ),
+    );
+
+    try {
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        stopProgress();
+        comparingAudioModel = comparingAudioModelFromJson(response.body);
+
+        logger.i(response.body);
+
+        if (comparingAudioModel?.exactMatch == true) {
+          // Add user response to the display items
+          displayItems.add(BotUserAnswerWidget(
+              answer: comparingAudioModel?.transcribedText ?? ''));
+          update();
+          currentQuestionIndex++;
+          if (currentQuestionIndex < situationModel!.data!.length) {
+            displayItems.add(BotQuestionWidget(
+              question: situationModel!.data![currentQuestionIndex].question,
+            ));
+          } else {
+            // All questions completed
+            displayItems.add(const BotQuestionWidget(
+              question: "Great job! You've completed.",
+            ));
+          }
+          update();
+        } else {
+          displayItems.add(BotUserAnswerWidget(
+              answer: comparingAudioModel?.transcribedText ?? ''));
+          // If answer doesn't match
+          displayItems.add(const BotQuestionWidget(
+            question: "Sorry, that's not correct. Please try again.",
+          ));
+          logger.e("API Error: ${response.body}");
+        }
+      } else {
+        // showToast('API error: ${response.statusCode}');
+      }
+    } catch (e) {
+      logger.e("Sending file failed: $e");
+      showToast('Something went wrong');
+    } finally {
+      // isRecordPressed = false;
+      update();
+    }
+  }
+
+  Future<void> sendVoiceFileForQuestion(String filePath) async {
+    if (situationModel == null || situationModel!.data == null) {
+      displayItems.add(const BotQuestionWidget(
+        question: "No questions available. Please try again later.",
+      ));
+      update();
+      return;
+    }
+    // bool questionMatched = false;
+    showProgress();
+    final uri = Uri.parse(ApiUrls.compareAudioWithTextApi);
+    final request = http.MultipartRequest('POST', uri);
+
+    request.fields['comparison_text'] =
+        situationModel!.data![currentQuestionIndex].question ?? '';
+
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'audio_file',
+        filePath,
+        contentType: MediaType('audio', 'mp4'), // or audio/mp4 or audio/m4a
+      ),
+    );
+
+    try {
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      // Variable to track if a match is found
+
+      if (response.statusCode == 200) {
+        stopProgress();
+        comparingAudioModel = comparingAudioModelFromJson(response.body);
+        logger.i(response.body);
+        if (comparingAudioModel?.exactMatch == true) {
+          displayItems.add(BotQuestionWidget(
+              question: comparingAudioModel?.transcribedText));
+          // displayItems.add(BotUserAnswerWidget(
+          //     answer: comparingAudioModel?.transcribedText));
+          //
+          //
+          //
+          // // Add user response to the display items
+          // displayItems.add(BotUserAnswerWidget(answer: wordsSpoken));
+          // questionMatched = true;
+          update();
+          currentQuestionIndex++;
+          if (currentQuestionIndex < situationModel!.data!.length) {
+            displayItems.add(BotUserAnswerWidget(
+              answer: situationModel!.data![currentQuestionIndex - 1].answer,
+            ));
+          } else {
+            // All questions completed
+            displayItems.add(const BotQuestionWidget(
+              question: "Great job! You've completed.",
+            ));
+          }
+          update();
+        } else {
+          // If answer doesn't match
+
+          // No match found: Ask the user to repeat the question
+          displayItems.add(BotQuestionWidget(
+              question: comparingAudioModel?.transcribedText ?? ''));
+          displayItems.add(const BotUserAnswerWidget(
+              answer: "I didn't understand that. Could you please repeat it?"));
+        }
+      } else {
+        stopProgress();
+
+        logger.e("API Error: ${response.body}");
+        // showToast('API error: ${response.statusCode}');
+      }
+    } catch (e) {
+      logger.e("Sending file failed: $e");
+      showToast('Something went wrong');
+    } finally {
+      // isRecordPressed = false;
+      update();
+    }
+  }
+
+  // void onSpeechResult(SpeechRecognitionResult result) {
+  //   if (result.finalResult) {
+  //     wordsSpoken =
+  //         result.recognizedWords.toLowerCase(); // Store complete sentence
+  //     logger.i("Final Recognized Sentence: $wordsSpoken");
+  //
+  //     handleAnswer(); // Process final result
+  //     update();
+  //   } else {
+  //     logger.i("Interim Words: ${result.recognizedWords}");
+  //   }
+  // }
+  // void startListening() async {
+  //   if (speechEnabled && !speechToText.isListening) {
+  //     await speechToText.listen(
+  //       onResult: (result) {
+  //         wordsSpoken = result.recognizedWords.toLowerCase();
+  //         update();
+  //       },
+  //       listenMode: ListenMode.dictation,
+  //       cancelOnError: true,
+  //     );
+  //   }
+  //   update();
+  // }
+  //
+  // void stopListening() async {
+  //   if (speechToText.isListening) {
+  //     await speechToText.stop();
+  //   }
+  //   // update();
+  // }
+  //
+  // onSpeechResult(SpeechRecognitionResult result) {
+  //   if (result.finalResult) {
+  //     wordsSpoken = result.recognizedWords;
+  //     logger.i("Final Recognized Words: $wordsSpoken");
+  //     handleAnswer();
+  //     update();
+  //   } else {
+  //     logger.i("Interim Result: ${result.recognizedWords}");
+  //   }
+  // }
 
   bool isPassed = false;
 
   playRecordedText() {
+    Get.find<MicrophoneController>().selectedLanguageCode = 'en-Us';
+    Get.find<MicrophoneController>().update();
     Get.find<MicrophoneController>().speak(wordsSpoken);
+  }
+
+  final record2 = Record();
+  String? recordedFilePath2;
+
+  Future<void> startRecording2() async {
+    if (await record2.hasPermission()) {
+      final dir = await getTemporaryDirectory();
+      final path = '${dir.path}/recorded_audio.m4a'; // or .mp4 if supported
+      await record2.start(path: path);
+      recordedFilePath2 = path;
+      logger.i("Recording started...");
+    }
+  }
+
+  Future<void> stopRecording2(
+      // String answer, String question, String route
+      ) async {
+    await record2.stop();
+    logger.i("Recording stopped. File saved at: $recordedFilePath2");
+
+    // if (recordedFilePath2 != null) {
+    //   await sendVoiceFileToApi(recordedFilePath2!, answer, question, route);
+    // }
   }
 
   /// ------------------------ String Similarity Matching ------------------------ ///
   Future<void> matchSpokenAndAnswerText(
       String answer, String question, String route) async {
+    sendVoiceFileToApi(recordedFilePath2 ?? '', answer, question, route);
     // Clean up input strings: Convert to lowercase and remove unnecessary characters
-    String cleanedAnswer =
-        answer.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
-    String cleanedSpokenWords =
-        wordsSpoken.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+    // String cleanedAnswer =
+    //     answer.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+    // String cleanedSpokenWords =
+    //     wordsSpoken.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+    //
+    // logger.i('Cleaned Answer = $cleanedAnswer');
+    // logger.i('Cleaned Spoken Words = $cleanedSpokenWords');
+    //
+    // // Calculate similarity using Jaro-Winkler algorithm
+    // double similarityScore = cleanedSpokenWords.similarityTo(cleanedAnswer);
+    // logger.i('Similarity Score: $similarityScore');
+    //
+    // // Define a threshold (e.g., 0.7 means 70% similarity is required)
+    // bool isMatched = similarityScore > 0.7;
+    //
+    // if (isMatched) {
+    //   if (route == '/general') {
+    //     await addRobotGeneralFeature(
+    //       AppStorage.getUserData()?.userId ?? '',
+    //       question,
+    //       cleanedAnswer,
+    //       cleanedSpokenWords,
+    //       'Pass',
+    //     );
+    //   } else {
+    //     await addRobotTopicFeature(
+    //       AppStorage.getUserData()?.userId ?? '',
+    //       question,
+    //       cleanedAnswer,
+    //       cleanedSpokenWords,
+    //       'Pass',
+    //     );
+    //   }
+    //   isPassed = true;
+    //   logger.i('Answer Matched!');
+    // } else {
+    //   if (route == '/general') {
+    //     await addRobotGeneralFeature(
+    //       AppStorage.getUserData()?.userId ?? '',
+    //       question,
+    //       cleanedAnswer,
+    //       cleanedSpokenWords,
+    //       'Fail',
+    //     );
+    //   } else {
+    //     await addRobotTopicFeature(
+    //       AppStorage.getUserData()?.userId ?? '',
+    //       question,
+    //       cleanedAnswer,
+    //       cleanedSpokenWords,
+    //       'Fail',
+    //     );
+    //   }
+    //   isPassed = false;
+    //   logger.i('Answer Did Not Match!');
+    // }
+    // stopProgress();
+    // showResult = true;
+    // update();
+  }
 
-    logger.i('Cleaned Answer = $cleanedAnswer');
-    logger.i('Cleaned Spoken Words = $cleanedSpokenWords');
+  // ComparingAudioModel? comparingAudioModel;
+  Future<void> sendVoiceFileToApi(
+      String filePath, String answer, String question, String route) async {
+    showProgress();
+    final uri = Uri.parse(ApiUrls.compareAudioWithTextApi);
+    final request = http.MultipartRequest('POST', uri);
 
-    // Calculate similarity using Jaro-Winkler algorithm
-    double similarityScore = cleanedSpokenWords.similarityTo(cleanedAnswer);
-    logger.i('Similarity Score: $similarityScore');
+    request.fields['comparison_text'] = answer ?? '';
 
-    // Define a threshold (e.g., 0.7 means 70% similarity is required)
-    bool isMatched = similarityScore > 0.7;
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'audio_file',
+        filePath,
+        contentType: MediaType('audio', 'mp4'), // or audio/mp4 or audio/m4a
+      ),
+    );
 
-    if (isMatched) {
-      if (route == '/general') {
-        await addRobotGeneralFeature(
-          AppStorage.getUserData()?.userId ?? '',
-          question,
-          cleanedAnswer,
-          cleanedSpokenWords,
-          'Pass',
-        );
+    try {
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        comparingAudioModel = comparingAudioModelFromJson(response.body);
+        final data = jsonDecode(response.body);
+        logger.i(response.body);
+
+        if (comparingAudioModel?.exactMatch == true) {
+          if (route == '/general') {
+            await addRobotGeneralFeature(
+              AppStorage.getUserData()?.userId ?? '',
+              question,
+              comparingAudioModel?.details?.normalizedTranscribed ?? '',
+              comparingAudioModel?.details?.normalizedTranscribed ?? '',
+              'Pass',
+            );
+          } else {
+            await addRobotTopicFeature(
+              AppStorage.getUserData()?.userId ?? '',
+              question,
+              comparingAudioModel?.details?.normalizedTranscribed ?? '',
+              comparingAudioModel?.details?.normalizedTranscribed ?? '',
+              'Pass',
+            );
+          }
+          isPassed = true;
+          logger.i('Answer Matched!');
+          update();
+        } else {
+          if (route == '/general') {
+            await addRobotGeneralFeature(
+              AppStorage.getUserData()?.userId ?? '',
+              question,
+              comparingAudioModel?.details?.normalizedTranscribed ?? '',
+              comparingAudioModel?.details?.normalizedTranscribed ?? '',
+              'Fail',
+            );
+          } else {
+            await addRobotTopicFeature(
+              AppStorage.getUserData()?.userId ?? '',
+              question,
+              comparingAudioModel?.details?.normalizedTranscribed ?? '',
+              comparingAudioModel?.details?.normalizedTranscribed ?? '',
+              'Fail',
+            );
+          }
+          isPassed = false;
+          logger.i('Answer Did Not Match!');
+          update();
+        }
+        stopProgress();
+        showResult = true;
+        update();
       } else {
-        await addRobotTopicFeature(
-          AppStorage.getUserData()?.userId ?? '',
-          question,
-          cleanedAnswer,
-          cleanedSpokenWords,
-          'Pass',
-        );
+        stopProgress();
+        logger.e("API Error: ${response.body}");
+        showToast('API error: ${response.statusCode}');
       }
-      isPassed = true;
-      logger.i('Answer Matched!');
-    } else {
-      if (route == '/general') {
-        await addRobotGeneralFeature(
-          AppStorage.getUserData()?.userId ?? '',
-          question,
-          cleanedAnswer,
-          cleanedSpokenWords,
-          'Fail',
-        );
-      } else {
-        await addRobotTopicFeature(
-          AppStorage.getUserData()?.userId ?? '',
-          question,
-          cleanedAnswer,
-          cleanedSpokenWords,
-          'Fail',
-        );
-      }
-      isPassed = false;
-      logger.i('Answer Did Not Match!');
+    } catch (e) {
+      logger.e("Sending file failed: $e");
+      showToast('Something went wrong');
+    } finally {
+      // isRecordPressed = false;
+      update();
     }
-    stopProgress();
-    showResult = true;
-    update();
   }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

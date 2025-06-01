@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:goolu/Controller/stripe_controller.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:upgrader/upgrader.dart';
@@ -15,15 +16,16 @@ import 'Controller/ScreenController/app_controller.dart';
 import 'Locale/language_cubit.dart';
 import 'Locale/translation.dart';
 import 'Theme/theme.dart';
-import 'Utils/consts.dart';
 import 'View/Splash/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = stripePublishableKey;
   await GetStorage.init();
   await Firebase.initializeApp();
   AppController.initializeControllers();
+  await Get.find<StripeController>().fetchStripeKeys();
+
+  Stripe.publishableKey = Get.find<StripeController>().publishableKeyTest ?? '';
 
   // await Firebase.initializeApp().whenComplete(() {
   //   logger.i('completed');

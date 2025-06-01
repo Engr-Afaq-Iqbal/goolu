@@ -93,30 +93,61 @@ class _RobotTopicWidgetState extends State<RobotTopicWidget> {
                   SizedBox(
                       width: SizesDimensions.width(60),
                       child: customText(text: widget.answer, maxLines: 10)),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(() => AdvancedRobotTopic(
-                            question: widget.questions,
-                            answer: widget.answer,
-                            route: '/topic',
-                          ));
-                    },
-                    child: Container(
-                      width: 30,
-                      height: 30,
-                      padding: const EdgeInsets.all(0),
-                      decoration: BoxDecoration(
-                        color: k7F7F7F.withOpacity(0.3), // Background color
-                        shape: BoxShape.circle, // Makes the container circular
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.check,
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          final microphoneCtrl =
+                              Get.find<MicrophoneController>();
+
+                          if (microphoneCtrl.isSpeaking) {
+                            // Stop speaking if currently speaking
+                            await microphoneCtrl.stopSpeaking();
+                            microphoneCtrl.isSpeaking = false;
+                          } else {
+                            // Start speaking if not speaking
+                            await microphoneCtrl
+                                .speakEnglishAccent(widget.answer);
+                            microphoneCtrl.isSpeaking = true;
+                          }
+
+                          microphoneCtrl.update(); // Notify UI
+                        },
+                        child: SvgPicture.asset(
+                          '$imgUrl$speakerYellowImg',
                           color: kWhite,
-                          size: 18,
                         ),
                       ),
-                    ),
+                      size30h,
+                      GestureDetector(
+                        onTap: () async {
+                          await microphoneCtrl.stopSpeaking();
+                          microphoneCtrl.isSpeaking = false;
+                          Get.to(() => AdvancedRobotTopic(
+                                question: widget.questions,
+                                answer: widget.answer,
+                                route: '/topic',
+                              ));
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          padding: const EdgeInsets.all(0),
+                          decoration: BoxDecoration(
+                            color: k7F7F7F.withOpacity(0.3), // Background color
+                            shape:
+                                BoxShape.circle, // Makes the container circular
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.check,
+                              color: kWhite,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -124,7 +155,7 @@ class _RobotTopicWidgetState extends State<RobotTopicWidget> {
           if (isShowAnswer == true) size10h,
           GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () {
+            onTap: () async {
               setState(() {
                 if (isShowAnswer == true) {
                   isShowAnswer = false;

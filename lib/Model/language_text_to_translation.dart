@@ -24,7 +24,7 @@ abstract class LanguageTextToTranslations {
     spanish,
     german,
     french,
-    farsi,
+    // farsi,
     english,
   ];
 
@@ -60,10 +60,10 @@ abstract class LanguageTextToTranslations {
     text: 'French',
     languageCode: 'fr-FR',
   );
-  static const farsi = LanguageTextToTranslation(
-    text: 'Farsi',
-    languageCode: 'ar-SA',
-  );
+  // static const farsi = LanguageTextToTranslation(
+  //   text: 'Farsi',
+  //   languageCode: 'ar-SA',
+  // );
   static const english = LanguageTextToTranslation(
     text: 'English',
     languageCode: 'en-US',

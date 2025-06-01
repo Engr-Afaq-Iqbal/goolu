@@ -59,7 +59,7 @@ dependencies:
   responsive_framework: ^1.4.0
   flutter_tts: ^3.8.5
   permission_handler: ^11.3.1
-  file_picker: ^8.0.5
+#  file_picker:
   flutter_sound: ^9.6.0
   dio: ^5.4.3+1
   image_picker:
@@ -78,6 +78,8 @@ dependencies:
   audioplayers:
   audio_waveforms:
   string_similarity:
+  record: ^4.4.4
+  path: ^1.8.3
 
 
 dev_dependencies:

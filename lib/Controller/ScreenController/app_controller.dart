@@ -10,6 +10,7 @@ import '../AuthController/auth_controller.dart';
 import '../AuthController/sign_up_controller.dart';
 import '../CameraController/camera_controller.dart';
 import '../dialog_controller.dart';
+import '../stripe_controller.dart';
 
 class AppController {
   static void initializeControllers() {
@@ -23,5 +24,6 @@ class AppController {
     Get.put(SideDrawerController());
     Get.put(DashboardController());
     Get.put(CameraSpeechController());
+    Get.put(StripeController());
   }
 }

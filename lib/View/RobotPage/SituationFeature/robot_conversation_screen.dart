@@ -11,8 +11,8 @@ import '../../../Utils/dimensions.dart';
 import '../../../Utils/image_urls.dart';
 
 class RobotConversationScreen extends StatefulWidget {
-  bool isQuestion;
-  RobotConversationScreen({super.key, this.isQuestion = false});
+  final bool isQuestion;
+  const RobotConversationScreen({super.key, this.isQuestion = false});
 
   @override
   State<RobotConversationScreen> createState() =>
@@ -62,19 +62,44 @@ class _RobotConversationScreenState extends State<RobotConversationScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       size20h,
-                      customText(
-                        text: 'Situation',
-                        textStyle: regular18NavyBlue.copyWith(
-                          fontSize: 14,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: const Icon(
+                                Icons.arrow_back,
+                                color: Colors.black,
+                              )),
+                          size60w,
+                          size60w,
+                          size60w,
+                          size60w,
+                          size30w,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              size20h,
+                              customText(
+                                text: 'Situations',
+                                textStyle: regular18NavyBlue.copyWith(
+                                  fontSize: 14,
+                                ),
+                              ),
+                              size10h,
+                              AppStyles.dividerLine(
+                                color: kLightBlue32A3B8,
+                                width: SizesDimensions.width(25),
+                                height: 2,
+                              ),
+                              size30h,
+                            ],
+                          ),
+                        ],
                       ),
-                      size10h,
-                      AppStyles.dividerLine(
-                        color: kLightBlue32A3B8,
-                        width: SizesDimensions.width(25),
-                        height: 2,
-                      ),
-                      size30h,
+                      size20h,
                       ClipRRect(
                         borderRadius: BorderRadius.circular(
                             Dimensions.radiusSingleExtraLarge),
@@ -95,46 +120,47 @@ class _RobotConversationScreenState extends State<RobotConversationScreen> {
                         ),
                       ),
                       size40h,
+
+                      // onTap: () async {
+                      //   if (robotCtrl.feature3Speak) {
+                      //     robotCtrl.feature3Speak = false;
+                      //     robotCtrl.stopListening();
+                      //   } else {
+                      //     robotCtrl.feature3Speak = true;
+                      //     robotCtrl.startListening();
+                      //   }
+                      //   robotCtrl.update();
+                      // },
+
+                      // if (robotCtrl.speechEnabled) {
+                      //   robotCtrl.feature3Speak = true;
+                      //   robotCtrl.startListening();
+                      //   robotCtrl.handleAnswer();
+                      //   robotCtrl.update();
+                      // }
                       if (robotCtrl.completedSituation == false)
                         GestureDetector(
                           onTap: () async {
+                            // Prevent rapid toggling
                             if (robotCtrl.feature3Speak) {
                               robotCtrl.feature3Speak = false;
-                              robotCtrl.stopListening();
+                              // robotCtrl.stopListening();
+                              robotCtrl.stopRecording();
+                              robotCtrl.update();
+                              // if (robotCtrl.isCustomer == true) {
+                              //   robotCtrl.handleAnswer();
+                              // } else {
+                              //   robotCtrl.handleUserQuestion();
+                              // }
                             } else {
                               robotCtrl.feature3Speak = true;
-                              robotCtrl.startListening();
+                              robotCtrl.startRecording();
+                              // robotCtrl.startListening();
+                              robotCtrl.update();
                             }
+
                             robotCtrl.update();
                           },
-                          // onTap: () async {
-                          //   // if (robotCtrl.speechEnabled) {
-                          //   //   robotCtrl.feature3Speak = true;
-                          //   //   robotCtrl.startListening();
-                          //   //   robotCtrl.handleAnswer();
-                          //   //   robotCtrl.update();
-                          //   // }
-                          //
-                          //   // Prevent rapid toggling
-                          //   if (robotCtrl.feature3Speak) {
-                          //     robotCtrl.feature3Speak = false;
-                          //     robotCtrl.stopListening();
-                          //     robotCtrl.update();
-                          //     if (robotCtrl.isCustomer == true) {
-                          //       robotCtrl.handleAnswer();
-                          //     } else {
-                          //       robotCtrl.handleUserQuestion();
-                          //     }
-                          //
-                          //     // showToast(robotCtrl.wordsSpoken);
-                          //   } else {
-                          //     robotCtrl.feature3Speak = true;
-                          //     robotCtrl.startListening();
-                          //     robotCtrl.update();
-                          //   }
-                          //
-                          //   robotCtrl.update();
-                          // },
                           child: Container(
                             width: 75,
                             height: 75,

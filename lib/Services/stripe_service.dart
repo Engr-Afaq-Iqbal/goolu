@@ -228,8 +228,8 @@ import 'package:goolu/Controller/SideDrawerController/side_drawer_controller.dar
 import 'package:goolu/Services/api_urls.dart';
 import 'package:goolu/Services/storage_sevices.dart';
 
+import '../Controller/stripe_controller.dart';
 import '../Model/UserModel/usersModel.dart';
-import '../Utils/consts.dart';
 import '../Utils/utils.dart';
 
 class StripeService {
@@ -259,6 +259,7 @@ class StripeService {
   }
 
   Future<String?> _createPaymentIntent(int amount, String currency) async {
+    await Get.find<StripeController>().fetchStripeKeys();
     try {
       final Dio dio = Dio();
       Map<String, dynamic> data = {
@@ -273,7 +274,8 @@ class StripeService {
         options: Options(
           contentType: Headers.formUrlEncodedContentType,
           headers: {
-            "Authorization": "Bearer $stripeSecretKey",
+            "Authorization":
+                "Bearer ${Get.find<StripeController>().secretKeyTest}",
             "Content-Type": 'application/x-www-form-urlencoded'
           },
         ),

@@ -1,11 +1,18 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:goolu/Controller/DashboardController/dashboard_controller.dart';
+import 'package:goolu/Services/api_urls.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:record/record.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
+import '../../Model/compairing_audio_model.dart';
 import '../../Services/storage_sevices.dart';
 import '../../Utils/utils.dart';
 import '../../View/Dashboard/daily_task_service.dart';
@@ -17,14 +24,19 @@ class CameraSpeechController extends GetxController {
   String? firebaseImageAnswer;
   bool isAnswerMatched = false;
 
+  // String name = '';
+
   /// Function to fetch only the first "false" document in sequence
 
   int documentIndex = 0;
   int answerIndex = 0;
   int docId = 0;
+  var name = ''.obs; // Observable String for real-time updates
+  var isLoading = true.obs;
 
   ///logic updated
   void fetchAndDisplayData({bool isCollectionPositive = true}) async {
+    isLoading.value = true;
     Map<String, dynamic>? data;
     if (isCollectionPositive == true) {
       data = await fetchNextFalseData('feature1CUsersPositive');
@@ -35,14 +47,18 @@ class CameraSpeechController extends GetxController {
     if (data != null) {
       logger.i('Image URL: ${data['url']}');
       firebaseImageUrl = '${data['url']}';
+      name.value = '${data['name']}';
+      isLoading.value = false;
       logger.i('First false answer: ${data['answerText']}');
       firebaseImageAnswer = '${data['answerText']}';
       documentIndex = data['documentIndex'];
       answerIndex = data['answerIndex'];
       docId = int.parse('${data['documentId']}');
+
       logger.i('Document Index = ${data['documentIndex']}');
       logger.i('Answer Index = ${data['answerIndex']}');
       logger.i('Doc Id = ${data['documentId']}');
+      logger.i('Name = $name');
       update();
     } else {
       logger.e('No data with mainResult as false or no false answer found.');
@@ -76,7 +92,7 @@ class CameraSpeechController extends GetxController {
           if (data['mainResult'] == 'false') {
             List<dynamic> answers = data['answers'];
             String imageUrl = data['url'];
-
+            String name2 = data['name'];
             for (int answerIndex = 0;
                 answerIndex < answers.length;
                 answerIndex++) {
@@ -88,6 +104,7 @@ class CameraSpeechController extends GetxController {
                   'documentIndex': documentIndex,
                   'documentId': doc.id,
                   'answerIndex': answerIndex,
+                  'name': name2,
                 });
               }
             }
@@ -202,21 +219,191 @@ class CameraSpeechController extends GetxController {
       {
         'imageUrl':
             'https://drive.google.com/file/d/13C-OAYal9lMz_G92FHrsMQ96Tq0oO1yf',
-        'index': 7,
+        'index': 0,
+        'name': 'p1',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
-                'There is a teenager reading a book by the window, wrapped in a cozy blanket. He is making the most of a rainy day indoors.',
+                'There is a child smiling and enjoying a colorful meal. It looks like he is excited to try new foods',
             'result': 'false'
           },
           {
             'text':
-                'There is a boy sitting comfortably and reading while it rains outside. He is enjoying the peaceful moment.',
+                'There is a boy laughing with his mom at the table. It seems like they are having a fun time together during mealtime',
             'result': 'false'
           },
           {
             'text':
-                'There is a young person reading a book with full focus. The rainy weather outside adds to the cozy atmosphere.',
+                'There is a mother and her son sharing a happy moment while eating. It looks like they are enjoying their healthy meal',
+            'result': 'false'
+          },
+        ],
+      },
+      {
+        'imageUrl':
+            'https://drive.google.com/file/d/13C-OAYal9lMz_G92FHrsMQ96Tq0oO1yf',
+        'index': 1,
+        'name': 'p2',
+        'mainResult': 'false',
+        'answers': [
+          {
+            'text':
+                ' There is a young girl smiling brightly as she takes her medicine. Her happiness shows she feels comfortable and supported',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There is a child with a big smile while taking medicine. This playful approach seems to make it easier for her',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There is a girl taking her medicine with joy. It looks like the encouragement she gets is making the experience positive',
+            'result': 'false'
+          },
+        ],
+      },
+      {
+        'imageUrl':
+            'https://drive.google.com/file/d/13C-OAYal9lMz_G92FHrsMQ96Tq0oO1yf',
+        'index': 2,
+        'name': 'p3',
+        'mainResult': 'false',
+        'answers': [
+          {
+            'text':
+                'There is a family sitting together, laughing and playing a board game. They are clearly enjoying each others company',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There are parents and kids gathered around a game, smiling and having fun. This looks like a great family bonding time',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There is a family playing a board game with lots of laughter. The joy in the room makes it a special moment for them',
+            'result': 'false'
+          },
+        ],
+      },
+      {
+        'imageUrl':
+            'https://drive.google.com/file/d/13C-OAYal9lMz_G92FHrsMQ96Tq0oO1yf',
+        'index': 3,
+        'name': 'p4',
+        'mainResult': 'false',
+        'answers': [
+          {
+            'text':
+                'There is a family laughing together at the dinner table. The toddler playful actions bring smiles all around',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There are parents and their child enjoying a joyful meal. Their shared laughter makes the dinner feel warm and lively',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There is a toddler eating at the table with their parents, who are all laughing. The family is enjoying a fun and happy dinner together',
+            'result': 'false'
+          },
+        ],
+      },
+      {
+        'imageUrl':
+            'https://drive.google.com/file/d/13C-OAYal9lMz_G92FHrsMQ96Tq0oO1yf',
+        'index': 4,
+        'name': 'p5',
+        'mainResult': 'false',
+        'answers': [
+          {
+            'text':
+                'There is a family playing a board game together at the airport. They are making the most of their waiting time with fun',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There are parents and their kids gathered around a game at an airport table. This family knows how to turn waiting into a joyful experience',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There is a family happily playing a game while waiting at the airport. Their laughter suggests they are having a great time together',
+            'result': 'false'
+          },
+        ],
+      },
+      {
+        'imageUrl':
+            'https://drive.google.com/file/d/13C-OAYal9lMz_G92FHrsMQ96Tq0oO1yf',
+        'index': 5,
+        'name': 'p6',
+        'mainResult': 'false',
+        'answers': [
+          {
+            'text':
+                'There is a student holding a stack of papers and showing a thumbs up. He feels proud and happy with his achievements',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There is a young man smiling brightly while holding his graded papers. His expression shows confidence and joy',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There is a student in a classroom, proudly displaying his grades. His big smile suggests he worked hard for this moment',
+            'result': 'false'
+          },
+        ],
+      },
+      {
+        'imageUrl':
+            'https://drive.google.com/file/d/13C-OAYal9lMz_G92FHrsMQ96Tq0oO1yf',
+        'index': 6,
+        'name': 'p7',
+        'mainResult': 'false',
+        'answers': [
+          {
+            'text':
+                'There is a toddler looking excitedly at the toys in a store. Her bright smile shows she is having a great time',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There is a little girl happily holding a treat while exploring a colorful aisle. She is enjoying this fun shopping trip',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There is a child smiling widely as she looks at the shelves filled with toys. The joy on her face makes this moment special',
+            'result': 'false'
+          },
+        ],
+      },
+      {
+        'imageUrl':
+            'https://drive.google.com/file/d/13C-OAYal9lMz_G92FHrsMQ96Tq0oO1yf',
+        'index': 7,
+        'name': 'p8',
+        'mainResult': 'false',
+        'answers': [
+          {
+            'text':
+                'There is a teenager reading a book by the window, wrapped in a cozy blanket. He is making the most of a rainy day indoors',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There is a boy sitting comfortably and reading while it rains outside. He is enjoying the peaceful moment',
+            'result': 'false'
+          },
+          {
+            'text':
+                'There is a young person reading a book with full focus. The rainy weather outside adds to the cozy atmosphere',
             'result': 'false'
           },
         ],
@@ -225,6 +412,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/11_fyXOrmK7WlT2gbxcMNiS_xOPd3hwrY',
         'index': 8,
+        'name': 'p9',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -247,6 +436,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1qgLFhNL52STOFBWqSczKyAGso6c3Couw',
         'index': 9,
+        'name': 'p10',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -269,6 +460,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1DAa_aaXzskZmU29EQYx82nL88a8vhPsD',
         'index': 10,
+        'name': 'p11',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -291,6 +484,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1ZoSIfrSphC2L6xoJImlkYPXcn8FtixlG',
         'index': 11,
+        'name': 'p12',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -313,6 +508,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1zAZtxl-UG83j4WDIhKtxImbJF-rKMgEH',
         'index': 12,
+        'name': 'p13',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -335,6 +532,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/15g8vhMdttz-8GRpQwc3MdKUYc4dXLmtx',
         'index': 13,
+        'name': 'p14',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -357,6 +556,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1k6nUzxPHNl2H1BWMtoHV9QfTcGRkJvbW',
         'index': 14,
+        'name': 'p15',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -379,6 +580,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1HrnHlvaPeBtpApSH9F8o2Qe-h0DTRSVf',
         'index': 15,
+        'name': 'p16',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -401,6 +604,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1RUMCW9hMptLKz5pzfbvebCZnP_FLAOLL',
         'index': 16,
+        'name': 'p17',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -423,6 +628,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/19pJTJELYoRg4RlFh_7Q8EELdRxhd-az3',
         'index': 17,
+        'name': 'p18',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -445,6 +652,7 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1Lt7USf2G6hg1BBwPipFw4B38BweQXcnx',
         'index': 18,
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -466,12 +674,13 @@ class CameraSpeechController extends GetxController {
     ];
 
     for (var data in dataList) {
-      uploadImageData(userId, data['imageUrl'], data['answers'], data['index']);
+      uploadImageData(userId, data['imageUrl'], data['answers'], data['index'],
+          data['name']);
     }
   }
 
   Future<void> uploadImageData(String userId, String imageUrl,
-      List<Map<String, dynamic>> answers, int index) async {
+      List<Map<String, dynamic>> answers, int index, String name) async {
     try {
       final firestore = FirebaseFirestore.instance;
 
@@ -484,6 +693,7 @@ class CameraSpeechController extends GetxController {
         'url': imageUrl,
         'answers': answers,
         'mainResult': 'false',
+        'name': name,
       });
 
       logger.i("Data uploaded successfully for index $index!");
@@ -584,6 +794,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1ioxXKzMKrHqG8es95X8bcOzuF2q6tWND',
         'index': 0,
+        'name': 'n1',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -606,6 +818,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1PZiiMyS4X0lJGPmQjrEBeTCbwPQcXxwe',
         'index': 1,
+        'name': 'n2',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -628,6 +842,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1TQEp_LJIqVXrtVeR4WDCa8g8iEvRerL5',
         'index': 2,
+        'name': 'n3',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -650,6 +866,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1JncxzxSTQ1olYw6kS9gIJ3lScd-RAf4T',
         'index': 3,
+        'name': 'n4',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -672,6 +890,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1u8R1ckOF4krzN9UvgdVbkDbkayVvzlg2',
         'index': 4,
+        'name': 'n5',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -694,6 +914,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1c7xD2tsxzJw6pZazUqK5H72kYEF6CVz1',
         'index': 5,
+        'name': 'n6',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -716,6 +938,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1ZXI7HraFzNJ1aKlUQooElrtmdOc68Dpk',
         'index': 6,
+        'name': 'n7',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -738,6 +962,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1B8N5MnX1PeKlZ3TKlh0e2DOV0ZT4Ljga',
         'index': 7,
+        'name': 'n8',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -760,6 +986,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/17RMaHOKv5Y5wbd3U8jvoLMdwLqU6v7l3',
         'index': 8,
+        'name': 'n9',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -782,6 +1010,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1OdZ9DBabHyLk6c2ipXxMG1TO2YTsk3yB',
         'index': 9,
+        'name': 'n10',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -804,6 +1034,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1xO4nu2B2FpJzB2FyjpheBj_BCuNEkYPL',
         'index': 10,
+        'name': 'n11',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -826,6 +1058,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1AMGpPH0q874yi1JP-E4-6iuO2_UWMyS2',
         'index': 11,
+        'name': 'n12',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -848,6 +1082,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1AjYmZhY_BeqUiI1gMqWscIhQySXuLPCZ',
         'index': 12,
+        'name': 'n13',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -870,6 +1106,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1peuTSSZr2E87RVhJyblWs56PAqs8njox',
         'index': 13,
+        'name': 'n14',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -892,6 +1130,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1W48-q5MxXPtDnVMOB84RQhAeJIBNc6Vz',
         'index': 14,
+        'name': 'n15',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -914,6 +1154,8 @@ class CameraSpeechController extends GetxController {
         'imageUrl':
             'https://drive.google.com/file/d/1TsT3nITiTN6s8yKR8FlAnoAbBr-oT9LN',
         'index': 15,
+        'name': 'n16',
+        'mainResult': 'false',
         'answers': [
           {
             'text':
@@ -935,13 +1177,13 @@ class CameraSpeechController extends GetxController {
     ];
 
     for (var data in dataList) {
-      uploadImageDataNegative(
-          userId, data['imageUrl'], data['answers'], data['index']);
+      uploadImageDataNegative(userId, data['imageUrl'], data['answers'],
+          data['index'], data['name']);
     }
   }
 
   Future<void> uploadImageDataNegative(String userId, String imageUrl,
-      List<Map<String, dynamic>> answers, int index) async {
+      List<Map<String, dynamic>> answers, int index, String name) async {
     try {
       final firestore = FirebaseFirestore.instance;
 
@@ -954,6 +1196,7 @@ class CameraSpeechController extends GetxController {
         'url': imageUrl,
         'answers': answers,
         'mainResult': 'false',
+        'name': name,
       });
 
       logger.i("Data uploaded successfully for index $index!");
@@ -980,6 +1223,90 @@ class CameraSpeechController extends GetxController {
       update();
     } catch (e) {
       logger.e("Error initializing speech: $e");
+    }
+  }
+
+  final record = Record();
+  String? recordedFilePath;
+
+  Future<void> startRecording() async {
+    if (await record.hasPermission()) {
+      final dir = await getTemporaryDirectory();
+      final path = '${dir.path}/recorded_audio.m4a'; // or .mp4 if supported
+      await record.start(path: path);
+      recordedFilePath = path;
+      logger.i("Recording started...");
+    }
+  }
+
+  Future<void> stopRecording() async {
+    await record.stop();
+    logger.i("Recording stopped. File saved at: $recordedFilePath");
+
+    if (recordedFilePath != null) {
+      await sendVoiceFileToApi(recordedFilePath!);
+    }
+  }
+
+  ComparingAudioModel? comparingAudioModel;
+
+  Future<void> sendVoiceFileToApi(String filePath) async {
+    showProgress();
+    final uri = Uri.parse(ApiUrls.compareAudioWithTextApi);
+    final request = http.MultipartRequest('POST', uri);
+
+    request.fields['comparison_text'] = firebaseImageAnswer ?? '';
+
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'audio_file',
+        filePath,
+        contentType: MediaType('audio', 'mp4'), // or audio/mp4 or audio/m4a
+      ),
+    );
+
+    try {
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        stopProgress();
+        comparingAudioModel = comparingAudioModelFromJson(response.body);
+        final data = jsonDecode(response.body);
+        logger.i(response.body);
+
+        if (comparingAudioModel?.exactMatch == true) {
+          updateAnswerResultToTrue();
+          logger.i('Answer matched');
+          DailyTaskService taskService = DailyTaskService();
+
+          // Update the "image_description" task to true
+          await taskService.updateTaskStatus(
+              AppStorage.getUserData()?.userId ?? '',
+              'image_description',
+              true);
+
+          isResult = true;
+          isAnswerMatched = true;
+          update();
+          Get.find<DashboardController>().fetchDailyTasks();
+        } else {
+          showToast('Try Again! Recording did not match');
+          isResult = false;
+          isRecordPressed = false;
+          update();
+        }
+      } else {
+        stopProgress();
+        logger.e("API Error: ${response.body}");
+        showToast('API error: ${response.statusCode}');
+      }
+    } catch (e) {
+      logger.e("Sending file failed: $e");
+      showToast('Something went wrong');
+    } finally {
+      isRecordPressed = false;
+      update();
     }
   }
 

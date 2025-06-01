@@ -18,8 +18,10 @@ class DashboardController extends GetxController {
   // Track selected words in the correct order
   List<String> selectedWordList = [];
 
+  List<bool> isSelected = [];
+
   // Track whether the word is selected or not
-  List<bool> isSelected = List.generate(5, (index) => false);
+  // List<bool> isSelected = List.generate(words.length, (index) => false);
   // Update the selected word when tapping on the container
   void toggleWordSelection(int index) {
     if (isSelected[index]) {
@@ -69,20 +71,45 @@ class DashboardController extends GetxController {
     update();
   }
 
+  // bool areListsEqual(List<String> list1, List<String> list2) {
+  //   // Check if both lists have the same length
+  //   if (list1.length != list2.length) {
+  //     return false;
+  //   }
+  //
+  //   // Compare elements at each index
+  //   for (int i = 0; i < list1.length; i++) {
+  //     if (list1[i] != list2[i]) {
+  //       return false;
+  //     }
+  //   }
+  //
+  //   // If no mismatch found, the lists are equal
+  //   return true;
+  // }
+
   bool areListsEqual(List<String> list1, List<String> list2) {
-    // Check if both lists have the same length
     if (list1.length != list2.length) {
       return false;
     }
 
-    // Compare elements at each index
-    for (int i = 0; i < list1.length; i++) {
-      if (list1[i] != list2[i]) {
+    // Normalize strings: remove special characters and convert to lowercase
+    List<String> normalize(List<String> list) {
+      return list.map((item) {
+        final cleaned = item.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase();
+        return cleaned.trim();
+      }).toList();
+    }
+
+    final normalizedList1 = normalize(list1);
+    final normalizedList2 = normalize(list2);
+
+    for (int i = 0; i < normalizedList1.length; i++) {
+      if (normalizedList1[i] != normalizedList2[i]) {
         return false;
       }
     }
 
-    // If no mismatch found, the lists are equal
     return true;
   }
 
@@ -121,7 +148,7 @@ class DashboardController extends GetxController {
     isUploading = false;
     update();
 
-    showToast('Data uploaded successfully!');
+    // showToast('Data uploaded successfully!');
   }
 
   String? word;
@@ -159,6 +186,7 @@ class DashboardController extends GetxController {
         correctSentence = sentence?.split(" ") ?? [];
         List<String> wordsList = jumpedSentence?.split(" ") ?? [];
         words = wordsList;
+        isSelected = List.generate(words.length, (index) => false);
       } else {
         word = "No word found";
         sentence = "No sentence available for today.";

@@ -286,43 +286,46 @@ class _RobotGeneralState extends State<RobotGeneral> {
     );
   }
 
-  Container answersBox({required String answer, required String question}) {
-    return Container(
-      margin: const EdgeInsets.only(
-        top: 10,
-        left: 20,
-        right: 20,
-        bottom: 10,
-      ),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-          color: kWhite,
-          boxShadow: [
-            BoxShadow(
-              color: kYellowffde59.withOpacity(0.3),
-              spreadRadius: 2,
-              blurRadius: 3,
-              offset: const Offset(0, 1),
-            ),
-          ],
-          borderRadius: BorderRadius.circular(
-            Dimensions.radiusExtraLarge,
+  Widget answersBox({required String answer, required String question}) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () async {
+        await microphoneCtrl.stopSpeaking();
+        microphoneCtrl.isSpeaking = false;
+        Get.to(
+          AdvancedRobotTopic(
+            answer: answer,
+            question: question,
+            route: '/general',
           ),
-          border: Border.all(color: kYellowffde59)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Get.to(
-                AdvancedRobotTopic(
-                  answer: answer,
-                  question: question,
-                  route: '/general',
-                ),
-              );
-            },
-            child: Container(
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(
+          top: 10,
+          left: 20,
+          right: 20,
+          bottom: 10,
+        ),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+            color: kWhite,
+            boxShadow: [
+              BoxShadow(
+                color: kYellowffde59.withOpacity(0.3),
+                spreadRadius: 2,
+                blurRadius: 3,
+                offset: const Offset(0, 1),
+              ),
+            ],
+            borderRadius: BorderRadius.circular(
+              Dimensions.radiusExtraLarge,
+            ),
+            border: Border.all(color: kYellowffde59)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
               width: 24.0,
               height: 24.0,
               padding: const EdgeInsets.all(0),
@@ -338,24 +341,36 @@ class _RobotGeneralState extends State<RobotGeneral> {
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            width: SizesDimensions.width(50),
-            child: customText(
-                text: answer,
-                maxLines: 3,
-                textStyle:
-                    regular14NavyBlue.copyWith(color: secDarkBlueNavyColor)),
-          ),
-          GestureDetector(
-            onTap: () {
-              microphoneCtrl.speakEnglishAccent(answer);
-            },
-            child: SvgPicture.asset(
-              '$imgUrl$speakerYellowImg',
+            SizedBox(
+              width: SizesDimensions.width(50),
+              child: customText(
+                  text: answer,
+                  maxLines: 3,
+                  textStyle:
+                      regular14NavyBlue.copyWith(color: secDarkBlueNavyColor)),
             ),
-          ),
-        ],
+            GestureDetector(
+              onTap: () async {
+                final microphoneCtrl = Get.find<MicrophoneController>();
+
+                if (microphoneCtrl.isSpeaking) {
+                  // Stop speaking if currently speaking
+                  await microphoneCtrl.stopSpeaking();
+                  microphoneCtrl.isSpeaking = false;
+                } else {
+                  // Start speaking if not speaking
+                  await microphoneCtrl.speakEnglishAccent(answer);
+                  microphoneCtrl.isSpeaking = true;
+                }
+
+                microphoneCtrl.update(); // Notify UI
+              },
+              child: SvgPicture.asset(
+                '$imgUrl$speakerYellowImg',
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -22,7 +22,7 @@ abstract class LanguageMenuItemsForApi {
     spanish,
     german,
     french,
-    farsi,
+    // farsi,
     english,
   ];
 
@@ -50,9 +50,9 @@ abstract class LanguageMenuItemsForApi {
   static const french = LanguageMenuItemForApi(
     text: 'French',
   );
-  static const farsi = LanguageMenuItemForApi(
-    text: 'Farsi ',
-  );
+  // static const farsi = LanguageMenuItemForApi(
+  //   text: 'Farsi ',
+  // );
   static const english = LanguageMenuItemForApi(
     text: 'English ',
   );
@@ -94,9 +94,9 @@ abstract class LanguageMenuItemsForApi {
       case LanguageMenuItemsForApi.french:
         microPhoneCtrl.selectedLanguage = 'French';
         break;
-      case LanguageMenuItemsForApi.farsi:
-        microPhoneCtrl.selectedLanguage = 'Farsi';
-        break;
+      // case LanguageMenuItemsForApi.farsi:
+      //   microPhoneCtrl.selectedLanguage = 'Farsi';
+      //   break;
       case LanguageMenuItemsForApi.english:
         microPhoneCtrl.selectedLanguage = 'English';
         break;

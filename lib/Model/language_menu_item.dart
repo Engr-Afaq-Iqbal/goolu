@@ -23,7 +23,7 @@ abstract class LanguageMenuItems {
     spanish,
     german,
     french,
-    farsi,
+    // farsi,
   ];
 
   static const english = LanguageMenuItem(
@@ -53,9 +53,9 @@ abstract class LanguageMenuItems {
   static const french = LanguageMenuItem(
     text: 'French',
   );
-  static const farsi = LanguageMenuItem(
-    text: 'Farsi ',
-  );
+  // static const farsi = LanguageMenuItem(
+  //   text: 'Farsi ',
+  // );
 
   static Widget buildItem(LanguageMenuItem item) {
     return Row(
@@ -105,10 +105,10 @@ abstract class LanguageMenuItems {
         authController.selectLanguage = 'French';
         Get.updateLocale(const Locale('fr', 'FR'));
         break;
-      case LanguageMenuItems.farsi:
-        authController.selectLanguage = 'Farsi';
-        Get.updateLocale(const Locale('fa', 'IR'));
-        break;
+      // case LanguageMenuItems.farsi:
+      //   authController.selectLanguage = 'Farsi';
+      //   Get.updateLocale(const Locale('fa', 'IR'));
+      //   break;
       default:
         break;
     }

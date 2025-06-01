@@ -68,7 +68,10 @@ class _RobotRoleSelectionPageState extends State<RobotRoleSelectionPage> {
                               onTap: () {
                                 Get.back();
                               },
-                              child: const Icon(Icons.arrow_back)),
+                              child: const Icon(
+                                Icons.arrow_back,
+                                color: Colors.black,
+                              )),
                           size60w,
                           size60w,
                           size60w,
@@ -79,7 +82,7 @@ class _RobotRoleSelectionPageState extends State<RobotRoleSelectionPage> {
                             children: [
                               size20h,
                               customText(
-                                text: 'Situation',
+                                text: 'Situations',
                                 textStyle: regular18NavyBlue.copyWith(
                                   fontSize: 14,
                                 ),
@@ -102,8 +105,12 @@ class _RobotRoleSelectionPageState extends State<RobotRoleSelectionPage> {
                         children: [
                           AppCustomButton(
                             onTap: () {
-                              robotCtrl.displayItems.clear();
-                              Get.to(() => RobotConversationScreen(
+                              robotCtrl.displayItems = [];
+                              robotCtrl.currentQuestionIndex = 0;
+                              robotCtrl.isCustomer = false;
+                              robotCtrl.update();
+
+                              Get.to(() => const RobotConversationScreen(
                                     isQuestion: true,
                                   ));
                             },
@@ -118,6 +125,9 @@ class _RobotRoleSelectionPageState extends State<RobotRoleSelectionPage> {
                           AppCustomButton(
                             onTap: () {
                               robotCtrl.displayItems.clear();
+                              robotCtrl.isCustomer = true;
+                              robotCtrl.currentQuestionIndex = 0;
+                              robotCtrl.update();
                               robotCtrl.displayItems.add(BotQuestionWidget(
                                 question: robotCtrl
                                     .situationModel!
@@ -125,7 +135,7 @@ class _RobotRoleSelectionPageState extends State<RobotRoleSelectionPage> {
                                     .question,
                               ));
                               robotCtrl.update();
-                              Get.to(() => RobotConversationScreen(
+                              Get.to(() => const RobotConversationScreen(
                                     isQuestion: false,
                                   ));
                             },

@@ -60,7 +60,37 @@ class _AdvancedRobotTopicState extends State<AdvancedRobotTopic> {
                   ),
                 ),
               ),
-              size100h,
+              size80h,
+              if ((robotCtrl.isPassed == false &&
+                      robotCtrl.showResult == false) ||
+                  (robotCtrl.isPassed == true && robotCtrl.showResult == false))
+                GestureDetector(
+                  onTap: () async {
+                    final microphoneCtrl = Get.find<MicrophoneController>();
+
+                    if (microphoneCtrl.isSpeaking) {
+                      // Stop speaking if currently speaking
+                      await microphoneCtrl.stopSpeaking();
+                      microphoneCtrl.isSpeaking = false;
+                    } else {
+                      // Start speaking if not speaking
+                      await microphoneCtrl.speakEnglishAccent(widget.answer);
+                      microphoneCtrl.isSpeaking = true;
+                    }
+
+                    microphoneCtrl.update(); // Notify UI
+                  },
+                  child: Center(
+                    child: SvgPicture.asset(
+                      '$imgUrl$speakerYellowImg',
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              if ((robotCtrl.isPassed == false &&
+                      robotCtrl.showResult == false) ||
+                  (robotCtrl.isPassed == true && robotCtrl.showResult == false))
+                size20h,
               if ((robotCtrl.isPassed == false &&
                       robotCtrl.showResult == false) ||
                   (robotCtrl.isPassed == true && robotCtrl.showResult == false))
@@ -70,15 +100,18 @@ class _AdvancedRobotTopicState extends State<AdvancedRobotTopic> {
                       left: SizesDimensions.width(2),
                       right: SizesDimensions.width(2),
                     ),
-                    width: SizesDimensions.width(70),
-                    child: customText(
-                      text: widget.answer,
-                      maxLines: 10,
-                      textStyle: regular14NavyBlue.copyWith(
-                        color: secDarkBlueNavyColor,
-                        fontSize: 18,
+                    width: SizesDimensions.width(90),
+                    height: SizesDimensions.height(30),
+                    child: SingleChildScrollView(
+                      child: customText(
+                        text: widget.answer,
+                        maxLines: 20,
+                        textStyle: regular14NavyBlue.copyWith(
+                          color: secDarkBlueNavyColor,
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
@@ -121,24 +154,19 @@ class _AdvancedRobotTopicState extends State<AdvancedRobotTopic> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
-                            onTap: robotCtrl.micButton == false
-                                ? () {
-                                    robotCtrl.micButton = true;
-                                    robotCtrl.micSubButton = true;
-                                    robotCtrl.showResult = false;
-                                    robotCtrl.playSubButton = false;
-                                    Get.back();
-                                  }
-                                : null,
+                            onTap: () {
+                              robotCtrl.micButton = true;
+                              robotCtrl.micSubButton = true;
+                              robotCtrl.showResult = false;
+                              robotCtrl.playSubButton = false;
+                              Get.back();
+                            },
                             child: Container(
                               width: 55,
                               height: 55,
                               padding: const EdgeInsets.all(0),
                               decoration: BoxDecoration(
-                                color: robotCtrl.micButton == false
-                                    ? kRedFE5657
-                                    : k7F7F7F
-                                        .withOpacity(0.3), // Background color
+                                color: kRedFE5657, // Background color
                                 shape: BoxShape
                                     .circle, // Makes the container circular
                               ),
@@ -163,6 +191,39 @@ class _AdvancedRobotTopicState extends State<AdvancedRobotTopic> {
                                 textStyle:
                                     bold18NavyBlue.copyWith(fontSize: 18)),
                           GestureDetector(
+                            // onTap: robotCtrl.micButton
+                            //     ? null
+                            //     : () async {
+                            //         final canReplayResult =
+                            //             robotCtrl.showResult;
+                            //         final shouldReplay =
+                            //             canReplayResult && robotCtrl.isPassed;
+                            //
+                            //         if (shouldReplay ||
+                            //             (robotCtrl.showResult &&
+                            //                 !robotCtrl.isPassed)) {
+                            //           robotCtrl.micButton = true;
+                            //           robotCtrl.micSubButton = true;
+                            //           robotCtrl.showResult = false;
+                            //           robotCtrl.playSubButton = false;
+                            //           Get.close(2);
+                            //         } else {
+                            //           showProgress();
+                            //           // await Future.delayed(
+                            //           //     const Duration(seconds: 1));
+                            //
+                            //           robotCtrl.stopRecording2(
+                            //             widget.answer,
+                            //             widget.question,
+                            //             widget.route,
+                            //           );
+                            //           // robotCtrl.matchSpokenAndAnswerText(
+                            //           //   widget.answer,
+                            //           //   widget.question,
+                            //           //   widget.route,
+                            //           // );
+                            //         }
+                            //       },
                             onTap: robotCtrl.micButton == false
                                 ? (robotCtrl.isPassed == false &&
                                             robotCtrl.showResult == true ||
@@ -176,9 +237,9 @@ class _AdvancedRobotTopicState extends State<AdvancedRobotTopic> {
                                         Get.close(2);
                                       }
                                     : () async {
-                                        showProgress();
-                                        await Future.delayed(
-                                            const Duration(seconds: 1));
+                                        // showProgress();
+                                        // await Future.delayed(
+                                        //     const Duration(seconds: 1));
                                         robotCtrl.matchSpokenAndAnswerText(
                                             widget.answer,
                                             widget.question,
@@ -225,7 +286,8 @@ class _AdvancedRobotTopicState extends State<AdvancedRobotTopic> {
                                   if (robotCtrl.micSubButton == true) {
                                     logger.i('In Start');
 
-                                    robotCtrl.startListening();
+                                    // robotCtrl.startRecording();
+                                    robotCtrl.startRecording2();
 
                                     ///here mic ready functionality will work
                                     robotCtrl.micSubButton = false;
@@ -234,7 +296,8 @@ class _AdvancedRobotTopicState extends State<AdvancedRobotTopic> {
                                     ///recording functionality will work
                                     robotCtrl.playSubButton = true;
                                     robotCtrl.micButton = false;
-                                    robotCtrl.stopListening();
+                                    robotCtrl.stopRecording2();
+                                    // robotCtrl.stopListening();
                                     robotCtrl.update();
                                   }
                                   robotCtrl.update();
